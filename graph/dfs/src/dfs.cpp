@@ -33,7 +33,7 @@ static int read_input_and_do_dfs(const int n, const int k, const int root) {
 	int level[n];
 	memset(adj, 0, sizeof(adj));
 	memset(level, 0, sizeof(level));
-	int i = n;
+	int i = k;
 	while(i--) {
 		int x,y;
 		cin >> x >> y;
