@@ -11,11 +11,11 @@ enum {
 	INFINITY = 10000,
 };
 
-static int bellman_ford(const int n, vector<pair<int, pair<int,int> > > &verts, int*dist, int*prev, int root) {
+static int bellman_ford(const int n, vector<pair<int, pair<int,int> > > &verts, int*dist, int*prev, const int root) {
 	int i;
 	const int nvertices = verts.size();
 	dist[root] = 0;
-	for( i = 1 ; i < nvertices; i++) {
+	for( i = 1/* strange */ ; i < nvertices; i++) {
 		vector<pair<int,pair<int,int> > >::iterator it = verts.begin();
 		while(it < verts.end()) {
 			pair<int,pair<int,int> > edge = *it++;
