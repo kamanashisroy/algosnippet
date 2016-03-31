@@ -12,7 +12,7 @@ bool compare_edge(pair<int, pair<int,int> >x, pair<int, pair<int,int> >y) {
 }
 
 void join_trees(int*prev, int x, int y) {
-	prev[x] = y; // TODO make a balanced tree
+	prev[x] = y; // TODO make a balanced tree for undirected graph
 }
 
 int find_root(int*prev, int x) {
