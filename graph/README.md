@@ -7,10 +7,13 @@ Here is my practice code of all the graph related algorithms.
 - [Breadth-first Search](bfs)
 - [Depth-first Search](dfs)
 - Shortest path search
-	- [Dijkstra Algorithm](dijkstra)
-	- [Floyd Warshall's algorithm](floyd_warshall)
-	- [Dynamic programming](dynamic_undirected)
-	- [Bellman Ford algorithm](bellman_ford)
+	- [Dijkstra Algorithm](shortest_path/dijkstra)
+	- [Floyd Warshall's algorithm](shortest_path/floyd_warshall)
+	- [Dynamic programming](shortest_path/dynamic_undirected)
+	- [Bellman Ford algorithm](shortest_path/bellman_ford)
+- Finding minimum spanning tree
+	- [Kruskal's algorithm](minimum_spanning_tree/kruskal)
+	- [Prim's algorithm](minimum_spanning_tree/prim)
 
 Note,Dijkstra and Breadth-first search are very similar algorithms.
 
