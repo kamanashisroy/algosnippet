@@ -2,7 +2,7 @@
 #include <string.h>
 #include <vector>
 #include <queue> // priority queue
-#include <set>
+#include <list>
 #include <iostream>
 #include <cstdio>
 #include <assert.h>
@@ -22,34 +22,39 @@ struct cmp {
 
 static int prim(const int n, vector<priority_queue<pair<int, int>, vector<pair<int, int> >, cmp > >&adj, int*tree) {
 	int i = n;
-	set<int> remaining;
+	list<int> remaining;
+	int added[n];
+	memset(added, 0, sizeof(added));
 	i = n;
 	while(i--) {
-		remaining.insert(i);
+		remaining.push_back(i);
 	}
 	while(!remaining.empty()) {
 		int minWeight = INFINITY;
 		int node = INFINITY;
-		i = n;
-		while(i--) {
-			priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >&pq = adj[i];
+		int x = n;
+		while(x--) {
+			priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >&pq = adj[x];
 			if(!pq.empty()) {
-				pair<int,int> min_dist = pq.top();
-				if(remaining.find(min_dist.second) == remaining.end()) { // this edge is costly , the adjuscent node is already added in the tree
+				pair<int,int> min_dist = pq.top();int y = min_dist.second;int w = min_dist.first;
+				if(added[y] && added[x]) { // this edge is costly , the adjuscent node is already added in the tree
 					pq.pop();
-				} else if(min_dist.first < minWeight) {
-					node = i;
-					minWeight = min_dist.first;
+				} else if(w < minWeight) {
+					node = x;
+					minWeight = w;
 				}
 			}
 		}
-		remaining.erase(node);
-		priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >&pq = adj[node];
+		x = node;
+		remaining.remove(x);
+		priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >&pq = adj[x];
 		assert(!pq.empty());
-		pair<int,int> min_dist = pq.top();
-		remaining.erase(min_dist.second);
-		tree[node*n + min_dist.second] = minWeight;
-		tree[min_dist.second*n + node] = minWeight;
+		pair<int,int> min_dist = pq.top();int y = min_dist.second;
+		remaining.remove(y);
+		tree[x*n + y] = minWeight;
+		tree[y*n + x] = minWeight;
+		added[x] = 1;
+		added[y] = 1;
 		pq.pop();
 	}
 	return 0;
