@@ -4,6 +4,10 @@ Graph
 
 Here is my practice code of all the graph related algorithms.
 
+- [tree](tree)
+	- [Red-Black tree](rbtree)
+	- [R-tree](rtree)
+	- [B-tree](btree)
 - [Breadth-first Search](bfs)
 - [Depth-first Search](dfs)
 - [Shortest path search](shortest_path)
