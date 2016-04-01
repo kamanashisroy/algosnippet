@@ -1,11 +1,14 @@
 
-Note,Dijkstra and Breadth-first search are very similar algorithms.
+Note,Dijkstra and Breadth-first search are very similar algorithms. Best-first search uses heuristic value dependent priority queue instead of normal queue in Dujkstra. A\* and B\* are examples of Best-first search. Based on the heuristic Best-first search can work either like Breadth-first search or Depth-first search or something else.
 
 | DFS | BFS | Dijkstra algorithm
 | --- | --- | ---
 | It uses **stack** | It uses **queue** | It uses **queue**
 | cannot find shortest path | finds shortest path in **unweighted** graph | finds shortest path in **weighted** graph
 | edges are kept in adjacency matrix | adjacency matrix | adjacency matrix
+| It is used for topological sorting | - | -
+| time complexity O(|E|) | O(|E|) | O(|E|+|V|lg|V|)
+| space complexity O(|V|) | O(|V|) | -
 
 ```C 
 	// depth first search
@@ -34,7 +37,7 @@ Note,Dijkstra and Breadth-first search are very similar algorithms.
 		int x = nodes.front();nodes.pop();
 		int i = n; while(i--) {
 			 /* calculate distance instead of level */
-			if(!*(adj+(x*n)+i) || (dist[i] < (dist[x]+*(adj+(x*n)+i))))continue;
+			if(!*(adj+(x*n)+i) || (dist[i] < (dist[x]+*(adj+(x*n)+i))))continue; // dynamic programming
 			nodes.push(i);
 			dist[i] = w;prev[i] = x;
  		}
