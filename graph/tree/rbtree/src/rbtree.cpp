@@ -3,6 +3,7 @@
 #include <queue>
 #include <iostream>
 #include <cstdio>
+#include <assert.h>
 
 using namespace std;
 
@@ -16,57 +17,75 @@ struct RBNode {
 
 	RBNode(K given) : x(given),is_black(true),right(NULL),left(NULL),equals(NULL) { }
 
-	int fixup_uncle(RBNode*added, bool is_same_side_as_uncle, RBNode*uncle) {
+	RBNode*fixup_uncle(RBNode*grand_child, bool is_same_side_as_uncle, RBNode*uncle) {
 		if(uncle && !uncle->is_black) { // if parent and uncle is red
 			// wikipedia case 3
 			// color flip
 			is_black = false;
 			right->is_black = true;
 			left->is_black = true;
-			added->is_black = false;
+			//grand_child->is_black = false;
 		} else if(uncle && uncle->is_black) { // uncle is black
-			// wikipedia case 4
 			if(is_same_side_as_uncle) {
+				// wikipedia case 4
 				// needs rotation
 				if(uncle == left) {
-					added->right = right;
-					right = added;
-					added->right->left = NULL;
+					grand_child->right = right;
+					right = grand_child;
+					grand_child->right->left = NULL;
 				} else {
-					added->left = left;
-					left = added;
-					added->left->right = NULL;
+					grand_child->left = left;
+					left = grand_child;
+					grand_child->left->right = NULL;
+				}
+			} else {
+				// wikipedia case 5
+				if(uncle == left) {
+					// rotate parent and grand parent
+					assert(right->left == NULL);
+					right->left = this; // grand parent is now child of parent
+					// color flip
+					is_black = false; // this grand parent is red
+					right->is_black = true; // parent is black
+					RBNode*ret = right;
+					right = NULL; 
+					return ret; // return parent as grand parent
+				} else {
+					assert(left->right = NULL);
+					left->right = this;
+					is_black = false;
+					left->is_black = true;
+					RBNode*ret = left;
+					left = NULL;
+					return ret;
 				}
 			}
 		}
-		return 0;
+		return NULL;
 	}
 
 	RBNode*insert(RBNode*node, RBNode*parent) {
 		if(node->x < x) {
 			if(left) {
-				left->insert(node, this);
-				// fix red red violation
-				if(is_black && !left->is_black && left->left && !left->left->is_black) {
-					// time to rotate
-					if(parent) {
-						if(parent->right == this)
-							parent->right = left;
-						else
-							parent->left = left;
+				RBNode*nparent = left->insert(node, this);
+				if(nparent != NULL) {
+					if((nparent->right == right) || (nparent->left == right)) {
+						right = nparent;
+						return NULL;
 					}
-					left->right = this;
-					is_black = true;
-					left = NULL;
-					if(!parent)
-						return left;
+					if((nparent->right == left) || (nparent->left == left)) {
+						left = nparent;
+						return NULL;
+					}
+					return nparent;
 				}
 				return NULL;
 			}
 			//cout << "inserting left " << node->x << '\n';
 			left = node;
 			left->is_black = false; // new item is always red
-			if(!is_black && parent)parent->fixup_uncle(left, parent->right == this, parent->right == this?parent->left:parent->right);
+			if(!is_black/* red */ && parent)
+				return parent->fixup_uncle(left, parent->right == this/* then it is the same side as uncle */, parent->right == this?parent->left:parent->right);
 			return NULL;
 		}
 		if(node->x == x) {
@@ -77,28 +96,25 @@ struct RBNode {
 			return NULL;
 		}
 		if(right) {
-			right->insert(node, this);
-			// fix red red violation
-			if(is_black && !right->is_black && right->right && !right->right->is_black) {
-				// time to rotate
-				if(parent) {
-					if(parent->right == this)
-						parent->right = right;
-					else
-						parent->left = right;
+			RBNode*nparent = right->insert(node, this);
+			if(nparent != NULL) {
+				if((nparent->right == right) || (nparent->left == right)) {
+					right = nparent;
+					return NULL;
 				}
-				right->left = this;
-				is_black = true;
-				right = NULL;
-				if(!parent)
-					return right;
+				if((nparent->right == left) || (nparent->left == left)) {
+					left = nparent;
+					return NULL;
+				}
+				return nparent;
 			}
 			return NULL;
 		}
 		//cout << "inserting right " << node->x << '\n';
 		right = node;
 		right->is_black = false; // new item is always red
-		if(!is_black && parent)parent->fixup_uncle(right, parent->left == this, parent->right == this?parent->left:parent->right);
+		if(!is_black && parent)
+			return parent->fixup_uncle(right, parent->left == this, parent->right == this?parent->left:parent->right);
 		return NULL;
 	}
 
