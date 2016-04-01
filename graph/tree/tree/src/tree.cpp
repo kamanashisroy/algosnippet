@@ -53,6 +53,28 @@ struct TNode {
 		assert(ch == ')');
 	}
 
+	bool is_equal(TNode*other) {
+		if(x != other->x)
+			return false;
+		if(other->left != left && ((other->left == NULL) || (left == NULL))) {
+			return false;
+		}
+		if(left != NULL && !left->is_equal(other->left))
+			return false;
+
+		if(other->right != right && ((other->right == NULL) || (right == NULL))) {
+			return false;
+		}
+		if(right != NULL && !right->is_equal(other->right)) {
+			return false;
+		}
+		return true;
+	}
+
+	bool contains_subtree(TNode*other) {
+		return is_equal(other) || (left != NULL && left->contains_subtree(other)) || (right != NULL && right->contains_subtree(other));
+	}
+
 	~TNode() {
 		if(equals) delete equals;
 		if(left) delete left;
@@ -89,10 +111,17 @@ static int read_tree_and_check_substring() {
 
 	// find if secondstrm is substring of firststrm
 	if(firststrm.str().find(secondstrm.str()) != std::string::npos) {
+		cout << "string way:second is subtree of first\n";
+	} else {
+		cout << "string way:second is NOT subtree of first\n";
+	}
+
+	if(first->contains_subtree(second)) {
 		cout << "second is subtree of first\n";
 	} else {
 		cout << "second is NOT subtree of first\n";
 	}
+
 	if(first)
 		delete first;
 	if(second)
