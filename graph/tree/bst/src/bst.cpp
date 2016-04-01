@@ -52,13 +52,12 @@ struct TNode {
 	}
 	// TODO remove node
 
-	void dump() { // prints tree in preorder
-		cout << '(' << x << ' ';
+	void in_order(int (*cb)(K x)) { // prints tree in preorder
 		if(left)
-			left->dump();
+			left->in_order(cb);
+		cb(x);
 		if(right)
-			right->dump();
-		cout << ')';
+			right->in_order(cb);
 	}
 
 	~TNode() {
@@ -68,6 +67,12 @@ struct TNode {
 	}
 
 };
+
+template <typename K>
+static int in_order_dump_cb(K x) {
+	cout << x << ',';
+	return 0;
+}
 
 static int read_input_and_build_tree_and_search(const int n, const int x) {
 	TNode<int>*root = NULL;
@@ -81,7 +86,7 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 		else
 			root->insert(node);
 	}
-	root->dump();
+	root->in_order(in_order_dump_cb);
 	cout << '\n';
 	if(root->search(x) != NULL) {
 		cout << "found " << x << '\n';
