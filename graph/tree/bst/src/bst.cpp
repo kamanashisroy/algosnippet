@@ -2,7 +2,9 @@
 #include <string.h>
 #include <queue>
 #include <iostream>
+#include <sstream>
 #include <cstdio>
+#include <assert.h>
 
 using namespace std;
 
@@ -60,6 +62,34 @@ struct TNode {
 			right->in_order(cb);
 	}
 
+	void serialize(stringstream&strm) {
+		strm << x << '(';
+		if(left)
+			left->serialize(strm);
+		strm << ',';
+		if(right)
+			right->serialize(strm);
+		strm << ')';
+	}
+
+	void deserialize(stringstream&strm) {
+		char ch;
+		strm  >> x >> ch;
+		assert(ch == '(');
+		if(strm.peek() != ',') {
+			left = new TNode<int>(0);
+			left->deserialize(strm);
+		}
+		strm >> ch;
+		assert(ch == ',');
+		if(strm.peek() != ')') {
+			right = new TNode<int>(0);
+			right->deserialize(strm);
+		}
+		strm >> ch;
+		assert(ch == ')');
+	}
+
 	~TNode() {
 		if(equals) delete equals;
 		if(left) delete left;
@@ -88,11 +118,20 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 	}
 	root->in_order(in_order_dump_cb);
 	cout << '\n';
+	stringstream strm;
+	root->serialize(strm);
+	cout << strm.str() << '\n';
 	if(root->search(x) != NULL) {
 		cout << "found " << x << '\n';
 	} else {
 		cout << "not found " << x << '\n';
 	}
+	if(root)
+		delete root;
+	root = new TNode<int>(0);
+	root->deserialize(strm);
+	root->in_order(in_order_dump_cb);
+	cout << '\n';
 	if(root)
 		delete root;
 	return 0;
