@@ -135,9 +135,10 @@ struct RBNode {
 	// TODO remove node
 
 	void dump() { // prints tree in preorder
-		cout << '(' << x << ' ';
+		cout << x << '(';
 		if(left)
 			left->dump();
+		cout << ',';
 		if(right)
 			right->dump();
 		cout << ')';
