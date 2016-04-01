@@ -133,7 +133,20 @@ struct RBNode {
 		if(right) delete right;
 	}
 
+	void in_order(int (*cb)(K x)) { // traverses tree in in-order
+		if(left)
+			left->in_order(cb);
+		cb(x);
+		if(right)
+			right->in_order(cb);
+	}
 };
+
+template <typename K>
+static int in_order_dump_cb(K x) {
+	cout << x << ',';
+	return 0;
+}
 
 static int read_input_and_build_tree_and_search(const int n, const int x) {
 	RBNode<int>*root = NULL;
@@ -151,6 +164,8 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 		}
 	}
 	root->dump();
+	cout << '\n';
+	root->in_order(in_order_dump_cb);
 	cout << '\n';
 	if(root->search(x) != NULL) {
 		cout << "found " << x << '\n';

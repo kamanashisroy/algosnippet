@@ -5,6 +5,8 @@ Graph
 Here is my practice code of all the graph related algorithms.
 
 - [tree](tree)
+	- [binary tree](tree)
+	- [binary search tree](bst)
 	- [Red-Black tree](rbtree)
 	- [R-tree](rtree)
 	- [B-tree](btree)

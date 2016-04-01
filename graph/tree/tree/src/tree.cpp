@@ -17,7 +17,7 @@ struct TNode {
 
 	TNode(K given) : x(given),right(NULL),left(NULL),equals(NULL) { }
 
-	void in_order(int (*cb)(K x)) { // prints tree in preorder
+	void in_order(int (*cb)(K x)) { // traverses tree in in-order
 		if(left)
 			left->in_order(cb);
 		cb(x);
