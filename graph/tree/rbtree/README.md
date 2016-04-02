@@ -1,2 +1,2 @@
 
-This redblack tree is still buggy, needs debugging.
+This is redblack tree implemented in one of many ways.
