@@ -14,17 +14,18 @@ static int find_set(const int n, const int sum, int*arr, const int index, int*ma
 		marker[index] = 1;
 		return 0;
 	}
-	if(index == n)
+	if(index == (n-1))
 		return -1; // no solution
-	int marker_backup[n];
-	memcpy(marker_backup, marker, sizeof(marker_backup));
 	if(find_set(n, sum, arr, index+1, marker) == 0) { // found
 		return 0;
 	}
-	memcpy(marker, marker_backup, sizeof(marker_backup));
 	marker[index] = 1;
 	// cout << index << ',' << marker[index] << " finding " << (sum-arr[index]) << '\n';
-	return find_set(n, sum-arr[index], arr, index+1, marker);
+	int ret = find_set(n, sum-arr[index], arr, index+1, marker);
+	if(ret) {
+		marker[index] = 0; // unmark
+	}
+	return ret;
 }
 
 static int find_subset_for_sum(const int n, const int sum) {
