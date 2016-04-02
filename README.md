@@ -5,3 +5,5 @@ This is a collection of algorithms we all studied in BS. It also has some algirt
 - [graph problems](graph)
 - [sum related problems](sum)
 - [string related problems](string)
+
+[algorithm cheat-sheet](algorithms_summary.md)

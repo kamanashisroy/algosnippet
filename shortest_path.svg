@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="800"
+   height="600"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="shortest_path.svg">
+  <title
+     id="title3872">Sorting algoritms in venn diagram</title>
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="221.41233"
+     inkscape:cy="354.94469"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="750"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Sorting algoritms in venn diagram</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-452.36218)">
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1.04414618;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985"
+       width="770.62042"
+       height="365.32629"
+       x="16.127289"
+       y="470.20374"
+       ry="64.882172" />
+    <g
+       id="g3893"
+       transform="translate(-261.04566,408.63966)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3755"
+         width="273.28815"
+         height="52.424595"
+         x="525.41809"
+         y="335.75504"
+         ry="9.3106403" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3757"
+         y="368.99887"
+         x="539.14722"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         xml:space="preserve"><tspan
+           y="368.99887"
+           x="539.14722"
+           id="tspan3759"
+           sodipodi:role="line">Bellman-Ford algorithm</tspan></text>
+    </g>
+    <g
+       id="g3903"
+       transform="translate(-98.92384,-151.61431)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3797"
+         width="273.28815"
+         height="52.424595"
+         x="539.41809"
+         y="755.755"
+         ry="9.3106403" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3799"
+         y="784.9989"
+         x="565.14722"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         xml:space="preserve"><tspan
+           y="784.9989"
+           x="565.14722"
+           id="tspan3801"
+           sodipodi:role="line">Dijkstra's algorithm</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="256.81232"
+       y="515.13354"
+       id="text3934"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3936"
+         x="256.81232"
+         y="515.13354">Single source shortest path</tspan></text>
+    <g
+       transform="translate(-464.92384,-153.61431)"
+       id="g3957">
+      <rect
+         ry="9.3106403"
+         y="755.755"
+         x="539.41809"
+         height="52.424595"
+         width="273.28815"
+         id="rect3959"
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         xml:space="preserve"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         x="575.14722"
+         y="788.9989"
+         id="text3961"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan3963"
+           x="575.14722"
+           y="788.9989">Breadth-first search</tspan></text>
+    </g>
+    <rect
+       ry="23.76322"
+       y="552.34076"
+       x="38.127289"
+       height="133.80145"
+       width="714.38159"
+       id="rect3965"
+       style="fill:none;stroke:#000000;stroke-width:0.6084097;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="291.20819"
+       y="584.4433"
+       id="text3967"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3969"
+         x="291.20819"
+         y="584.4433">non-negative weight</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="309.01535"
+       y="724.71747"
+       id="text3971"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3973"
+         x="309.01535"
+         y="724.71747">negative-weight</tspan></text>
+    <rect
+       ry="27.292587"
+       y="870.20374"
+       x="16.127289"
+       height="153.67395"
+       width="770.62042"
+       id="rect3975"
+       style="fill:none;stroke:#000000;stroke-width:0.67720628;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="279.198"
+       y="907.10327"
+       id="text3977"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3979"
+         x="279.198"
+         y="907.10327">All pairs shortest path</tspan></text>
+    <g
+       id="g3981"
+       transform="translate(-284.92384,186.38569)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3983"
+         width="273.28815"
+         height="52.424595"
+         x="539.41809"
+         y="755.755"
+         ry="9.3106403" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3985"
+         y="788.9989"
+         x="549.14722"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         xml:space="preserve"><tspan
+           y="788.9989"
+           x="549.14722"
+           id="tspan3987"
+           sodipodi:role="line">Ford-Warshall's algorithm</tspan></text>
+    </g>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.6084097;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3989"
+       width="714.38159"
+       height="133.80145"
+       x="38.127289"
+       y="692.34076"
+       ry="23.76322" />
+  </g>
+</svg>

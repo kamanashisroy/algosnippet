@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="800"
+   height="600"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="sorting_algorithm_similarity.svg">
+  <title
+     id="title3872">Sorting algoritms in venn diagram</title>
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="221.41233"
+     inkscape:cy="499.79695"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="750"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Sorting algoritms in venn diagram</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-452.36218)">
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.93370086;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985"
+       width="770.62042"
+       height="292.12845"
+       x="16.127289"
+       y="548.20374"
+       ry="51.882191" />
+    <g
+       id="g3893"
+       transform="translate(-13.045661,522.63966)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3755"
+         width="273.28815"
+         height="52.424595"
+         x="525.41809"
+         y="335.75504"
+         ry="9.3106403" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3757"
+         y="370.99887"
+         x="603.14722"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         xml:space="preserve"><tspan
+           y="370.99887"
+           x="603.14722"
+           id="tspan3759"
+           sodipodi:role="line">Insertion Sort</tspan></text>
+    </g>
+    <g
+       id="g3898"
+       transform="translate(-488.99504,423.44166)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3771"
+         width="273.28815"
+         height="52.424595"
+         x="525.41809"
+         y="495.755"
+         ry="9.3106403" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773"
+         y="530.9989"
+         x="593.14722"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         xml:space="preserve"><tspan
+           y="530.9989"
+           x="593.14722"
+           sodipodi:role="line"
+           id="tspan3775">Selection Sort</tspan></text>
+    </g>
+    <g
+       id="g3929"
+       transform="translate(-62,260)">
+      <rect
+         ry="13.249089"
+         y="326.26596"
+         x="96.995026"
+         height="74.600471"
+         width="277.28128"
+         id="rect3791"
+         style="fill:none;stroke:#000000;stroke-width:0.28302941;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         xml:space="preserve"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         x="176.70041"
+         y="361.48611"
+         id="text3793"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan3795"
+           x="176.70041"
+           y="361.48611">Quick Sort</tspan></text>
+    </g>
+    <g
+       id="g3903"
+       transform="matrix(0,1,-1,0,1327.8061,97.20456)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3797"
+         width="273.28815"
+         height="52.424595"
+         x="539.41809"
+         y="755.755"
+         ry="9.3106403" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3799"
+         y="790.9989"
+         x="619.14722"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         xml:space="preserve"><tspan
+           y="790.9989"
+           x="619.14722"
+           id="tspan3801"
+           sodipodi:role="line">Merge Sort</tspan></text>
+    </g>
+    <g
+       id="g3908"
+       transform="matrix(0,1,-1,0,1148.0496,185.10304)">
+      <rect
+         ry="9.3106403"
+         y="833.755"
+         x="539.41809"
+         height="52.424595"
+         width="273.28815"
+         id="rect3803"
+         style="fill:none;stroke:#000000;stroke-width:0.23554748;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         xml:space="preserve"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+         x="619.14722"
+         y="868.9989"
+         id="text3805"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan3807"
+           x="619.14722"
+           y="868.9989">Heap Sort</tspan></text>
+    </g>
+    <rect
+       ry="22.948263"
+       y="632.2229"
+       x="166.3649"
+       height="129.21274"
+       width="335.77002"
+       id="rect3828"
+       style="fill:none;stroke:#000000;stroke-width:0.40989646;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="294.77151"
+       y="714.02417"
+       id="text3830"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3832"
+         x="294.77151"
+         y="714.02417">Binary tree Sort</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="416.81232"
+       y="593.13354"
+       id="text3934"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3936"
+         x="416.81232"
+         y="593.13354">Partition based</tspan></text>
+  </g>
+</svg>
