@@ -132,6 +132,8 @@ There is also algorithm for all pairs shortest path. Floyd-Warshall's algorithm 
 
 ##### Minimum spanning tree 
 
+The minimum spanning tree can be calculated by Kruskal's greedy strategy. Like most of the greedy strategy it requires sorting. 
+
 #### Optimization and Speedup
 
 There are three ways to speedup the algorithms,
@@ -141,8 +143,6 @@ There are three ways to speedup the algorithms,
 - Parallelization.
 
 Partition based algorithms and greedy approach gain speedup by decision tree pruning. And Dynamic programming gains it by memoization and avoiding recalculation. Parallel programming is applied by data-partitioning. Popular parallel programming patterns are pipeline-pattern, map-reduce pattern or worker-pool pattern.
-
-The minimum spanning tree can be calculated by Kruskal's greedy strategy. Like most of the greedy strategy it requires sorting. 
 
 #### Transformations
 
