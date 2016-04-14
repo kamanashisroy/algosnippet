@@ -19,7 +19,7 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 
 | Approach | When applicable | Common feature | Examples
 | --- | --- | --- | ---
-| Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, Binary search etc.
+| Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, [Binary search](graph/tree/bst) etc.
 | Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory | Fast-fibonacci, Subset-sum problem, Dijkstra algorithms when updating the shortest path array.
 | Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, Kruskals minimum spanning tree algorithm, Dijkstra algorithms when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
@@ -80,25 +80,25 @@ Searching algorithms take advantage of the sorted representation of the data. Po
 
 As discussed earlier, the tree representation generally needs randomly accessible memory to build the nodes and sequentially accessible memory to keep the duplicates.
 
-| Binary tree | Balanced binary tree | Data is represented | Type of data
-| --- | --- | --- 
+| [Tree](graph/tree/tree) | Balanced binary tree | Data is represented | Type of data
+| --- | --- | --- | ---
 | Heap | not balanced | all nodes | Comparable
 | AVL-tree | balanced | 
-| Red-black tree | balanced | internal nodes(not in the leaves) | Comparable
+| [Red-black tree](graph/tree/rbtree) | balanced | internal nodes(not in the leaves) | Comparable
 | AA tree | balanced | | Comparable
 | R tree | balanced | only leaf nodes | Spatial/Range
 | B tree | balanced | all nodes | Comparable
 | 2-3 tree | balanced | | Comparable
 | 2-3-4 tree | balanced | | Comparable 
 | B+ tree | balanced | key in nodes, records in leave | Comparable
-| Trie/prefix-tree | | as node/path in the tree | Sequential/String
+| [Trie/prefix-tree](graph/tree/trie) | | as node/path in the tree | Sequential/String
 | Directed Acyclic Word Graph | | as edge/path in the tree | Sequential/String
 | Ternary search tree | | as node/path in the tree | Comparable and Sequential/String
-| Fibonacci heap | 
-| Binomial heap |
-| Disjoint set forest |
+| Fibonacci heap | |
+| Binomial heap | |
+| Disjoint set forest | |
 | C4.5 tree | | leaf has the final category | multiple attributes both continuous or not
-| RIPPER |  
+| RIPPER | | 
 
 R-tree, R*tree keeps the data in the leaf node. They are used for detecting if a point is on a given set of rectangles. It can also be used to work on the pairs of numbers or range of data which uses the one-dimensional feature instead of two dimensional rectangles. Unlike other trees they uses imaginary bucket to fill in the intermediate nodes. 
 
