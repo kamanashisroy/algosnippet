@@ -21,7 +21,7 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | --- | --- | --- | ---
 | Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, [Binary search](graph/tree/bst) etc.
 | Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory | Fast-fibonacci, Subset-sum problem, Dijkstra algorithms when updating the shortest path array.
-| Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, Kruskals minimum spanning tree algorithm, Dijkstra algorithms when in subproblem.
+| Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
 
 Distribution based algorithms can get speedup by parallel programming.
