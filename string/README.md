@@ -1,5 +1,5 @@
 
 #### Substring searching algorithms
-	- [Rabin-Karp algorithm](rk/)
-	- [Knuth-Morris-Pratt algorithm](kmp/)
+ - [Rabin-Karp algorithm](rk/)
+ - [Knuth-Morris-Pratt algorithm](kmp/)
 
