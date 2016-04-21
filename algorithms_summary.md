@@ -20,7 +20,7 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Approach | When applicable | Common feature | Examples
 | --- | --- | --- | ---
 | Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, [Binary search](graph/tree/bst) etc.
-| Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory | Fast-fibonacci, Subset-sum problem, Dijkstra algorithms when updating the shortest path array.
+| Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/lcs), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
 | Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
 
@@ -62,7 +62,7 @@ As we go deep into these algorithm we can find some similarity in them.
 
 ![shorting algorithm similarity](sorting_algorithm_similarity.svg)
 
-For example, heap-sort actually sorts by selecting the minimum or maximum value from the heap. So it has the same approach as selection sort. It is not possible to build heap with sequentially accessible data(linked list or tape drive). 
+For example, heap-sort actually sorts by selecting the minimum or maximum value from the heap. So it has the same approach as selection sort. It is not practical to build heap with sequentially accessible data(linked list or tape drive). 
 
 Merge sort does sorting by combine or merge operations. The combine operation has some similarity with insertion sort. Again merge sort can be optimized by using insertion sort in the small data. Merge sort is well suited for sequentially accessible data(linked list or tape drive) and it does not require binary tree. It takes O(n) extra memory which can be reduced in various ways(multi-way merge sort, alternating the memory to reduce memory copy). 
 
