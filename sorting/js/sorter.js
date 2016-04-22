@@ -33,7 +33,8 @@ module.exports.Sorter = function(x) {
 			return y;
 		if(x == y)
 			return x;
-		var mid = Math.floor((x+y)/2);
+		//var mid = Math.floor((x+y)/2);
+		var mid = (x+y) >> 2;
 		if(mid == x)
 			return y;
 		if(this[mid] <= p)
