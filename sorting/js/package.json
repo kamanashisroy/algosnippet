@@ -1,0 +1,18 @@
+{
+  "author": "Kamanashis Roy <kamanashisroy@gmail.com> (https://github.com/kamanashisroy)",
+  "name": "sorter",
+  "description": "It has abstract sorting constructs. We will test other sorting algorithms using this in strategy pattern.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kamanashisroy/algosnippet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kamanashisroy/algosnippet.git"
+  },
+  "main": "sorter.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
