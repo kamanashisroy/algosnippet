@@ -17,9 +17,7 @@ var mysort = function(x) {
 				continue;
 			}
 			// swap
-			var buf = x[j-1];
-			x[j-1] = x[j];
-			x[j] = buf;
+			x.swap(j,j-1);
 			swapped = true;
 		
 		}
