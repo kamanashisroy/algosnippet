@@ -1,0 +1,18 @@
+{
+  "author": "Kamanashis Roy <kamanashisroy@gmail.com> (https://github.com/kamanashisroy)",
+  "name": "subsetsum",
+  "description": "It has constructs for testing subsetsum problem.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kamanashisroy/algosnippet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kamanashisroy/algosnippet.git"
+  },
+  "main": "subsetsum.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

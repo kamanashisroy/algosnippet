@@ -27,6 +27,7 @@ static vector<int> find_set(const int n, const int sum, int*arr, const int index
 	map<int,vector<int> >::iterator it = table.find(sum);
 	if(it != table.end()) { // precalculated
 		*found = true;
+		// TODO check if it used the any of the index from [0,index) if so then disregard the result.
 		return it->second;
 	} else { // not precalculated
 		bool sub_found = false;
@@ -44,6 +45,7 @@ static vector<int> find_set(const int n, const int sum, int*arr, const int index
 	it = table.find(sum-arr[index]);
 	if(it != table.end()) { // precalculated
 		*found = true;
+		// TODO check if it used the any of the index from [0,index] if so then disregard the result.
 		return it->second;
 	} else { // not precalculated
 		bool sub_found = false;

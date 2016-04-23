@@ -57,7 +57,7 @@ static int find_subset_for_sum(const int n, const int sum) {
 }
 
 int main(int argc, char*argv[]) {
-	/* n is the number of nodes and k is the number of edges */
+	/* n is the number of integers and sum is the target sum */
 	int n,sum; 
 	cin >> n >> sum; 
 	find_subset_for_sum(n,sum);
