@@ -1,0 +1,18 @@
+{
+  "author": "Kamanashis Roy <kamanashisroy@gmail.com> (https://github.com/kamanashisroy)",
+  "name": "mergesort",
+  "description": "A library that does sorting using merge-sort algorithm.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kamanashisroy/algosnippet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kamanashisroy/algosnippet.git"
+  },
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
