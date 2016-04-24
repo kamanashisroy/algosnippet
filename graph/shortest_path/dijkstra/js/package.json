@@ -1,0 +1,18 @@
+{
+  "author": "Kamanashis Roy <kamanashisroy@gmail.com> (https://github.com/kamanashisroy)",
+  "name": "shortest_path",
+  "description": "It is a construct to test shortest path algorithms",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kamanashisroy/algosnippet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kamanashisroy/algosnippet.git"
+  },
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
