@@ -23,20 +23,19 @@ module.exports.Sorter = function(x) {
 		return this;
 	}
 	/**
-	 * It searches the next smaller or equal element of p in sorted elements [x,y).
+	 * It searches the next smaller or equal element of p in sorted elements [x,y). If the target is found the the index is returned otherwise -1 is returned.
 	 */
 	Array.prototype.binarySearch = function(x,y,p) {
+		if(x == y)
+			return -1;
 		y--;
 		if(this[x] > p)
-			return x;
+			return -1;
 		if(this[y] <= p)
 			return y;
-		if(x == y)
-			return x;
+		assert(x != y);
 		//var mid = Math.floor((x+y)/2);
-		var mid = (x+y) >> 2;
-		if(mid == x)
-			return y;
+		var mid = (x+(y+1)) >> 1;
 		if(this[mid] <= p)
 			return this.binarySearch(mid,y+1,p);
 		else
@@ -49,6 +48,15 @@ module.exports.Sorter = function(x) {
 			this[i] = this[i-1];
 		}
 		this[x] = p;
+		return this;
+	}
+	Array.prototype.moveFront = function(x, start, end) {
+		assert(x<start, "It only moves the element in the position of arg2 in the position of arg0, arg0 must be smaller than arg1");
+		var chunk = this.splice(start, end - start);
+		var k = 0;
+		var ar = this;
+		chunk.forEach(function(p) {ar.splice(x++,0,p);});
+		//this.splice.call(this, [x,0].join(chunk));
 		return this;
 	}
 	return {
@@ -81,9 +89,9 @@ module.exports.Sorter = function(x) {
 			}
 		}
 		,'test' : function() {
-			var sample = [12,34,23,3,13,4,2];
-
-			this.testWrapper(sample);
+			this.testWrapper([12,34,23,3,13,4,2]);
+			this.testWrapper([2, 4, 1, 3, 5]);
+			this.testWrapper([1, 20, 6, 4, 5]);
 		}
 	};
 }

@@ -22,7 +22,9 @@ var mysort = function(x) {
 			break;
 		// find the right place for x[pos] in x[0] .. x[pos-1]
 		var dest = x.binarySearch(0,pos,x[pos]);
-		assert(dest != -1);
+		if(dest == -1) {
+			dest = 0;
+		}
 		x.moveFront(dest,pos);
 	}
 	return x;
