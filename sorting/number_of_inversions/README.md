@@ -28,3 +28,5 @@ Merge sort is comparison based and it uses divide and conquer approach. In each 
 		q+= chunkLen;
 	}
 ```
+
+This algorithm takes `BigO(n\*log n)` time.

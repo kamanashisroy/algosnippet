@@ -21,3 +21,9 @@ Here is my practice code of all the graph related algorithms.
 	- [Kruskal's algorithm](minimum_spanning_tree/kruskal)
 	- [Prim's algorithm](minimum_spanning_tree/prim)
 
+Graph representation
+====================
+
+If the graph is represented as adjacency-list then the space cost is O(|E|+|V|). If it is represented as adjacency-matrix then it takes O(|V|^2) space.
+
+
