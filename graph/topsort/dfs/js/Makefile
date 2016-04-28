@@ -1,0 +1,3 @@
+
+all:
+	node index.js

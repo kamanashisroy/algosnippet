@@ -1,5 +1,5 @@
 
-Note,Dijkstra and Breadth-first search are very similar algorithms. Best-first search uses heuristic value dependent priority queue instead of normal queue in Dujkstra. A\* and B\* are examples of Best-first search. Based on the heuristic Best-first search can work either like Breadth-first search or Depth-first search or something else.
+Note,Dijkstra and Breadth-first search are very similar algorithms. Best-first search uses heuristic value dependent priority queue instead of normal queue in Dujkstra. A\* and B\* are examples of Best-first search. Based on the heuristic Best-first search can work either like Breadth-first search or Depth-first search or something else. Note that DFS does not find the shortest path.
 
 | DFS | BFS | Dijkstra algorithm
 | --- | --- | ---
