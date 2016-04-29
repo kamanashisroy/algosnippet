@@ -48,27 +48,11 @@ module.exports.TopSortProblem = function(x) {
 			return rep.charAt(i);
 		}
 		,'execute' : x
-		,'check' : function(graph, prev) {
-			var i = 0;
-			var marker = [];
-			var dumpParent = function(index) {
-				if(!(index in prev)) { // base case
-					console.log(index);
-					return 0;
-				}
-				marker[index] = 1;
-				var ret = dumpParent(prev[index]);
-				console.log(' - ' + ret + " : "  + index);
-				return ret+1;
-			}
-			for(i = 1; i <= graph.length; i++) {
-				if(!(i in prev))
-					continue;
-				if(i in marker)
-					continue;
-				marker[i] = 1;
-				dumpParent(i);
-			}
+		,'check' : function(graph, depend) {
+			if(!util.isArray(depend))
+				return false;
+			var represent = this.represent;
+			console.log(depend.map(function(i){return represent(i)}));
 			return true;
 		}
 		,'testWrapper' : function(graph) {
@@ -84,7 +68,7 @@ module.exports.TopSortProblem = function(x) {
 			}
 		}
 		,'test' : function() {
-			var graph = [
+			/*var graph = [
 				// this problem is from page 615 of cormen book where the problem is defind by m,n .. z nodes
 				//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 				[0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0]
@@ -99,6 +83,23 @@ module.exports.TopSortProblem = function(x) {
 				,[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0]
 				,[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
 				,[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			];*/
+			var graph = [
+				// this problem is from page 615 of cormen book where the problem is defind by m,n .. z nodes
+				[4,5,11]
+				,[4,8,2]
+				,[5,6,9]
+				,[2,6,13]
+				,[7]
+				,[8,12]
+				,[5]
+				,[]
+				,[7]
+				,[10,11]
+				,[13]
+				,[]
+				,[9]
+				,[]
 			];
 			this.testWrapper(graph);
 		}
