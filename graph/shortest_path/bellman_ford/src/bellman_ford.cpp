@@ -16,10 +16,8 @@ static int bellman_ford(const int n, vector<pair<int, pair<int,int> > > &verts, 
 	const int nvertices = verts.size();
 	dist[root] = 0;
 	for( i = 1/* strange */ ; i < nvertices; i++) {
-		vector<pair<int,pair<int,int> > >::iterator it = verts.begin();
-		while(it < verts.end()) {
-			pair<int,pair<int,int> > edge = *it++;
-			int w = edge.first;
+		for(auto edge: verts) {
+			//pair<int,pair<int,int> > edge = *it;
 			pair<int,int> nodes = edge.second;
 			int x = nodes.first;
 			int y = nodes.second;
@@ -31,9 +29,7 @@ static int bellman_ford(const int n, vector<pair<int, pair<int,int> > > &verts, 
 		}
 	}
 	// check negative loop
-	vector<pair<int,pair<int,int> > >::iterator it = verts.begin();
-	while(it < verts.end()) {
-		pair<int,pair<int,int> > edge = *it++;
+	for(auto edge: verts) {
 		int w = edge.first;
 		pair<int,int> nodes = edge.second;
 		int x = nodes.first;
