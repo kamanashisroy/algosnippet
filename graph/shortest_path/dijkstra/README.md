@@ -1,2 +1,2 @@
 
-The [javascript version](js) uses the adjacency list and the complexity for it is O(|E|).
+The [javascript version](js) uses the adjacency list and the complexity for it is O(|E| + |V| lg |V|).
