@@ -8,9 +8,8 @@ var bfs = function(graph, start, end) {
 	pool.push(start);level[start] = 0;
 	while(pool.length) {
 		var u = pool.shift();
-		for(var i = 0; i < graph.length; i++) {
-			var v = i+1;
-			if(!graph[u-1][v-1]) continue;
+		for(var i = 0; i < graph[u].length; i++) {
+			var v = graph[u][i].n;
 			if(v in level) continue;
 			pool.push(v);
 			level[v] = level[u] + 1;

@@ -3,27 +3,30 @@ const problem = require('../../js/index');
 var dijkstra = function(graph, start, end) {
 	var dist = [];
 	var prev = [];
-	const n = graph[0].length;
+	const n = graph.length;
 	for(var i = 0; i < n; i++) {
 		dist[i] = 10000;
 		prev[i] = -1;
 	}
-	dist[start-1] = 0;
+	dist[start] = 0;
 	var pool = [start];
 	while(pool.length) {
 		var u = pool.pop();
-		for(var v = 1; v <= n; v++) {
-			if((u == v) || (graph[u-1][v-1] == 10000))
-				continue;
-			cost = dist[u-1] + graph[u-1][v-1]; 
-			if(dist[v-1] > cost) {
-				dist[v-1] = cost;
-				prev[v-1] = u;
+		console.log("u = " + u);
+		for(var k = 0; k < graph[u].length; k++) {
+			console.log(graph[u][k]);
+			var v = graph[u][k].n;
+			cost = dist[u] + graph[u][k].w; 
+			console.log(graph[u][k].w + " cost : " + cost + " dist : " + dist[v]);
+			if(dist[v] > cost) {
+				dist[v] = cost;
+				prev[v] = u;
 				pool.push(v);
 			}
 		}
 	}
-	return dist[end-1]; // return distrance
+	console.log(dist);
+	return dist[end]; // return distrance
 }
 
 var x = new problem.ShortestPathProblem(dijkstra);

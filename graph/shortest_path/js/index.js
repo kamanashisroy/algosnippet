@@ -72,8 +72,9 @@ module.exports.ShortestPathProblem = function(x) {
 			}
 		}
 		,'test' : function() {
-			var graph = [[0,24,3,20],[24,0,10000,10000],[3,10000,0,12],[20,10000,12,0]];
-			this.testWrapper(graph, 1, 4);
+			//var graph = [[0,24,3,20],[24,0,10000,10000],[3,10000,0,12],[20,10000,12,0]];
+			var graph = [[{'n':1,'w':24},{'n':2,'w':3},{'n':3,'w':20}],[{'n':0,'w':24}],[{'n':0,'w':3},{'n':3,'w':12}],[{'n':0,'w':20},{'n':2,'w':12}]];
+			this.testWrapper(graph, 0, 3);
 		}
 	};
 }
@@ -136,8 +137,9 @@ module.exports.UnweightedShortestPathProblem = function(x) {
 			}
 		}
 		,'test' : function() {
-			var graph = [[1,1,1,0],[1,1,0,0],[1,0,1,1],[0,0,1,0]];
-			this.testWrapper(graph, 1, 4);
+			//var graph = [[1,1,1,0],[1,1,0,0],[1,0,1,1],[0,0,1,0]];
+			var graph = [[{'n':1,'w':1},{'n':2,'w':1}],[{'n':0,'w':1}],[{'n':0,'w':1},{'n':3,'w':1}],[{'n':2,'w':1}]];
+			this.testWrapper(graph, 0, 3);
 		}
 	};
 }
