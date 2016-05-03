@@ -8,6 +8,9 @@ Here I shall try to summarize the approaches we use to solve algorithmic problem
 4. Dynamic programming.
 5. Greedy approach.
 6. Backtracking.
+7. Branch-and-bound
+8. Randomized algorithms.
+9. Transformation based.
 
 Brute-force approach gives the insight of the algorithm and the possible ways of optimization. 
 
@@ -23,6 +26,8 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory, It may use **Hashtable** data-structure very often for querying precalculated results.[TODO exemplify in subset-sum problem, very important](todo) | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/lcs), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
 | Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
+| Branch-and-bound | 
+| Backtracking | | It has two phases, 1. when a subproblem in path is beging considered, 2. when a path is fully explored. | [Depth-first search](graph/traversal/dfs), [Eight-queen problem](graph/traversal/eight_queen_problem)
 
 Distribution based algorithms can get speedup by parallel programming.
 
