@@ -46,6 +46,8 @@ The algorithm problems can be categorized in the following domains. Like the alg
 - State machine
 - Optimization problem
 - Combinatorial problem
+- Decision problem
+- Constraint satisfaction problem
 
 The following table categorizes the popular problems into different domains.
 
@@ -58,6 +60,7 @@ The following table categorizes the popular problems into different domains.
 | State machine | Dynamic programming and backtracking | [Longest common substring](string/lcs), [finding substring](string/substring).
 | Optimization problem | Dynamic programming and backtracking | [Subset-sum problem](sum/subset_sum), Knapsack problem, Rod-cutting problem.
 | Combinatorial problem | Dynamic programming, backtracking, approximation algorithm, bipartite graph | TSP, Minimum spanning tree,[Subset-sum problem](sum/subset_sum), Knapsack problem, Assignment problems
+| Constraint Satisfaction problem | backtracking | [Eight queen problem](graph/traversal/eight_queen_problem), Map coloring problem
 
 #### Sorting algorithms
 
