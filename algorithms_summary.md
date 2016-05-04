@@ -27,7 +27,7 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
 | Branch-and-bound | 
-| Backtracking | | It has two phases, 1. when a subproblem in path is beging considered, 2. when a path is fully explored. | [Depth-first search](graph/traversal/dfs), [Eight-queen problem](graph/traversal/eight_queen_problem)
+| Backtracking | multiple subproblems where some of them may not predict the expected result. | It has two phases, 1. when a subproblem in path is beging considered, 2. when a path is fully explored. | [Depth-first search](graph/traversal/dfs), [Eight-queen problem](graph/traversal/eight_queen_problem)
 
 Distribution based algorithms can get speedup by parallel programming.
 
@@ -73,7 +73,7 @@ Merge sort does sorting by combine or merge operations. The combine operation ha
 
 Like the Merge-sort, Quick-sort is partition based algorithm and it can be used alongside insertion sort. 
 
-Insertion sort can be optimized by binary search.
+Insertion sort can be optimized by [binary search](graph/tree/bst).
 
 Binary-tree-sort is also partition based algorithm that requires randomly-accessible memory(for example, array) to build tree and sequentially accessible memory(for example, linked-list) to handle duplicates. Note that it can be used to get unique elements from the given duplicates at O(n*log n) time. 
 

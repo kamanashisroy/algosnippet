@@ -15,13 +15,12 @@ btnode<K>*btnode<K>::find_minimum() {
 	return p;
 }
 
+// recursive way
 template <typename K>
 btnode<K>*btnode<K>::find_maximum() {
-	btnode*p = this;
-	while(p->right) {
-		p = p->right;
-	}
-	return p;
+	if(right)
+		return right->find_maximum();
+	return this;
 }
 ```
 
