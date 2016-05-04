@@ -23,6 +23,16 @@ void btnode<K>::in_order(int (*cb)(K x)) {
 }
 
 template <typename K>
+void btnode<K>::in_order_without_stack(int (*cb)(K x)) {
+	btnode<K>*p = this->find_minimum();
+	while(p) {
+		cb(p->x);
+		p = p->find_successor();
+	}
+}
+
+
+template <typename K>
 void btnode<K>::in_order_recursive(int (*cb)(K x)) {
 	if(left)
 		left->in_order(cb);

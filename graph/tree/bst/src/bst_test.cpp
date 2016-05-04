@@ -26,6 +26,8 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 	}
 	root->in_order(in_order_dump_cb);
 	cout << endl;
+	root->in_order_without_stack(in_order_dump_cb);
+	cout << endl;
 	root->in_order_recursive(in_order_dump_cb);
 	cout << endl;
 	stringstream strm;

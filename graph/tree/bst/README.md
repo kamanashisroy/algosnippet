@@ -45,6 +45,19 @@ void btnode<K>::in_order(int (*cb)(K x)) {
 }
 ```
 
+There is another non-recursive solution.
+
+```C++
+template <typename K>
+void btnode<K>::in_order_without_stack(int (*cb)(K x)) {
+	btnode<K>*p = this->find_minimum();
+	while(p) {
+		cb(p->x);
+		p = p->find_successor();
+	}
+}
+```
+
 #### Reconstructing/Deserializing a binary tree from in-order dump
 
 This is kind of recursive and trivial. The only intelligence it needs is checking `strm.peek() != ','` and `strm.peek() != ')'`.
