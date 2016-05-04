@@ -55,7 +55,7 @@ The following table categorizes the popular problems into different domains.
 | --- | --- | ---
 | Counting | GCD algorithm, pegion-hole principle | LCM(Lowest-common-multiple) problem, graph coloring problem, Fibonacci number.
 | Sorting | partition based approach, distribution based approach | [number sorting](sorting), augmented data sorting, [topological sorting](graph/topsort).
-| Searching | binary-search-tree, hash function, hashtable, trie | Searching in [binary search tree](graph/tree/bst), finding overlaping pairs of a given pair, finding a point in a R tree, [finding substring](string/substring), suggesting word(TODO)
+| Searching | binary-search-tree, hash function, hashtable, trie | Searching in [binary search tree](graph/tree/bst), find median, finding overlaping pairs of a given pair, finding a point in a R tree, [finding substring](string/substring), suggesting word(TODO)
 | Tree traversal | Backtracking | finding lowest common ancestor, finding subtree, [topological sort](graph/topsort), finding shortest path, finding hamiltonian cycle, TSP.
 | State machine | Dynamic programming and backtracking | [Longest common substring](string/lcs), [finding substring](string/substring).
 | Optimization problem | Dynamic programming and backtracking | [Subset-sum problem](sum/subset_sum), Knapsack problem, Rod-cutting problem.
