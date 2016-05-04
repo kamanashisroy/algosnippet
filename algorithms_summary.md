@@ -12,6 +12,8 @@ Here I shall try to summarize the approaches we use to solve algorithmic problem
 8. Randomized algorithms.
 9. Transformation based.
 
+In particular problem solving it is common to use multiple approaches.
+
 Brute-force approach gives the insight of the algorithm and the possible ways of optimization. 
 
 Partition-based, dynamic-programming and greedy-approach all work in sub-problems. Partition-based algorithms work when the sub-problems are not overlapping(exception is R-tree). 
@@ -23,7 +25,7 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Approach | When applicable | Common feature | Examples
 | --- | --- | --- | ---
 | Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, [Binary search](graph/tree/bst) etc.
-| Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory, It may use **Hashtable** data-structure very often for querying precalculated results.[TODO exemplify in subset-sum problem, very important](todo) | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/lcs), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
+| Dynamic Programming | non-overlaping subproblems where there is recalculation | memoization or tabulation in extra memory, It may use **Hashtable** data-structure very often for querying precalculated results.[TODO exemplify in subset-sum problem, very important](todo) | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/substring), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
 | Greedy approach | non-overlaping subproblems when optimal substructure predicts optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
 | Branch-and-bound | 
@@ -34,6 +36,28 @@ Distribution based algorithms can get speedup by parallel programming.
 Again, some algorithms are implemented in incremental approach and some are implemented as recursion. And there are also different data-structure to represent, insert, delete, search, merge the data.
 
 We have already studied different algorithms in our academy. Here I want to summarize and compare the algorithms to get valuable insights. Summary also helps identify their suitable application for the real world problem. 
+
+The algorithm problems can be categorized in the following domains. Like the algorithm approaches, these domains are not exclusive.
+
+- Counting
+- Sorting
+- Searching
+- Traversal
+- State machine
+- Optimization problem
+- Combinatorial problem
+
+The following table categorizes the popular problems into different domains.
+
+| Domain | approaches and principles | Problem
+| --- | --- | ---
+| Counting | GCD algorithm, pegion-hole principle | LCM(Lowest-common-multiple) problem, graph coloring problem, Fibonacci number.
+| Sorting | partition based approach, distribution based approach | [number sorting](sorting), augmented data sorting, [topological sorting](graph/topsort).
+| Searching | binary-search-tree | Searching in [binary search tree](graph/tree/bst), finding overlaping pairs of a given pair, finding a point in a R tree 
+| Traversal | Backtracking | finding lowest common ancestor, finding shortest path, finding hamiltonian cycle, TSP.
+| State machine | Dynamic programming and backtracking | [Longest common substring](string/lcs), [finding substring](string/substring).
+| Optimization problem | Dynamic programming and backtracking | [Subset-sum problem](sum/subset_sum), Knapsack problem, Rod-cutting problem.
+| Combinatorial problem | Dynamic programming, backtracking, approximation algorithm, bipartite graph | TSP, Minimum spanning tree,[Subset-sum problem](sum/subset_sum), Knapsack problem, Assignment problems
 
 #### Sorting algorithms
 
