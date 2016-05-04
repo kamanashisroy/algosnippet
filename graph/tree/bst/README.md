@@ -3,6 +3,72 @@ This is binary search tree(BST) implementation as node and pointer. Note BST sea
 
 The insertion, search, find minimum, find maxium, find successor, find predecessor takes **O(h)** time in binary search tree. 
 
+#### Traversing BST in inorder
+
+In-order bst traversal gives a sorted ordered traversal. Note that traversing the BST in in-order is **more specific from dfs** (TODO say how).
+
+In-order traversal is easy to implement recursively. Note that recursion is an abstraction that makes things simple(abstraction principle/do not duplicate yourself).
+
+```C++
+template <typename K>
+void btnode<K>::in_order_recursive(int (*cb)(K x)) {
+	if(left)
+		left->in_order(cb);
+	cb(x);
+	if(right)
+		right->in_order(cb);
+}
+```
+
+But the iterative version is non-trivial. It is hard to understand and implement. This is because of the boiler-plate code.
+
+```C++
+template <typename K>
+void btnode<K>::in_order(int (*cb)(K x)) {
+	stack<btnode<K>*> pool;
+	btnode<K>*p = this;
+	while(p) {
+		pool.push(p);
+		p = p->left; // go left
+	}
+	while(pool.size()) {
+		p = pool.top();
+		pool.pop();
+		cb(p->x);
+		btnode<K>*q = p->right; // go right only when popping up/ backtracking
+		while(q) {
+			pool.push(q);
+			q = q->left;
+		}
+
+	}
+}
+```
+
+#### Reconstructing/Deserializing a binary tree from in-order dump
+
+This is kind of recursive and trivial. The only intelligence it needs is checking `strm.peek() != ','` and `strm.peek() != ')'`.
+```C++
+template <typename K>
+void btnode<K>::deserialize(stringstream&strm) {
+	char ch;
+	strm  >> x >> ch;
+	assert(ch == '(');
+	if(strm.peek() != ',') {
+		left = new btnode<int>(0);
+		left->deserialize(strm);
+	}
+	strm >> ch;
+	assert(ch == ',');
+	if(strm.peek() != ')') {
+		right = new btnode<int>(0);
+		right->deserialize(strm);
+	}
+	strm >> ch;
+	assert(ch == ')');
+}
+```
+
 #### Finding the minimum and maxium
 
 ```C++

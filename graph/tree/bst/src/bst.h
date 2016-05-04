@@ -33,6 +33,7 @@ class btnode {
 	// TODO remove node
 	// @brief prints tree in preorder
 	void in_order(int (*cb)(K x));
+	void in_order_recursive(int (*cb)(K x));
 	// @brief serialize
 	void serialize(stringstream&strm);
 	// @brief deserialize
