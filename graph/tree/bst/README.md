@@ -139,3 +139,61 @@ btnode<K>*btnode<K>::find_successor() {
 }
 ```
 
+#### Removal of node
+
+Removal is tricky. If the node has right child then find the successor and replace it. Otherwise find the predecessor and replace it.
+
+```C++
+template <typename K>
+btnode<K>*btnode<K>::remove(btnode<K>*node) {
+	btnode<K>*nparent = node->parent;
+	if(node->right) {
+		btnode<K>*next = node->find_successor();
+		cout << "Removing successor "<< next->x << endl;
+		this->remove(next);
+		next->parent = nparent;
+		next->left = node->left;
+		next->right = node->right;
+		assert(next != next->right);
+		assert(next != next->left);
+		assert(next != next->parent);
+		if(nparent == NULL) {
+			return next;
+		}
+		if(nparent->right == node) {
+			nparent->right = next;
+		} else {
+			nparent->left = next;
+		}
+		cout << "deletion complete" << endl;
+		return this;
+	} else if(node->left) {
+		btnode<K>*next = node->find_predecessor();
+		cout << "removing predecessor " << next->x << endl;
+		this->remove(next);
+		next->parent = nparent;
+		next->right = node->right;
+		next->left = node->left;
+		assert(next != next->right);
+		assert(next != next->left);
+		assert(next != next->parent);
+		if(nparent == NULL) {
+			return next;
+		}
+		if(nparent->left == node) {
+			nparent->left = next;
+		} else {
+			nparent->right = next;
+		}
+		cout << "deletion complete" << endl;
+		return this;
+	}
+	if(nparent->left == node) {
+		nparent->left = NULL;
+	} else {
+		nparent->right = NULL;
+	}
+	return this;
+}
+```
+

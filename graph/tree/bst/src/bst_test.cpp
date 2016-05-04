@@ -41,6 +41,8 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 	} else {
 		cout << "not found " << x << endl;
 	}
+	
+	cout << "Finding iteratively " << x << endl;
 	result = NULL;
 	if((result = root->search_iterative(x)) != NULL) {
 		cout << "found iteratively " << x << endl;
@@ -48,10 +50,22 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 		cout << "Successor of " << x << " is " << (sucr?sucr->x:-1) << endl;
 		btnode<int>*pred = result->find_predecessor();
 		cout << "Predecessor of " << x << " is " << (pred?pred->x:-1) << endl;
+		cout << "Removing " << x << endl;
+		root = root->remove(result);
+		cout << "after removing new root " << root->x << endl;
+		stringstream strm2;
+		root->serialize(strm2);
+		cout << strm2.str() << endl;
 	} else {
 		cout << "not found " << x << endl;
 	}
 	result = NULL;
+	cout << "Finding after removal " << x << endl;
+	if((result = root->search(x)) != NULL) {
+		cout << "found " << x << endl;
+	} else {
+		cout << "not found " << x << endl;
+	}
 	if(root)
 		delete root;
 	root = new btnode<int>(0);

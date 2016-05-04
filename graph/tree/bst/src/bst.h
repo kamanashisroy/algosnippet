@@ -24,6 +24,8 @@ class btnode {
 	btnode(K given);
 	~btnode();
 	int insert(btnode*node);
+	// @brief it deletes the node from the tree and returns a new root of the tree if necessary
+	btnode*remove(btnode*node);
 	btnode*search(K given);
 	btnode*search_iterative(K given);
 	btnode*find_minimum();
