@@ -1,6 +1,6 @@
 #include "bst.h"
 #include "bst.cpp"
-#include "bst_insert.cpp"
+#include "bst_builder.cpp"
 #include "bst_serializer.cpp"
 #include "bst_search.cpp"
 #include "bst_find.cpp"
@@ -24,6 +24,7 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 		else
 			root->insert(node);
 	}
+	assert(root->check());
 	root->in_order(in_order_dump_cb);
 	cout << endl;
 	root->in_order_without_stack(in_order_dump_cb);
@@ -52,6 +53,7 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 		cout << "Predecessor of " << x << " is " << (pred?pred->x:-1) << endl;
 		cout << "Removing " << x << endl;
 		root = root->remove(result);
+		assert(root->check());
 		cout << "after removing new root " << root->x << endl;
 		stringstream strm2;
 		root->serialize(strm2);
@@ -66,6 +68,7 @@ static int read_input_and_build_tree_and_search(const int n, const int x) {
 	} else {
 		cout << "not found " << x << endl;
 	}
+	assert(root->check());
 	if(root)
 		delete root;
 	root = new btnode<int>(0);

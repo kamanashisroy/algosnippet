@@ -23,6 +23,7 @@ class btnode {
 	btnode*equals;
 	btnode(K given);
 	~btnode();
+	bool check();
 	int insert(btnode*node);
 	// @brief it deletes the node from the tree and returns a new root of the tree if necessary
 	btnode*remove(btnode*node);

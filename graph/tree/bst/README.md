@@ -145,7 +145,8 @@ Removal is tricky. If the node has both right and left children then find the su
 
 ```C++
 
-static template <typename K>
+
+template <typename K>
 btnode<K>*transplant(btnode<K>*root, btnode<K>*node, btnode<K>*next) {
 	btnode<K>*nparent = node->parent;
 	next->parent = nparent;
@@ -162,24 +163,31 @@ btnode<K>*transplant(btnode<K>*root, btnode<K>*node, btnode<K>*next) {
 	return root;
 }
 
+/**
+ * @brief abstract out the node attachment.
+ */
+template <typename K>
+void attach(btnode<K>*node, btnode<K>*lnode, btnode<K>*rnode) {
+	node->left = lnode;
+	if(lnode)lnode->parent = node; // add reverse as well
+	node->right = rnode;
+	if(rnode)rnode->parent = node; // add reverse as well
+}
+
 template <typename K>
 btnode<K>*btnode<K>::remove(btnode<K>*node) {
 	btnode<K>*nparent = node->parent;
 	if(node->right) {
 		btnode<K>*next = node->right;
-		if(node->left) {
+		if(node->left) { // we could find the predecessor depending on the balancing performed afterwords.
 			next = node->find_successor();
 			cout << "Removing successor "<< next->x << endl;
 			this->remove(next);
-			next->left = node->left;
-			next->right = node->right;
-			assert(next != next->right);
-			assert(next != next->left);
+			attach(next, node->left, node->right);
 		}
 		return transplant(this, node, next);
 	} else if(node->left) {
-		btnode<K>*next = node->left;
-		return transplant(this, node, next);
+		return transplant(this, node, node->left);
 	}
 	if(nparent->left == node) {
 		nparent->left = NULL;
@@ -188,6 +196,9 @@ btnode<K>*btnode<K>::remove(btnode<K>*node) {
 	}
 	return this;
 }
+
+
+
 
 ```
 
