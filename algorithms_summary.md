@@ -146,7 +146,7 @@ C4.5 and RIPPER are examples of decision trees. C4.5 is the decision tree built 
 
 #### Subset sum and Knapsack algorithms
 
-TODO: fill me
+Please refer to [sum related problems](sum/).
 
 #### Graph algorithms
 

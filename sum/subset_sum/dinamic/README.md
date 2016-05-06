@@ -84,3 +84,5 @@ static vector<int> find_set(const int n, const int sum, int*arr, const int index
 
 ```
 
+Running time for this dinamic approach is pseudo-polynomial(TODO:show how). 
+
