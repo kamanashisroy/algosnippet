@@ -1,4 +1,11 @@
 
+Subset sum has different variations. And they fall into decision problem domain and optimization problem domain.
+
+- Given a set of integers, is there a non-empty subset whose sum is K?
+- Given a set of integers, find all the subset whose sum is K.
+- [Given a set of integers, is there a non-empty subset whose sum is K, where the integers can repeat any number of times.](repeatsum)
+- [Given a set of integers, divide the set into two set, S1 and S2, such that, the sum of S1 is equal to the sum of S2.](partitionsum)
+
 There are many ways to solve subset sum problem.
 
 - [Divide and conquer](divide_and_conquer/)
