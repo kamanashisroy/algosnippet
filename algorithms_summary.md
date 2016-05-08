@@ -31,6 +31,13 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Branch-and-bound | 
 | Backtracking | multiple subproblems where some of them may not predict the expected result. | It has two phases, 1. when a subproblem in path is beging considered, 2. when a path is fully explored. | [Depth-first search](graph/traversal/dfs), [Eight-queen problem](graph/traversal/eight_queen_problem)
 
+There are two strategies of formulating a solution.
+
+| Approach | When applicable | Common feature | Examples
+| --- | --- | --- | ---
+| top-down | | | TODO
+| bottom-up | | | TODO
+
 Distribution based algorithms can get speedup by parallel programming.
 
 Again, some algorithms are implemented in incremental approach and some are implemented as recursion. And there are also different data-structure to represent, insert, delete, search, merge the data.
