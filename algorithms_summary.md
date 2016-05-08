@@ -46,9 +46,9 @@ There are two strategies of formulating a solution.
 | top-down | | Recursion, Memoization(using map) | TODO
 | bottom-up | | Iteration, Tabulation | TODO
 
-In top-down approach we use abstraction to think less detailed. It is simple and natural to use recursion with top-down. In dynamic programming the recursion is normally used along with Memoization.
+In top-down approach we use abstraction to think less detailed. It is simple and natural to use recursion with top-down. In dynamic programming the recursion is normally used along with Memoization. In dynamic programming, top-down approach traverses the **subproblem-graph** like in depth-first traversal.
 
-In bottom-up approach start from details and compose the final result from them. Normally the iterative solutions use bottom-up approach. In dynamic programming the bottom-up approach is normally used with tabulation. It is noted that in some problems the bottom-up-tabulation may result in computation of unnecessary subproblems than top-down-memoiazation.
+In bottom-up approach start from details and compose the final result from them. Normally the iterative solutions use bottom-up approach. In dynamic programming the bottom-up approach is normally used with tabulation. It is noted that in some problems the bottom-up-tabulation may result in computation of unnecessary subproblems than top-down-memoiazation. In dynamic programming, bottom-up approach traverses the **subproblem-graph** in topologically sorted order.
 
 When both the top-down and bottom-up approaches have the same asymptotic running-time, the bottom-up-iterative approach often has much better constant factors than top-down-recursive approach.
 
