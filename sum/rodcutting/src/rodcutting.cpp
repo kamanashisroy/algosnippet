@@ -13,7 +13,7 @@ int getMax(int x, int y) {
 	return y;
 }
 
-int debug = 0;
+int debug = 1;
 int find_max_benefit_subproblem(const int n, const int* const prices, int*localMaxes, const int from) {
 	if(from >= n) // sanity check
 		return 0;
@@ -50,11 +50,17 @@ int find_max_benefit_top_down(const int n, const int* const prices) {
 
 int find_max_benefit_bottom_up(const int n, const int* const prices) {
 	int localMaxes[n];
+	int cuts[n];
 	localMaxes[0] = prices[0];
+	cuts[0] = 0;
 	for(int i=1; i < n; i++) {
 		int max = prices[i];
+		cuts[i] = i;
 		for(int j = 1; j < i; j++) {
-			max = getMax(max, localMaxes[i-j-1]+prices[j]);
+			if(max < localMaxes[i-j-1]+prices[j]) {
+				cuts[i] = j;
+				max = localMaxes[i-j-1]+prices[j];
+			}
 		}
 		localMaxes[i] = max;
 		if(debug)
@@ -62,9 +68,8 @@ int find_max_benefit_bottom_up(const int n, const int* const prices) {
 	}
 	if(debug) {
 		for(int i = 0; i < n; i++) {
-			cout << localMaxes[i] << ',';
+			cout << (i+1) << " length cuts at " << (cuts[i]+1)  << " to get " << localMaxes[i] << endl;
 		}
-		cout << endl;
 	}
 	return localMaxes[n-1];
 }
