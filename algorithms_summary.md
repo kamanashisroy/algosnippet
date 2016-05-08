@@ -50,6 +50,8 @@ In top-down approach we use abstraction to think less detailed. It is simple and
 
 In bottom-up approach start from details and compose the final result from them. Normally the iterative solutions use bottom-up approach. In dynamic programming the bottom-up approach is normally used with tabulation. It is noted that in some problems the bottom-up-tabulation may result in computation of unnecessary subproblems than top-down-memoiazation.
 
+When both the top-down and bottom-up approaches have the same asymptotic running-time, the bottom-up-iterative approach often has much better constant factors than top-down-recursive approach.
+
 The algorithm problems can be categorized in the following domains. Like the algorithm approaches, these domains are not exclusive.
 
 - Counting
