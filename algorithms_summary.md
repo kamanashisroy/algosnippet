@@ -31,18 +31,22 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Branch-and-bound | 
 | Backtracking | multiple subproblems where some of them may not predict the expected result. | It has two phases, 1. when a subproblem in path is beging considered, 2. when a path is fully explored. | [Depth-first search](graph/traversal/dfs), [Eight-queen problem](graph/traversal/eight_queen_problem)
 
-There are two strategies of formulating a solution.
-
-| Approach | When applicable | Common feature | Examples
-| --- | --- | --- | ---
-| top-down | | | TODO
-| bottom-up | | | TODO
-
 Distribution based algorithms can get speedup by parallel programming.
 
 Again, some algorithms are implemented in incremental approach and some are implemented as recursion. And there are also different data-structure to represent, insert, delete, search, merge the data.
 
 We have already studied different algorithms in our academy. Here I want to summarize and compare the algorithms to get valuable insights. Summary also helps identify their suitable application for the real world problem. 
+
+There are two strategies of formulating a solution.
+
+| Approach | When applicable | Common feature | Examples
+| --- | --- | --- | ---
+| top-down | | Recursion, Memoization | TODO
+| bottom-up | | Iteration, Tabulation | TODO
+
+In top-down approach we use abstraction to think less detailed. It is simple and natural to use recursion with top-down. In dynamic programming the recursion is normally used along with Memoization.
+
+In bottom-up approach start from details and compose the final result from them. Normally the iterative solutions use bottom-up approach. In dynamic programming the bottom-up approach is normally used with tabulation.
 
 The algorithm problems can be categorized in the following domains. Like the algorithm approaches, these domains are not exclusive.
 
