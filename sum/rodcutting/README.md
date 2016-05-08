@@ -24,3 +24,7 @@ for(int i=1; i < n; i++) {
 	localMaxes[i] = max;
 }
 ```
+
+#### Running time
+
+In the both solutions the running time is `Theta(n^2)`.
