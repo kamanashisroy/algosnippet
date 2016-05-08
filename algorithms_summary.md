@@ -18,14 +18,16 @@ Brute-force approach gives the insight of the algorithm and the possible ways of
 
 Partition-based, dynamic-programming and greedy-approach all work in sub-problems. Partition-based algorithms work when the sub-problems are not overlapping(exception is R-tree). 
 
-Dynamic-programming works when the sub-problems are overlapping and when there is recalculation. It allows speedup by memoization or tabulation to avoid recalculation. 
+Dynamic-programming works when the sub-problems are overlapping and when there is recalculation. It allows speedup by memoization or tabulation to avoid recalculation. In optimization problem dynamic programming works when the problem has optimal-subproblem characteristic, optimal solutions to the problem incorporates optimal solutions to the related subproblems. It runs in polynomial time when,
+- the number of distinct subproblems involved is polynomial in the input size,
+- and each subproblems are solved in polynomial time.
 
 Greedy approach avoids some calculations. Both partition-based and greedy-approach (may be also backtracking) allow optimization based on decision tree pruning. 
 
 | Approach | When applicable | Common feature | Examples
 | --- | --- | --- | ---
 | Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, [Binary search](graph/tree/bst) etc.
-| Dynamic Programming | overlapping subproblems where there is recalculation, **optimal solutions to the problem incorporates optimal solutions to the related subproblems** | recursion-memoization or iteration-tabulation in extra memory | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/substring), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
+| Dynamic Programming | overlapping subproblems where there is recalculation, **optimal solutions to the problem incorporates optimal solutions to the related subproblems(optimal substructure characteristics)** | recursion-memoization or iteration-tabulation in extra memory | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/substring), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
 | Greedy approach | ?? | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
 | Branch-and-bound | 
@@ -185,7 +187,7 @@ There are three ways to speedup the algorithms,
 - Memorization.
 - Parallelization.
 
-Partition based algorithms and greedy approach gain speedup by decision tree pruning. And Dynamic programming gains it by memoization and avoiding recalculation. Parallel programming is applied by data-partitioning. Popular parallel programming patterns are pipeline-pattern, map-reduce pattern or worker-pool pattern.
+Partition based algorithms and greedy approach gain speedup by decision tree pruning. And Dynamic programming gains it by memoization and avoiding recalculation(time-memory trade-off). Parallel programming is applied by data-partitioning. Popular parallel programming patterns are pipeline-pattern, map-reduce pattern or worker-pool pattern.
 
 #### Transformations
 
