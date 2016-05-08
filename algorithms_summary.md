@@ -186,10 +186,23 @@ The minimum spanning tree can be calculated by Kruskal's greedy strategy. Like m
 There are three ways to speedup the algorithms,
 
 - Decision tree pruning.
-- Memorization.
+- Memoization and tabulation.
 - Parallelization.
 
-Partition based algorithms and greedy approach gain speedup by decision tree pruning. And Dynamic programming gains it by memoization and avoiding recalculation(time-memory trade-off). Parallel programming is applied by data-partitioning. Popular parallel programming patterns are pipeline-pattern, map-reduce pattern or worker-pool pattern.
+###### Decision tree pruning
+
+Partition based algorithms and greedy approach gain speedup by decision tree pruning. 
+
+###### Memoization and tabulation
+
+The dynamic programming subproblems can be represented as directed subproblem graph. Each vertex represent the subproblem. And the directed edges represent the dependency.
+
+The dynamic programming reduce the number of times the vertices/subproblems to be calculated to one. It is done by memoization or tabulation(time-memory trade-off). And from depth-first-search we know the traversal time is O(|V| + |E|). Typically, the time to compute the solution to a subproblem is proportional to the degree of the corresponding vertex in the subproblem graph.
+
+###### Parallelization
+
+Parallel programming is applied by data-partitioning. Popular parallel programming patterns are pipeline-pattern, map-reduce pattern or worker-pool pattern.
+
 
 #### Transformations
 
