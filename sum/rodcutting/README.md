@@ -27,4 +27,4 @@ for(int i=1; i < n; i++) {
 
 #### Running time
 
-In the both solutions the running time is `Theta(n^2)`.
+In the both solutions the running time is `Theta(n^2)`. In brute-force approach it takes `O(2^n)`. So the dynamic programming otimizes it from exponential to quadratic.
