@@ -27,8 +27,8 @@ Greedy approach avoids some calculations. Both partition-based and greedy-approa
 | Approach | When applicable | Common feature | Examples
 | --- | --- | --- | ---
 | Partition-based | non-overlaping subproblems | data represented in tree or recursion tree or decision tree | Merge sort, Quick sort, [Binary search](graph/tree/bst) etc.
-| Dynamic Programming | overlapping subproblems where there is recalculation, **optimal solutions to the problem incorporates optimal solutions to the related subproblems(optimal substructure characteristics)** | recursion-memoization or iteration-tabulation in extra memory | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/substring), [Rod-cutting problem](sum/rodcutting), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
-| Greedy approach | Localy optimal solution can predict global optimal solution | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem.
+| Dynamic Programming | overlapping subproblems where there is recalculation, **optimal solutions to the problem incorporates optimal solutions to the related subproblems(optimal substructure characteristics), that is the substructures are independent** | recursion-memoization or iteration-tabulation in extra memory | Fast-fibonacci, and optimization problems like [Subset-sum problem](sum/subset_sum/), [Longest-common-substring problem](string/substring), [Rod-cutting problem](sum/rodcutting), [Dijkstra algorithms](graph/shortest_path/dijkstra/) when updating the shortest path array.
+| Greedy approach | Localy optimal solution can predict global optimal solution(optimal substructure characteristic). It is possible to make a choice of localy optimal solution. | sorting or finding the minimum and maximum | Fractional Knapsack, Subset-sum by sorting, [Kruskals minimum spanning tree algorithm](graph/minimum_spanning_tree/kruskal), [Dijkstra algorithms](shortest_path/dijkstra) when in subproblem, [activity selection problem](interval/activity_selection)
 | Distribution based | When the range of data can fit into memory | sparse array for buckets and link-list for duplicates | Bucket-sort, Radix-sort, Hashtable
 | Branch-and-bound | 
 | Backtracking | multiple subproblems where some of them may not predict the expected result. | It has two phases, 1. when a subproblem in path is beging considered, 2. when a path is fully explored. | [Depth-first search](graph/traversal/dfs), [Eight-queen problem](graph/traversal/eight_queen_problem)
@@ -192,6 +192,8 @@ There are three ways to speedup the algorithms,
 ###### Decision tree pruning
 
 Partition based algorithms and greedy approach gain speedup by decision tree pruning. 
+
+In greedy approach, a localy optimized choice is made. And the problem is left with typically one smaller subproblem to be solved rather than multiple subproblems. Usually greedy approach is top-down.
 
 ###### Memoization and tabulation
 
