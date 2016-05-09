@@ -68,7 +68,7 @@ static int find_subset_to_max_val(const int n, const int max_weight) {
 }
 
 int main(int argc, char*argv[]) {
-	/* n is the number of nodes and k is the number of edges */
+	/* n is the number of nodes and max_weight is the maximum weight */
 	int n,max_weight; 
 	cin >> n >> max_weight; 
 	find_subset_to_max_val(n,max_weight);

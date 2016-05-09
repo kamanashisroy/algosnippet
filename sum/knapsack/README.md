@@ -1,4 +1,5 @@
 
-The knapsack here is not dynamic. It is recursion based. 
+Knapsack problem is an optimization problem. It has optimal substructure characteristics. It has different varieties,
 
-So the next task is to implement it as dynamic and also try to implement it in iteration.
+- [0-1 Knapsack problem](01knapsack)
+- [Fractional Khapsack problem](fractionalknapsack)
