@@ -24,6 +24,29 @@ struct cmp {
 
 typedef priority_queue<edge_t, vector<edge_t>, cmp> edge_pq_t;
 
+static int find_nearest_vertex(const int n, vector<edge_pq_t>&adj, int*marker) {
+	int minWeight = INFINITY;
+	int nearest_vertex = INFINITY;
+	int x = n;
+	while(x--) {
+		edge_pq_t &pq = adj[x];
+		if(!pq.empty()) {
+			edge_t min_edge = pq.top(); // get the edge of minimum weight
+			int y = min_edge.second; // other vertex
+			int w = min_edge.first; // weight
+
+			// check if the two vertices are already added
+			if(marker[y] && marker[x]) {
+				pq.pop();
+			} else if(w < minWeight) {
+				nearest_vertex = x;
+				minWeight = w;
+			}
+		}
+	}
+	return nearest_vertex;
+}
+
 static int prim(const int n, vector<edge_pq_t>&adj, int*tree) {
 	int i = n;
 	list<int> remaining;
@@ -34,29 +57,18 @@ static int prim(const int n, vector<edge_pq_t>&adj, int*tree) {
 		remaining.push_back(i);
 	}
 	while(!remaining.empty()) {
-		int minWeight = INFINITY;
-		int node = INFINITY;
-		int x = n;
-		while(x--) {
-			edge_pq_t &pq = adj[x];
-			if(!pq.empty()) {
-				edge_t min_dist = pq.top(); // get the edge of minimum weight
-				int y = min_dist.second; // other vertex
-				int w = min_dist.first; // weight
-				if(added[y] && added[x]) { // this edge is costly , the adjuscent node is already added in the tree
-					pq.pop();
-				} else if(w < minWeight) {
-					node = x;
-					minWeight = w;
-				}
-			}
-		}
-		x = node;
-		remaining.remove(x);
+		/**
+		 * Find the node with minumum edge from reamining
+		 */
+		int x = find_nearest_vertex(n, adj, added);
+		remaining.remove(x); // we are done with x
 		edge_pq_t &pq = adj[x];
 		assert(!pq.empty());
-		edge_t min_dist = pq.top();int y = min_dist.second;
-		remaining.remove(y);
+		edge_t min_edge = pq.top();
+
+		int y = min_edge.second;
+		int minWeight = min_edge.first;
+		remaining.remove(y); // we are done with y
 		tree[x*n + y] = minWeight;
 		tree[y*n + x] = minWeight;
 		added[x] = 1;
