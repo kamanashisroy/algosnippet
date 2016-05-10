@@ -22,3 +22,8 @@ DFS theorems and corollary
 - Parenthesis theorem
 - Nesting of descendant's intervals 
 - White path theorem
+
+Links
+------
+
+- [Iterative depth-first search](http://stackoverflow.com/questions/28879510/how-do-i-add-finishing-times-for-iterative-depth-first-search)
