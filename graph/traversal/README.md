@@ -18,6 +18,8 @@ DFS is useful to find the common ancestor. A node u is ancestor of v if and only
 
 DFS is useful to find the cycle in directed graph. A directed graph is acyclic if and only if depth-first search yelds no black edges.
 
+DFS is useful to find cycle in undirected graph as well, it takes O(|V|) to do that.
+
 DFS theorems and corollary
 - Parenthesis theorem
 - Nesting of descendant's intervals 
