@@ -53,15 +53,15 @@ var dfs_with_finishing_time = function(graph, start, cb) {
 				no_way = false;
 			}
 			if(no_way) {
-				cb(null, u+1); // reversed post-ordering (finishing time)
+				cb(null, u+1); // no way, reversed post-ordering (finishing time)
 			}
 			if(last_parent != parent[u] && last_parent != -1) {
-				cb(null, last_parent+1); // reversed post-ordering (finishing time)
+				cb(null, last_parent+1); // parent change, reversed post-ordering (finishing time)
 			}
 			last_parent = parent[u];
 		}
 		if(last_parent != -1) {
-			cb(null, last_parent+1); // reversed post-ordering (finishing time)
+			cb(null, last_parent+1); // tree end, reversed post-ordering (finishing time)
 		}
 	}
 }
