@@ -13,14 +13,18 @@ enum {
 	INFINITY = 1000,
 };
 
+/* pair<weight, vertex> */
+typedef pair<int, int> edge_t;
+
 struct cmp {
-	int operator()(pair<int,int> x, pair<int,int> y) {
-		return x.first < y.first;
+	int operator()(edge_t x, edge_t y) {
+		return x.first < y.first; // compare weight 
 	}
 };
 
+typedef priority_queue<edge_t, vector<edge_t>, cmp> edge_pq_t;
 
-static int prim(const int n, vector<priority_queue<pair<int, int>, vector<pair<int, int> >, cmp > >&adj, int*tree) {
+static int prim(const int n, vector<edge_pq_t>&adj, int*tree) {
 	int i = n;
 	list<int> remaining;
 	int added[n];
@@ -34,9 +38,11 @@ static int prim(const int n, vector<priority_queue<pair<int, int>, vector<pair<i
 		int node = INFINITY;
 		int x = n;
 		while(x--) {
-			priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >&pq = adj[x];
+			edge_pq_t &pq = adj[x];
 			if(!pq.empty()) {
-				pair<int,int> min_dist = pq.top();int y = min_dist.second;int w = min_dist.first;
+				edge_t min_dist = pq.top(); // get the edge of minimum weight
+				int y = min_dist.second; // other vertex
+				int w = min_dist.first; // weight
 				if(added[y] && added[x]) { // this edge is costly , the adjuscent node is already added in the tree
 					pq.pop();
 				} else if(w < minWeight) {
@@ -47,9 +53,9 @@ static int prim(const int n, vector<priority_queue<pair<int, int>, vector<pair<i
 		}
 		x = node;
 		remaining.remove(x);
-		priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >&pq = adj[x];
+		edge_pq_t &pq = adj[x];
 		assert(!pq.empty());
-		pair<int,int> min_dist = pq.top();int y = min_dist.second;
+		edge_t min_dist = pq.top();int y = min_dist.second;
 		remaining.remove(y);
 		tree[x*n + y] = minWeight;
 		tree[y*n + x] = minWeight;
@@ -62,12 +68,12 @@ static int prim(const int n, vector<priority_queue<pair<int, int>, vector<pair<i
 
 static int read_input_and_find_minmum_spanning_tree(const int n, const int k) {
 	int tree[n][n];
-	vector<priority_queue<pair<int, int>, vector<pair<int, int> >, cmp > > adj(n);
+	vector<edge_pq_t> adj(n);
 	int i;
 	memset(tree, 0, sizeof(tree));
 	i = n;
 	while(i--) {
-		adj[i] = priority_queue<pair<int, int>, vector<pair<int, int> >, cmp >();
+		adj[i] = edge_pq_t();
 	}
 	i = k;
 	while(i--) {
