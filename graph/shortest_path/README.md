@@ -63,31 +63,25 @@ Note,Bellman-Ford and Floyd-Warshall are very similar algorithms.
 | It relaxes number of times equals to the number of edges minus one | It relaxes number of times equals to the number of vertices
 
 ```C
-static int bellman_ford(const int n, vector<pair<int, pair<int,int> > > &verts, int*dist, int*prev, const int root) {
+
+static int bellman_ford(const int n, vector<weighted_edge_t> &edges, int*dist, int*prev, const int root) {
 	int i;
-	const int nvertices = verts.size();
 	dist[root] = 0;
-	for( i = 1/* strange */ ; i < nvertices; i++) {
-		vector<pair<int,pair<int,int> > >::iterator it = verts.begin();
-		while(it < verts.end()) {
-			pair<int,pair<int,int> > edge = *it++;int w = edge.first;pair<int,int> nodes = edge.second;int x = nodes.first;int y = nodes.second;
-			assert(x < n && y < n);
-			if(dist[y] > dist[x] + w) {
-				dist[y] = dist[x] + w;
-				prev[y] = x;
-			}
+	for( i = 1/* we need to relax |V|-1 times */ ; i < n; i++) {
+		for(auto edge: edges) {
+			bellman_ford_relax(edge.second.first, edge.second.second, edge.first, dist, prev);
 		}
 	}
 	// check negative loop
-	vector<pair<int,pair<int,int> > >::iterator it = verts.begin();
-	while(it < verts.end()) {
-		pair<int,pair<int,int> > edge = *it++;int w = edge.first;pair<int,int> nodes = edge.second;int x = nodes.first;int y = nodes.second;
-		if(dist[y] > dist[x] + w) {
+	for(auto edge: edges) {
+		if(bellman_ford_relax(edge.second.first, edge.second.second, edge.first, dist, prev)) {
+			// as there is more relaxation position so there is negative loop
 			return -1;
 		}
 	}
 	return 0;
 }
+
 static int floyd_warshall(const int n, int*adj, int*dist, int root) {
 	int i,j,k;
 	for( k = 0 ; k < n; k++) {
