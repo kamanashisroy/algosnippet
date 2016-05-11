@@ -9,3 +9,9 @@ Graph
 String
 -------
 - [ ] Find longest palindromic subsequence.
+
+Invariants
+------------
+- [ ] Sorting algorithms.
+- [ ] Shortest path searching algorithms.
+- [ ] Minimum spanning tree algorithms.
