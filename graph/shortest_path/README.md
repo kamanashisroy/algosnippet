@@ -4,7 +4,7 @@ Note,Dijkstra and Breadth-first search are very similar algorithms. Best-first s
 | DFS | BFS | Dijkstra algorithm
 | --- | --- | ---
 | It uses **stack** | It uses **queue** | It uses **queue**
-| cannot find shortest path | finds shortest path in **unweighted** graph | finds shortest path in **weighted** graph
+| cannot find shortest path | finds shortest path in **unweighted** graph | finds shortest path in non-negative **weighted** graph
 | edges are kept in adjacency matrix | adjacency matrix | adjacency matrix
 | It is used for topological sorting | - | -
 | time complexity O(|E|) | O(|E|) | O(|E|+|V|lg|V|)
@@ -44,10 +44,18 @@ Note,Dijkstra and Breadth-first search are very similar algorithms. Best-first s
 	}
 ```
 
+#### Comparison of Bellman-Ford and Dijkstra algorithms
+
+| Bellman-Ford algorithm | Dijkstra algorithm
+| --- | ---
+| It relaxes `|V|-1` times | It relaxes only once(in directed acyclic graph)
+| `O(|V|*|E|)` | `O(|E|+|V|lg|V|)`
+
+
 
 Note,Bellman-Ford and Floyd-Warshall are very similar algorithms.
 
-| Bellman Ford-algorithm | Floyd-Warshall's algorithm
+| Bellman-Ford algorithm | Floyd-Warshall's algorithm
 | --- | --- 
 | complexity `O(|E|\*|V|)` | `O(|V|^3)`
 | uses **edge list** | uses **adjacency matrix**
