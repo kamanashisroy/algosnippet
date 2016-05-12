@@ -17,12 +17,12 @@ vector<int> make_table(string word) {
 	// Theta(|word|)
 	for(i = 1; i < word.size(); i++) {
 		int matchlen = tbl[i-1];
-		cout << matchlen << ':' << word[i];
+		//cout << " matchlen( " << word[i-1] << " ) = " << matchlen << endl;
 		if(matchlen >= 0 && word[i] == word[matchlen])
 			tbl[i] = matchlen+1;
 		else
 			tbl[i] = 0;
-		cout << tbl[i] << '\n';
+		cout << " matchlen( " << word[i] << " ) = " << tbl[i] << endl;
 	}
 	return tbl;
 }
