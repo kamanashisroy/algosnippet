@@ -181,6 +181,55 @@ There is also algorithm for all pairs shortest path. Floyd-Warshall's algorithm 
 
 The minimum spanning tree can be calculated by Kruskal's greedy strategy. Like most of the greedy strategy it requires sorting. 
 
+#### Creative problem solving and algorithms
+
+Creativity is the novel way to solve problem in real world. One of the process to generate multiple creative ways to a problem is to use mind-map. The mind-map may contain all the algorithms and approaches for number and graph problems. It can help us to convert a real-world problem to one of such algorithmic problems. Finally we can solve the problem as we solve the algorithmic problems we have solved earlier.
+
+Here is an example of mindmap.
+
+| Group | Subgroup | Subgroup | Is it possible to convert the problem into them ? | Does it work ? | Is it appropriate to use ? |
+| --- | --- | --- | --- | --- | --- |
+| Brute force |
+| Brute force | Bubbling
+| Brute force | Building
+| Distribuion |
+| Distribuion | Bucketing
+| Distribuion | Counting
+| Distribuion | Histogram
+| Distribuion | Bucketing | Hashing
+| Subproblem | 
+| Subproblem | Divide and conquer
+| Divide and Conquer | Greedy approach
+| Divide and Conquer | Arranging(Quicksort) |
+| Divide and Conquer | Merging |
+| Divide and Conquer | Tree |
+| Tree | 
+| Tree | Recursion tree |
+| Tree | Recursion tree | Indirect recursion
+| Tree | Recursion tree | Backtracking
+| Tree | Search tree(contains data) |
+| Tree | Search tree(contains data) | Augmented tree |
+| Tree | Search tree(contains data) | Binary tree |
+| Tree | Search tree(contains data) | Binary tree | Imaginary node
+| Tree | Search tree(contains data) | Binary tree | data at internal node
+| Tree | Search tree(contains data) | Binary tree | data in leaf
+| Subproblem | multiple subproblem
+| Graph 
+| Graph |
+| Graph | Traversing
+| Traversal | BFS |
+| Traversal | BFS | Exploring
+| Traversal | BFS | Shortest path
+| Traversal | BFS | Heurestics | Greedy approach
+| Traversal | DFS | Existance of path
+| Traversal | DFS | Topological sorting
+| Traversal | DFS | Heurestics
+| Traversal | DFS | Heurestics | Greedy appraoch
+| Transformation | 
+| Transformation | Compression
+
+TODO, example of use of this mindmap in real-world problem.
+
 #### Optimization and Speedup
 
 There are three ways to speedup the algorithms,
