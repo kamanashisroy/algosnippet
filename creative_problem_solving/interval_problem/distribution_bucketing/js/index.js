@@ -91,11 +91,17 @@ var distribution_bucketing = function(intervals, target) {
 	var limits = find_limits(intervals);
 	var buckets = make_buckets(limits, N);
 	var contents = distribute_in_buckets(intervals, buckets);
-
-	// search target
-	return find_overlapping(intervals, buckets, contents, target);
+	return {
+		'intervals' : intervals
+		,'buckets' : buckets
+		,'contents' : contents
+	};
 }
 
-var x = new search.SearchInterval(distribution_bucketing);
+var distribution_bucket_search = function(training_data, target) {
+	return find_overlapping(training_data.intervals, training_data.buckets, training_data.contents, target);
+}
+
+var x = new search.SearchInterval(distribution_bucketing, distribution_bucket_search);
 x.test();
 

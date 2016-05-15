@@ -3,7 +3,7 @@
 const util = require('util');
 const assert = require('assert');
 
-module.exports.SearchInterval = function(x) {
+module.exports.SearchInterval = function(train, search) {
 	Array.prototype.swap = function (x,y) {
 		var b = this[x];
 		this[x] = this[y];
@@ -59,7 +59,8 @@ module.exports.SearchInterval = function(x) {
 		'name' : function() {
 			return 'SearchInterval';
 		}
-		,'searchInterval' : x
+		,'train' : train
+		,'searchInterval' : search 
 		,'check' : function(intervals, target, output) {
 			if(!util.isArray(intervals) || !util.isArray(target) || !util.isArray(output)) {
 				console.log("Test failed while in sanity check");
@@ -79,7 +80,8 @@ module.exports.SearchInterval = function(x) {
 			return true;
 		}
 		,'testWrapper' : function(intervals, target) {
-			var output = this.searchInterval(intervals, target);
+			var tdata = this.train(intervals);
+			var output = this.searchInterval(tdata, target);
 			if(this.check(intervals, target, output)) {
 				console.log('successful');
 			} else {

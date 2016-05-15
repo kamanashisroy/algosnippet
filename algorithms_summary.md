@@ -187,8 +187,8 @@ Creativity is the novel way to solve problem in real world. One of the process t
 
 Here is an example of mindmap.
 
-| Group | Subgroup | Subgroup | Is it possible to convert the problem into them ? | Does it work ? | Is it appropriate to use ? |
-| --- | --- | --- | --- | --- | --- |
+| Group | Subgroup | Subgroup | Subgroup | Subgroup | Is it possible to convert the problem into them ? | Does it work ? | Is it appropriate to use ? |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 | Brute force |
 | Brute force | Bubbling
 | Brute force | Building
@@ -213,6 +213,7 @@ Here is an example of mindmap.
 | Tree | Search tree(contains data) | Binary tree | Imaginary node
 | Tree | Search tree(contains data) | Binary tree | data at internal node
 | Tree | Search tree(contains data) | Binary tree | data in leaf
+| Tree | Bucketing
 | Subproblem | multiple subproblem
 | Graph 
 | Graph |
@@ -228,7 +229,7 @@ Here is an example of mindmap.
 | Transformation | 
 | Transformation | Compression
 
-TODO, example of use of this mindmap in real-world problem.
+Here are some examples of [creative problem solving](creative_problem_solving).
 TODO, use C-K theory to solve problem.
 
 #### Optimization and Speedup
