@@ -1,0 +1,16 @@
+{
+  "name": "interval_bucket",
+  "version": "1.0.0",
+  "description": "It is a bucket of intervals, that can be searched for an interval.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kamanashisroy/algosnippet.git"
+  },
+  "devDependencies": {search_interval},
+  "author": "Kamanashis Roy",
+  "license": "ISC"
+}

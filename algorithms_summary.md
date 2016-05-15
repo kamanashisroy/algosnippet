@@ -229,6 +229,7 @@ Here is an example of mindmap.
 | Transformation | Compression
 
 TODO, example of use of this mindmap in real-world problem.
+TODO, use C-K theory to solve problem.
 
 #### Optimization and Speedup
 
