@@ -1,6 +1,21 @@
 
 var search = require("../../js/index.js");
+/**
+ * Possible configurations
+ * 
+ * - number of buckets
+ */
 
+var distributionBucketingConfig = {
+	'getNumberOfBuckets' : function(dataLength) {
+		if(dataLength > 1000)
+			return dataLength/100;
+		else if(dataLength > 10)
+			return 10;
+		else
+			return 2;
+	}
+}
 /**
  * We can configure bucketing by specifying the number of buckets(n).
  * Otherwise we can define the bucket number by the length of intervals.
@@ -29,10 +44,10 @@ function make_buckets(limits, N) {
 	if(N == 0) // sanity check
 		return [];
 	var buckets = [];
-	var interval_len = N/(limits[1]-limits[0]);
+	var bucket_width = Math.floor((limits[1]-limits[0])/N);
 	for(var i = 0; i < N; i++) {
-		var start = limits[0] + i*interval_len;
-		buckets[i] = [start,start + interval_len - 1];
+		var start = Math.floor(limits[0] + i*bucket_width);
+		buckets[i] = [start,start + bucket_width - 1];
 	}
 	buckets[N-1][1] = limits[1]; // extend the last one .
 	return buckets;
@@ -47,9 +62,11 @@ function make_buckets(limits, N) {
 function distribute_in_buckets(intervals, buckets) {
 	var contents = [];
 	for(var i = 0; i < intervals.length; i++) {
-		var bucketIndex = Math.floor((intervals[i][0] - buckets[0][0])/(buckets.length));
-		//console.log(bucketIndex);
-		for(;bucketIndex < buckets.length && buckets[bucketIndex][1] <= intervals[i][1]; bucketIndex++) {
+		var pair = intervals[i];
+		var start = pair[0];
+		var end = pair[1];
+		var bucketIndex = Math.floor((pair[0] - buckets[0][0])/(buckets[0][1]-buckets[0][0]+1));
+		for(;bucketIndex < buckets.length && buckets[bucketIndex][0] <= end; bucketIndex++) {
 			if(!(bucketIndex in contents)) {
 				contents[bucketIndex] = [];
 			}
@@ -62,22 +79,29 @@ function distribute_in_buckets(intervals, buckets) {
 var find_overlapping = function(intervals, buckets, contents, target) {
 	console.log(target);
 	var output = [];
-	var bucketIndex = Math.floor((target[0] - buckets[0][0])/(buckets.length));
+	var start = target[0];
+	var end = target[1];
+	var bucketIndex = Math.floor((start - buckets[0][0])/(buckets[0][1]-buckets[0][0]+1));
 	var marker = [];
-	for(;bucketIndex < buckets.length && buckets[bucketIndex][1] <= target[1]; bucketIndex++) {
+	console.log("Total intervals " + intervals.length);
+	console.log("Total buckets " + buckets.length);
+	if(!(bucketIndex in buckets)) {
+		console.log("Unexpected error, " + bucketIndex + " not found in bucket " + buckets);
+	}
+	for(;bucketIndex < buckets.length && buckets[bucketIndex][0] <= end; bucketIndex++) {
 		if(!(bucketIndex in contents)) {
 			continue;
 		}
 		for(var j = 0; j < contents[bucketIndex].length; j++) {
 			var xIndex = contents[bucketIndex][j];
-			if(intervals[xIndex][0] > target[1] || intervals[xIndex][1] < target[0]) {
+			if(intervals[xIndex][0] > end || intervals[xIndex][1] < start) {
 				continue;
 			}
 			if(xIndex in marker) {
 				continue; // already added
 			}
 			marker[xIndex] = 1;
-			output.push(intervals[xIndex]);
+			output.push(xIndex);
 		}
 	}
 	console.log(output.length);
@@ -87,7 +111,7 @@ var find_overlapping = function(intervals, buckets, contents, target) {
 var distribution_bucketing = function(intervals, target) {
 
 	// create search buckets
-	var N = intervals.length; // number of buckets is the number of intervals, we could set it to 2 or any other value.
+	var N = distributionBucketingConfig.getNumberOfBuckets(intervals.length); // number of buckets is the number of intervals, we could set it to 2 or any other value.
 	var limits = find_limits(intervals);
 	var buckets = make_buckets(limits, N);
 	var contents = distribute_in_buckets(intervals, buckets);

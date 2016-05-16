@@ -67,14 +67,24 @@ module.exports.SearchInterval = function(train, search) {
 				return false;
 			}
 			var i = 0;
-			for(i = 0; i < output.length; i++) {
-				if(output[i][0] > target[1] || output[i][1] < target[0]) {
-					console.log("The following is not overlapping");
-					console.log(output[i]);
-					console.log("Where the target is");
+			for(i = 0; i < intervals.length; i++) {
+				if(output.indexOf(i) != -1) {
+					if(intervals[i][0] > target[1] || intervals[i][1] < target[0]) {
+						console.log("The following is not overlapping");
+						console.log(intervals[i]);
+						console.log("Where the target is");
+						console.log(target);
+						return false;
+					}
+				} else if(!(intervals[i][0] > target[1] || intervals[i][1] < target[0])){
+					console.log("The following should be in the output");
+					console.log(intervals[i]);
+					console.log("For target");
 					console.log(target);
 					return false;
 				}
+			}
+			for(i = 0; i < output.length; i++) {
 				// TODO check if output[i] is in intervals and check if there is any solution that is not in array
 			}
 			return true;
@@ -90,7 +100,7 @@ module.exports.SearchInterval = function(train, search) {
 		}
 		,'test' : function() {
 			var intervals = [];
-			var N = 1000;
+			var N = 20;
 			for(var i = 0; i < N; i++) {
 				intervals.push(pairrand());
 			}
