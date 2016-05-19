@@ -47,12 +47,12 @@ module.exports.SearchInterval = function(train, search) {
 		//this.splice.call(this, [x,0].join(chunk));
 		return this;
 	}
-	var intrand = function() {
-		return Math.floor(Math.random()*1000);
+	var intrand = function(x) {
+		return Math.floor(Math.random()*x);
 	}
 	var pairrand = function() {
-		var x = intrand();
-		var y = x+intrand();
+		var x = intrand(1000);
+		var y = x+intrand(100);
 		return [x,y];
 	}
 	return {
