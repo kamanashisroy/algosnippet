@@ -1,0 +1,133 @@
+digraph G {
+        fontname = "Bitstream Vera Sans"
+        fontsize = 8
+	node [
+		shape = "record"
+	]
+
+	edge [
+                arrowhead = "empty"
+        ]
+
+	aGraph [
+		label = <<table><tr><td>Graph</td></tr><tr><td>vertices<br/>edges</td></tr></table>>
+	]
+
+	Tree [
+		label = <<table><tr><td>Tree</td></tr><tr><td>children</td></tr></table>>
+	]
+	Tree -> aGraph
+
+	OrderedTree [
+		label = "Ordered Tree\luse Array or combine(Linked-list,Hashtable)"
+	]
+	OrderedTree -> Tree
+
+	BinarySearchTree [ label = "Binary-Search Tree"]
+	BinarySearchTree -> OrderedTree
+	
+	UnaryTree [
+		label = <<table><tr><td>Unary Tree</td></tr><tr><td>next</td></tr></table>>
+	]
+	UnaryTree -> Tree
+
+	UnarySubproblemTree [ label = "Unary Subproblem Tree"]
+	UnarySubproblemTree -> UnaryTree
+
+	BinaryTree [
+		label = <<table><tr><td>Binary Tree</td></tr><tr><td>left<br/>right</td></tr></table>>
+	]
+	BinaryTree -> Tree
+
+	OrderedSubproblemTree [ label = "Ordered Subproblem Tree"]
+	OrderedSubproblemTree -> OrderedTree
+
+	DirectedGraph [label = "Directed Graph"]
+	DirectedGraph -> aGraph
+
+	UnDirectedGraph [label = "Undirected Graph"]
+	UnDirectedGraph -> aGraph
+
+	DAG [label = "Directed Acyclic Graph"]
+	DAG -> DirectedGraph
+
+	AcyclicSubProblemGraph [label = "Acyclic Subproblem Graph"]
+	AcyclicSubProblemGraph -> DAG
+
+
+	GeneralSearch [
+		label = <<table><tr><td>General Search</td></tr><tr><td>+ search(problem, iterator)</td></tr></table>>
+	]
+
+	BreadthFirstSearch [
+		label = <<table><tr><td>Breadth-First Search</td></tr><tr><td>+ search(problem, queue)</td></tr></table>>
+		color=blue
+	]
+	BreadthFirstSearch -> GeneralSearch
+
+	DivideAndConquer [
+		label = <<table><tr><td>Divide and Conquer</td></tr><tr><td>+ search(subproblem, subqueue)</td></tr></table>>
+	]
+	DivideAndConquer -> BreadthFirstSearch
+	DivideAndConquer -> OrderedSubproblemTree [arrowhead = "open" constraint="false" shape="dashed" label="<<use>>"]
+
+	DepthFirstSearch [
+		label = <<table><tr><td>Depth-First Search</td></tr><tr><td>+ search(problem, stack)</td></tr></table>>
+		color=yellow
+	]
+	DepthFirstSearch -> GeneralSearch
+
+	BacktrackingSearch [
+		label = <<table><tr><td>Backtracking Search</td></tr><tr><td>+ search(problem, iterator, constraint)</td></tr></table>>
+		color=green
+	]
+	BacktrackingSearch-> DepthFirstSearch
+
+	DynamicProgramming [
+		label = <<table><tr><td>Dynamic Programming</td></tr><tr><td>+ search(problem, stack, memo, constraint)</td></tr></table>>
+		color="blue"
+	]
+	DynamicProgramming -> BacktrackingSearch
+	DynamicProgramming -> AcyclicSubProblemGraph [arrowhead = "open" constraint="false" shape="dashed" label="<<use>>"]
+
+	DepthLimitingSearch [ label = "Depth-Limiting Search" color=green ]
+	DepthLimitingSearch -> GeneralSearch [constraint = "false"]
+
+	IterativeDeepeningSearch [ label = "Iterative-Deepening Search" color=blue ]
+	IterativeDeepeningSearch -> GeneralSearch [constraint = "false"]
+
+	UniformCostSearch [ label = "Uniform-cost Search" color=blue ]
+	UniformCostSearch -> GeneralSearch [constraint = "false"]
+
+	BidirectionalSearch [ label = "Bidirectional Search" color=blue ]
+	BidirectionalSearch -> GeneralSearch [constraint = "false"]
+
+	BestFirstSearch [
+		label = <<table><tr><td>Best-First Search</td></tr><tr><td>+ search(problem, eval_fn)</td></tr></table>>
+	]
+	BestFirstSearch -> GeneralSearch
+
+	GreedySearch [
+		label = <<table><tr><td>Greedy Search</td></tr><tr><td>+ search(problem, heuristic)</td></tr></table>>
+		color = yellow
+	]
+	GreedySearch -> BestFirstSearch
+
+	SingletonGreedySearch [
+		label = <<table><tr><td>No-Backtraking/Singleton Greedy Search</td></tr><tr><td>+ search(problem, heuristic, constraint)</td></tr></table>>
+	]
+	SingletonGreedySearch -> GreedySearch
+	SingletonGreedySearch -> UnarySubproblemTree [arrowhead = "open" constraint="false" shape="dashed" label="<<use>>"]
+
+	BinarySearch [ label = "Binary Search" color="blue" ]
+	BinarySearch -> SingletonGreedySearch
+
+	QuickSelect [ label = "Quick Select" color="blue" ]
+	QuickSelect -> SingletonGreedySearch
+
+	AStarSearch [
+		label = "A* search"
+		color = blue
+	]
+	AStarSearch -> BestFirstSearch
+}

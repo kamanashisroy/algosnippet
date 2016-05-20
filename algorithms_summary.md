@@ -52,6 +52,10 @@ In bottom-up approach start from details and compose the final result from them.
 
 When both the top-down and bottom-up approaches have the same asymptotic running-time, the bottom-up-iterative approach often has much better constant factors than top-down-recursive approach.
 
+Here is a mindmap to relate the different [problem solving approaches](mindmap/mindmap.dot).
+
+![mindmap](https://cloud.githubusercontent.com/assets/973414/15442078/9dc9f2fc-1e93-11e6-99af-aa85f0e62c17.png)
+
 The algorithm problems can be categorized in the following domains. Like the algorithm approaches, these domains are not exclusive.
 
 - Counting
@@ -185,49 +189,7 @@ The minimum spanning tree can be calculated by Kruskal's greedy strategy. Like m
 
 Creativity is the novel way to solve problem in real world. One of the process to generate multiple creative ways to a problem is to use mind-map. The mind-map may contain all the algorithms and approaches for number and graph problems. It can help us to convert a real-world problem to one of such algorithmic problems. Finally we can solve the problem as we solve the algorithmic problems we have solved earlier.
 
-Here is an example of mindmap.
-
-| Group | Subgroup | Subgroup | Subgroup | Subgroup | Is it possible to convert the problem into them ? | Does it work ? | Is it appropriate to use ? |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Brute force |
-| Brute force | Bubbling
-| Brute force | Building
-| Distribuion |
-| Distribuion | Bucketing
-| Distribuion | Counting
-| Distribuion | Histogram
-| Distribuion | Bucketing | Hashing
-| Subproblem | 
-| Subproblem | Divide and conquer
-| Divide and Conquer | Greedy approach
-| Divide and Conquer | Arranging(Quicksort) |
-| Divide and Conquer | Merging |
-| Divide and Conquer | Tree |
-| Tree | 
-| Tree | Recursion tree |
-| Tree | Recursion tree | Indirect recursion
-| Tree | Recursion tree | Backtracking
-| Tree | Search tree(contains data) |
-| Tree | Search tree(contains data) | Augmented tree |
-| Tree | Search tree(contains data) | Binary tree |
-| Tree | Search tree(contains data) | Binary tree | Imaginary node
-| Tree | Search tree(contains data) | Binary tree | data at internal node
-| Tree | Search tree(contains data) | Binary tree | data in leaf
-| Tree | Bucketing
-| Subproblem | multiple subproblem
-| Graph 
-| Graph |
-| Graph | Traversing
-| Traversal | BFS |
-| Traversal | BFS | Exploring
-| Traversal | BFS | Shortest path
-| Traversal | BFS | Heurestics | Greedy approach
-| Traversal | DFS | Existance of path
-| Traversal | DFS | Topological sorting
-| Traversal | DFS | Heurestics
-| Traversal | DFS | Heurestics | Greedy appraoch
-| Transformation | 
-| Transformation | Compression
+![mindmap](https://cloud.githubusercontent.com/assets/973414/15442078/9dc9f2fc-1e93-11e6-99af-aa85f0e62c17.png)
 
 Here are some examples of [creative problem solving](creative_problem_solving).
 TODO, use C-K theory to solve problem.
