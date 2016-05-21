@@ -52,9 +52,15 @@ In bottom-up approach start from details and compose the final result from them.
 
 When both the top-down and bottom-up approaches have the same asymptotic running-time, the bottom-up-iterative approach often has much better constant factors than top-down-recursive approach.
 
+The problem solving starts with input constraints. When a subproblem is being solved the constraints are being reduced. This is called **relaxation**.
+
+For example, for sorting problem the constraints are `a[0] < a[1] < a[1] < .. < a[n]`. After every iteration of outer loop in bubble sort, the `a[i]..a[n]` elements are in final sorted position. That means those elements are out of the sort-constraint. The new constraint-set contains `a[0] < a[1] < a[2] .. < a[i]`. And thus in each iteration there is relaxation of constraints.
+
+In the same way in Bellman-ford algorithm, after each iteration of outer loop, all paths from source to `u` has `i` or fiewer edges. So there are only `n-i` edges to be checked for shorter paths. So the shortest-path-constraints are being relaxed in each iteration. Actually it is relaxed in each update of dist[u] table.
+
 Here is a mindmap to relate the different [problem solving approaches](mindmap/mindmap.dot).
 
-![mindmap](https://cloud.githubusercontent.com/assets/973414/15442078/9dc9f2fc-1e93-11e6-99af-aa85f0e62c17.png)
+![mindmap](https://cloud.githubusercontent.com/assets/973414/15445415/17623d9e-1eb3-11e6-9c9d-a97d59791845.png)
 
 The algorithm problems can be categorized in the following domains. Like the algorithm approaches, these domains are not exclusive.
 
@@ -189,7 +195,7 @@ The minimum spanning tree can be calculated by Kruskal's greedy strategy. Like m
 
 Creativity is the novel way to solve problem in real world. One of the process to generate multiple creative ways to a problem is to use mind-map. The mind-map may contain all the algorithms and approaches for number and graph problems. It can help us to convert a real-world problem to one of such algorithmic problems. Finally we can solve the problem as we solve the algorithmic problems we have solved earlier.
 
-![mindmap](https://cloud.githubusercontent.com/assets/973414/15442078/9dc9f2fc-1e93-11e6-99af-aa85f0e62c17.png)
+![mindmap](https://cloud.githubusercontent.com/assets/973414/15445415/17623d9e-1eb3-11e6-9c9d-a97d59791845.png)
 
 Here are some examples of [creative problem solving](creative_problem_solving).
 TODO, use C-K theory to solve problem.

@@ -10,48 +10,53 @@ digraph G {
         ]
 
 	aGraph [
-		label = <<table><tr><td>Graph</td></tr><tr><td>vertices<br/>edges</td></tr></table>>
+		label = <<table><tr><td>Graph</td></tr><tr><td>+ vertices<br/>+ edges</td></tr></table>>
+		color = "grey" style = "filled"
 	]
 
 	Tree [
-		label = <<table><tr><td>Tree</td></tr><tr><td>children</td></tr></table>>
+		label = <<table><tr><td>Tree</td></tr><tr><td>+ children</td></tr></table>>
+		color = "grey" style = "filled"
 	]
 	Tree -> aGraph
 
 	OrderedTree [
-		label = "Ordered Tree\luse Array or combine(Linked-list,Hashtable)"
+		label = <<table><tr><td>Ordered Tree</td></tr><tr><td>+ children:Array</td></tr><tr><td>or + children:(linkedlist+hashtable)</td></tr></table>>
+		color = "grey" style = "filled"
 	]
 	OrderedTree -> Tree
 
-	BinarySearchTree [ label = "Binary-Search Tree"]
-	BinarySearchTree -> OrderedTree
+	BinarySearchTree [ label = "Binary-Search Tree" color = "grey" style = "filled"]
+	BinarySearchTree -> BinaryTree
 	
 	UnaryTree [
-		label = <<table><tr><td>Unary Tree</td></tr><tr><td>next</td></tr></table>>
+		label = <<table><tr><td>Unary Tree</td></tr><tr><td>+ next</td></tr></table>>
+		color = "grey" style = "filled"
 	]
 	UnaryTree -> Tree
 
-	UnarySubproblemTree [ label = "Unary Subproblem Tree"]
+	UnarySubproblemTree [ label = "Unary Subproblem Tree" color = "grey" style = "filled"]
 	UnarySubproblemTree -> UnaryTree
 
 	BinaryTree [
-		label = <<table><tr><td>Binary Tree</td></tr><tr><td>left<br/>right</td></tr></table>>
+		label = <<table><tr><td>Binary Tree</td></tr><tr><td>+ left<br/>+ right</td></tr></table>>
+		color = "grey" style = "filled"
 	]
-	BinaryTree -> Tree
+	BinaryTree -> OrderedTree
 
-	OrderedSubproblemTree [ label = "Ordered Subproblem Tree"]
+	OrderedSubproblemTree [ label = "Ordered Subproblem Tree" color = "grey" style = "filled"]
 	OrderedSubproblemTree -> OrderedTree
 
-	DirectedGraph [label = "Directed Graph"]
+	DirectedGraph [label = "Directed Graph" color = "grey" style = "filled"]
 	DirectedGraph -> aGraph
 
-	UnDirectedGraph [label = "Undirected Graph"]
+	UnDirectedGraph [label = "Undirected Graph" color = "grey" style = "filled"]
 	UnDirectedGraph -> aGraph
 
-	DAG [label = "Directed Acyclic Graph"]
+	DAG [label = "Directed Acyclic Graph" color = "grey" style = "filled"]
 	DAG -> DirectedGraph
 
-	AcyclicSubProblemGraph [label = "Acyclic Subproblem Graph"]
+	AcyclicSubProblemGraph [label = "Acyclic Subproblem Graph" color = "grey" style = "filled"]
 	AcyclicSubProblemGraph -> DAG
 
 
@@ -61,45 +66,65 @@ digraph G {
 
 	BreadthFirstSearch [
 		label = <<table><tr><td>Breadth-First Search</td></tr><tr><td>+ search(problem, queue)</td></tr></table>>
-		color=blue
+		color=green
+		style="filled"
 	]
 	BreadthFirstSearch -> GeneralSearch
 
 	DivideAndConquer [
 		label = <<table><tr><td>Divide and Conquer</td></tr><tr><td>+ search(subproblem, subqueue)</td></tr></table>>
+		color=green
+		style="filled"
 	]
 	DivideAndConquer -> BreadthFirstSearch
-	DivideAndConquer -> OrderedSubproblemTree [arrowhead = "open" constraint="false" shape="dashed" label="<<use>>"]
+	DivideAndConquer -> OrderedSubproblemTree [arrowhead = "open" shape="dashed" label="<<use>>"]
+
+	DivideAndConquerNote [
+		label = <<table><tr><td>Merge Sort</td></tr><tr><td>Quick Sort</td></tr><tr><td>Bucket Sort</td></tr></table>>
+		color=white
+		style="filled"
+	]
+	DivideAndConquerNote -> DivideAndConquer [arrowhead = "open" shape="dashed" label="<<example>>"]
 
 	DepthFirstSearch [
 		label = <<table><tr><td>Depth-First Search</td></tr><tr><td>+ search(problem, stack)</td></tr></table>>
 		color=yellow
+		style="filled"
 	]
 	DepthFirstSearch -> GeneralSearch
 
 	BacktrackingSearch [
 		label = <<table><tr><td>Backtracking Search</td></tr><tr><td>+ search(problem, iterator, constraint)</td></tr></table>>
-		color=green
+		color=aquamarine
+		style="filled"
 	]
 	BacktrackingSearch-> DepthFirstSearch
 
 	DynamicProgramming [
 		label = <<table><tr><td>Dynamic Programming</td></tr><tr><td>+ search(problem, stack, memo, constraint)</td></tr></table>>
-		color="blue"
+		color="green"
+		style="filled"
 	]
 	DynamicProgramming -> BacktrackingSearch
-	DynamicProgramming -> AcyclicSubProblemGraph [arrowhead = "open" constraint="false" shape="dashed" label="<<use>>"]
+	DynamicProgramming -> AcyclicSubProblemGraph [arrowhead = "open" shape="dashed" label="<<use>>"]
 
-	DepthLimitingSearch [ label = "Depth-Limiting Search" color=green ]
+	DynamicProgrammingNote [
+		label = <<table><tr><td>Bellman-Ford</td></tr><tr><td>Fast-Fibonacci</td></tr><tr><td>Knapsack</td></tr></table>>
+		color=white
+		style="filled"
+	]
+	DynamicProgrammingNote -> DynamicProgramming [arrowhead = "open" shape="dashed" label="<<example>>"]
+
+	DepthLimitingSearch [ label = "Depth-Limiting Search" color=aquamarine style="filled" ]
 	DepthLimitingSearch -> GeneralSearch [constraint = "false"]
 
-	IterativeDeepeningSearch [ label = "Iterative-Deepening Search" color=blue ]
+	IterativeDeepeningSearch [ label = "Iterative-Deepening Search" color=green style="filled" ]
 	IterativeDeepeningSearch -> GeneralSearch [constraint = "false"]
 
-	UniformCostSearch [ label = "Uniform-cost Search" color=blue ]
+	UniformCostSearch [ label = "Uniform-cost Search" color=green style="filled" ]
 	UniformCostSearch -> GeneralSearch [constraint = "false"]
 
-	BidirectionalSearch [ label = "Bidirectional Search" color=blue ]
+	BidirectionalSearch [ label = "Bidirectional Search" color=green style="filled" ]
 	BidirectionalSearch -> GeneralSearch [constraint = "false"]
 
 	BestFirstSearch [
@@ -110,24 +135,29 @@ digraph G {
 	GreedySearch [
 		label = <<table><tr><td>Greedy Search</td></tr><tr><td>+ search(problem, heuristic)</td></tr></table>>
 		color = yellow
+		style="filled"
 	]
 	GreedySearch -> BestFirstSearch
 
 	SingletonGreedySearch [
 		label = <<table><tr><td>No-Backtraking/Singleton Greedy Search</td></tr><tr><td>+ search(problem, heuristic, constraint)</td></tr></table>>
+		color=aquamarine
+		style="filled"
 	]
 	SingletonGreedySearch -> GreedySearch
 	SingletonGreedySearch -> UnarySubproblemTree [arrowhead = "open" constraint="false" shape="dashed" label="<<use>>"]
 
-	BinarySearch [ label = "Binary Search" color="blue" ]
-	BinarySearch -> SingletonGreedySearch
-
-	QuickSelect [ label = "Quick Select" color="blue" ]
-	QuickSelect -> SingletonGreedySearch
+	SingletonGreedySearchNote [
+		label = <<table><tr><td>Binary Search</td></tr><tr><td>Quick Select</td></tr><tr><td>Kruskal's algorithm</td></tr></table>>
+		color=white
+		style="filled"
+	]
+	SingletonGreedySearchNote -> SingletonGreedySearch [arrowhead = "open" shape="dashed" label="<<example>>"]
 
 	AStarSearch [
 		label = "A* search"
-		color = blue
+		color = green
+		style="filled"
 	]
 	AStarSearch -> BestFirstSearch
 }
