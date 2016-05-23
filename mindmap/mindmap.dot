@@ -29,6 +29,9 @@ digraph G {
 	BinarySearchTree [ label = "Binary-Search Tree" color = "grey" style = "filled"]
 	BinarySearchTree -> BinaryTree
 	
+	RadixTree [ label = "Trie/Radix Tree" color = "grey" style = "filled"]
+	RadixTree -> BinaryTree
+
 	UnaryTree [
 		label = <<table><tr><td>Unary Tree</td></tr><tr><td>+ next</td></tr></table>>
 		color = "grey" style = "filled"
