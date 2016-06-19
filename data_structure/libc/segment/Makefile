@@ -11,7 +11,7 @@ CPPFLAGS+=$(INCLUDES)
 all:$(TARGET_BIN)
 
 $(TARGET_BIN):$(SOURCES)
-	$(CC) -S $^ -o $@
+	$(CC) -O0 -S $^ -o $@
 
 clean:
 	rm -f $(OBJECTS) $(TARGET_BIN)
