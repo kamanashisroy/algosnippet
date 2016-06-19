@@ -1,6 +1,21 @@
 
+Let us examine segement.c file.
 
-Here is the assembly generated for segment.c file. Note that `s` is in `.global` aka `data` segement. `sar` is in `.text` segment. It seems `sar` is const pointer or not pointer at all(practically it is an array). And eventually it has an implecation that `sizeof(sar) = 6` is different to `sizeof(s) = 8`.
+```C
+	char*s = "hello";
+	char sar[] = "hello";
+	char content[32];
+
+	int main(int argc, char*argv[]) {
+		char*ps = "phello";
+		content[0] = 1;
+		sar[3] = 1;
+		// sar++; // not allowed
+		return 0;
+	}
+```
+
+Here is the assembly generated for segment.c file. Note that both `s` and `sar` is in `global` aka `.data` segement. It seems `sar` is const pointer or not pointer at all(practically it is an array). And eventually it has an implecation that `sizeof(sar) = 6` is different to `sizeof(s) = 8`. There are "hello" and "phello" in readonly(`.rodata`) section. 
 
 ```asm
 	.file	"segment.c"
@@ -19,6 +34,7 @@ s:
 	.size	sar, 6
 sar:
 	.string	"hello"
+	.comm	content,32,32
 	.section	.rodata
 .LC1:
 	.string	"phello"
@@ -36,6 +52,8 @@ main:
 	movl	%edi, -20(%rbp)
 	movq	%rsi, -32(%rbp)
 	movq	$.LC1, -8(%rbp)
+	movb	$1, content(%rip)
+	movb	$1, sar+3(%rip)
 	movl	$0, %eax
 	popq	%rbp
 	.cfi_def_cfa 7, 8
@@ -49,4 +67,4 @@ main:
 
 Again for private variable in main, the compiler does not bother to create a name.
 
-
+The `.text` segement is generally saved in ROM in embedded system. While in desktop it is saved in RAM.
