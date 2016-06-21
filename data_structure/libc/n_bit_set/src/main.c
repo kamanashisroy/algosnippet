@@ -51,6 +51,7 @@ int main(int argc, char*argv[]) {
 	assert(get_set_n_position(0b1100110, 2) == 1);
 	assert(get_set_n_position(0b1100110, 3) == -1);
 	assert(get_set_n_position(0b1100110, 1) == 1);
+	assert(get_set_n_position(0b0001000, 1) == 3);
 	assert(get_set_n_position(0b1100110, 0) == -1);
 	assert(get_set_n_position(0b1100110, 4) == -1);
 	assert(get_set_n_position(0b1110110, 4) == -1);
