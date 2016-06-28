@@ -6,12 +6,12 @@ OBJECTS:=$(subst .c,.o,$(SOURCES))
 CPPFLAGS:=-Wall
 LDFLAGS:=-std=c++11
 INCLUDES:=-Isrc
-CPPFLAGS+=-ggdb3 $(INCLUDES)
+CPPFLAGS+=$(INCLUDES)
 
 all:$(TARGET_BIN)
 
 $(TARGET_BIN):$(OBJECTS)
-	$(CC) -ggdb3 $^ -o $@
+	$(CC) $^ -o $@
 
 test:$(TARGET_BIN)
 	./$(TARGET_BIN)
