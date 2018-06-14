@@ -87,7 +87,7 @@ class algo_tree:
                     self.height = self.right.height+1
                 return result_node
 
-        raise AssertionError("Unreachable code")
+        raise AssertionError("Unreachable code:" + repr(x) + "<>" + repr(self.root))
 
     def swap(self,other):
         '''
