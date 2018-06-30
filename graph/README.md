@@ -4,12 +4,7 @@ Graph
 
 Here is my practice code of all the graph related algorithms.
 
-- [tree](tree)
-	- [binary tree](tree)
-	- [binary search tree](bst)
-	- [Red-Black tree](rbtree)
-	- [R-tree](rtree)
-	- [B-tree](btree)
+- [Tree](../data_structure/tree)
 - [Breadth-first Search](bfs)
 - [Depth-first Search](dfs)
 - [Shortest path search](shortest_path)
