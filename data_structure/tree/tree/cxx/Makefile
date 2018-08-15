@@ -9,7 +9,7 @@ LDFLAGS:=-std=c++11
 all:$(TARGET_BIN)
 
 $(TARGET_BIN):$(OBJECTS)
-	g++ $^ -o $@
+	${CXX} $^ -o $@
 
 test:$(TARGET_BIN)
 	./$(TARGET_BIN) < input1.txt
