@@ -74,16 +74,18 @@ namespace algo_snippet {
             } else if(weight > weight_) { // weight is increased
                 // we should go down
                 weight_ = weight;
-                if(left_ && !right_) {
-                    left_->move_up();
-                } else if(right_ && !left_) {
-                    right_->move_up();
-                } else if(right_ && left_) {
-                    if(left_->get_weight() <= right_->get_weight()) {
-                        // I guess we can do balancing when the weights are equal
+                while( (left_ && left_->get_weight() < get_weight()) || (right_ && right_->get_weight() < get_weight()) ) {
+                    if(left_ && !right_) {
                         left_->move_up();
-                    } else {
+                    } else if(right_ && !left_) {
                         right_->move_up();
+                    } else if(right_ && left_) {
+                        if(left_->get_weight() <= right_->get_weight()) {
+                            // I guess we can do balancing when the weights are equal
+                            left_->move_up();
+                        } else {
+                            right_->move_up();
+                        }
                     }
                 }
             }
@@ -179,7 +181,7 @@ namespace algo_snippet {
             // implement update weight
             while(NULL != parent_ && parent_->get_weight() > get_weight()) {
                 // rotate
-                if(parent_->get_key() < get_key()) { // this is right child of parent
+                if(parent_->right_ == this) { // this is right child of parent
                     // before p=parent, x=this
                     //                 p
                     //            pl          x
@@ -191,7 +193,7 @@ namespace algo_snippet {
                     //                pl     l
                     // update parent
                     #ifdef ALGO_SNIPPET_DEBUG
-                    assert(parent_->right_ == this);
+                    assert(parent_->get_key() <= get_key());
                     #endif
                     parent_->right_ = left_;
                     if(parent_->right_) {
@@ -233,7 +235,11 @@ namespace algo_snippet {
                     //              m       pr
                     // update parent
                     #ifdef ALGO_SNIPPET_DEBUG
+
+                    std::cout << repr() << "this is left child of =" << parent_->repr() << std::endl;
+                    std::cout << repr() << "==" << parent_->left_->repr() << std::endl;
                     assert(parent_->left_ == this);
+                    assert(parent_->get_key() >= get_key());
                     #endif
                     parent_->left_ = right_;
                     if(parent_->left_) {
@@ -373,6 +379,7 @@ int main() {
     cout << "=============Treap======================" << endl;
     cout << head.to_string() << endl;
     cout << "=============Treap======================" << endl;
+    cout << "Now going back to original(8)" << endl;
     result->update(8);
     cout << "=============Treap======================" << endl;
     cout << head.to_string() << endl;
