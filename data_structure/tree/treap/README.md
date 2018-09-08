@@ -1,4 +1,44 @@
 
+Treap
+======
+
+#### Insert
+
+#### update
+
+The cost of update is logarighmic to the change of heap-property.
+
+```C++
+        // update weight of the treap
+        void update(WT weight) {
+            // implement update weight
+            if(weight < weight_) { // weight is reduced
+                // we should go up
+                weight_ = weight;
+                move_up();
+            } else if(weight > weight_) { // weight is increased
+                // we should go down
+                weight_ = weight;
+                while( (left_ && left_->get_weight() < get_weight()) || (right_ && right_->get_weight() < get_weight()) ) {
+                    if(left_ && !right_) {
+                        left_->move_up();
+                    } else if(right_ && !left_) {
+                        right_->move_up();
+                    } else if(right_ && left_) {
+                        if(left_->get_weight() <= right_->get_weight()) {
+                            // I guess we can do balancing when the weights are equal
+                            left_->move_up();
+                        } else {
+                            right_->move_up();
+                        }
+                    }
+                }
+            }
+        }
+```
+
+
+
 Treap example output
 =====================
 
@@ -49,3 +89,14 @@ Now when we query all the elements at depth 10 we get the following in sorted or
 ```
 [(5, 1, 5), (6, 7, 6), (8, 7, 8), (9, 2, 9), (10, 7, 10), (11, 4, 11), (13, 8, 13), (14, 3, 14)]
 ```
+
+Treap related problem
+=======================
+
+Augmented-Treap can be used as order-statistics-tree to solve problems of tree-distance calculations.
+
+```
+https://www.hackerrank.com/contests/w38/challenges/neighborhood-queries/submissions/code/1310160145
+```
+
+
