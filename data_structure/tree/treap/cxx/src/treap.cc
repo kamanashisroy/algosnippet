@@ -8,8 +8,12 @@
 #endif
 
 #ifdef ALGO_SNIPPET_DEBUG
-#include <sstream>
+#define ALGO_SNIPPET_TO_STRING
 #include <cassert>
+#endif
+
+#ifdef ALGO_SNIPPET_TO_STRING
+#include <sstream>
 #endif
 
 namespace algo_snippet {
@@ -21,14 +25,17 @@ namespace algo_snippet {
     class algo_treap_head {
     public:
         algo_treap_head() : root(NULL), size_(0){ }
-        void insert(WT heap_weight, KT key, std::allocator<algo_treap<WT,KT>> &allocator);
+        void insert(WT heap_property, KT bst_key, std::allocator<algo_treap<WT,KT>> &allocator);
         void insert(algo_treap<WT,KT>& given);
         void insert(algo_treap<WT,KT>* given);
-        const algo_treap<WT,KT>* query(WT heap_weight_limit, const unsigned int rank) const;
+        const algo_treap<WT,KT>* query(WT heap_property_limit, const unsigned int rank) const;
         const std::size_t size() const {
             return size_;
         }
-        #ifdef ALGO_SNIPPET_DEBUG
+        const algo_treap<WT,KT>* get_root() const {
+            return root;
+        }
+        #ifdef ALGO_SNIPPET_TO_STRING
         const std::string to_string() const {
             if(root) {
                 return root->to_string();
@@ -37,6 +44,7 @@ namespace algo_snippet {
             }
         }
         #endif
+        const void assert_treap() const;
     private:
         algo_treap<WT,KT>*root;
         std::size_t size_;
@@ -49,8 +57,8 @@ namespace algo_snippet {
 
         algo_treap() = default;
 
-        algo_treap(WT heap_weight, KT key, std::size_t id, algo_treap_head<WT,KT> &head)
-            : heap_weight_(heap_weight),key_(key), id_(id),left_(NULL),right_(NULL),parent_(NULL),head_(head) {
+        algo_treap(WT heap_property, KT bst_key, std::size_t id, algo_treap_head<WT,KT> &head)
+            : heap_property_(heap_property),bst_key_(bst_key), id_(id),left_(NULL),right_(NULL),parent_(NULL),head_(head) {
         }
 
         ~algo_treap() {
@@ -67,27 +75,27 @@ namespace algo_snippet {
 #endif
         }
 
-        // update heap_weight of the treap
-        void update_heap_property(WT heap_weight) {
-            // implement update heap_weight
-            if(heap_weight < heap_weight_) { // heap_weight is reduced
+        // update heap_property of the treap
+        void update_heap_property(WT heap_property) {
+            // implement update heap_property
+            if(heap_property < heap_property_) { // heap_property is reduced
                 // we should go up
-                heap_weight_ = heap_weight;
-                move_up();
-            } else if(heap_weight > heap_weight_) { // heap_weight is increased
+                heap_property_ = heap_property;
+                up_heap();
+            } else if(heap_property > heap_property_) { // heap_property is increased
                 // we should go down
-                heap_weight_ = heap_weight;
-                while( (left_ && left_->get_heap_weight() < get_heap_weight()) || (right_ && right_->get_heap_weight() < get_heap_weight()) ) {
+                heap_property_ = heap_property;
+                while( (left_ && left_->get_heap_property() < get_heap_property()) || (right_ && right_->get_heap_property() < get_heap_property()) ) {
                     if(left_ && !right_) {
-                        left_->move_up();
+                        left_->up_heap();
                     } else if(right_ && !left_) {
-                        right_->move_up();
+                        right_->up_heap();
                     } else if(right_ && left_) {
-                        if(left_->get_heap_weight() <= right_->get_heap_weight()) {
-                            // I guess we can do balancing when the heap_weights are equal
-                            left_->move_up();
+                        if(left_->get_heap_property() <= right_->get_heap_property()) {
+                            // I guess we can do balancing when the heap_propertys are equal
+                            left_->up_heap();
                         } else {
-                            right_->move_up();
+                            right_->up_heap();
                         }
                     }
                 }
@@ -98,12 +106,12 @@ namespace algo_snippet {
         algo_treap<WT,KT>*insert(algo_treap*other) {
 
             // check heap-property
-            if(other->get_heap_weight() < get_heap_weight()) { // heap-property needs fix
+            if(other->get_heap_property() < get_heap_property()) { // heap-property needs fix
                 // other should be the root
                 return other->insert(this);
             } else { // heap-property is good
-                if(other->get_key() <= get_key()) {
-                    // so other key goes left
+                if(other->get_bst_key() <= get_bst_key()) {
+                    // so other bst_key goes left
                     if(NULL == left_) { // we have empty spot
                         left_ = other; // put the other on left
                         left_->parent_ = this;
@@ -125,19 +133,19 @@ namespace algo_snippet {
             }
         }
 
-        inline const KT get_key() const {
-            return key_;
+        inline const KT get_bst_key() const {
+            return bst_key_;
         }
 
-        inline const WT get_heap_weight() const {
-            return heap_weight_;
+        inline const WT get_heap_property() const {
+            return heap_property_;
         }
 
         inline const std::size_t id() const {
             return id_;
         }
 
-        #ifdef ALGO_SNIPPET_DEBUG
+        #ifdef ALGO_SNIPPET_TO_STRING
         const std::string to_string(std::size_t depth=0) const {
             std::ostringstream output;
             to_string(output, depth);
@@ -145,7 +153,7 @@ namespace algo_snippet {
         }
         const std::string repr() const {
             std::ostringstream output;
-            output << "Treap(k=" << get_key() << ",w=" << get_heap_weight() << ",id=" << id() << ")" << std::endl;
+            output << "Treap(k=" << get_bst_key() << ",w=" << get_heap_property() << ",id=" << id() << ")";
             return output.str();
         }
         const void to_string(std::ostringstream& output, std::size_t depth) const {
@@ -155,7 +163,7 @@ namespace algo_snippet {
             for(std::size_t i = 0; i < depth; i++) {
                 output << '\t';
             }
-            output << "(k=" << get_key() << ",w=" << get_heap_weight() << ",id=" << id() << ")" << std::endl;
+            output << "(k=" << get_bst_key() << ",w=" << get_heap_property() << ",id=" << id() << ")" << std::endl;
             if(right_) {
                 right_->to_string(output, depth+1);
             }
@@ -164,9 +172,9 @@ namespace algo_snippet {
 
         //! \brief rebuild the node.
         //! \NOTE it must be done before inserting into the head/tree
-        void rebuild(WT heap_weight, KT key) {
-            heap_weight_ = heap_weight;
-            key_ = key;
+        void rebuild(WT heap_property, KT bst_key) {
+            heap_property_ = heap_property;
+            bst_key_ = bst_key;
             left_ = NULL;
             right_ = NULL;
             parent_ = NULL;
@@ -174,20 +182,38 @@ namespace algo_snippet {
             id_ = 0;
         }
 
+        const void assert_treap() const {
+            if(get_left()) {
+                assert(get_left()->parent_ == this);
+                assert(get_left()->get_bst_key() <= get_bst_key());
+                assert(get_left()->get_heap_property() >= get_heap_property());
+                get_left()->assert_treap();
+            }
+            if(get_right()) {
+                assert(get_right()->parent_ == this);
+                assert(get_right()->get_bst_key() >= get_bst_key());
+                assert(get_right()->get_heap_property() >= get_heap_property());
+                get_right()->assert_treap();
+            }
+        }
+
+    protected:
+        //! \brief overloading rebuild here allow to override the id
+        virtual void rebuild_link(std::size_t id, algo_treap_head<WT,KT> &head) {
+            id_ = id;
+            head_ = &head;
+        }
+
+
     private:
-        WT heap_weight_; //!< heap_weight sets relative-depth of the node
-        KT key_; //!< key is used to order the binary search tree
+        WT heap_property_; //!< heap_property sets relative-depth of the node
+        KT bst_key_; //!< bst_key is used to order the binary search tree
         std::size_t id_;
 
         algo_treap<WT,KT>*left_;
         algo_treap<WT,KT>*right_;
         algo_treap<WT,KT>*parent_;
         algo_treap_head<WT,KT> *head_;
-
-        void rebuild(std::size_t id, algo_treap_head<WT,KT> &head) {
-            id_ = id;
-            head_ = &head;
-        }
 
         const algo_treap<WT,KT>* get_left() const {
             return left_;
@@ -197,9 +223,9 @@ namespace algo_snippet {
             return right_;
         }
 
-        void move_up() {
-            // implement update heap_weight
-            while(NULL != parent_ && parent_->get_heap_weight() > get_heap_weight()) {
+        void up_heap() {
+            // implement update heap_property
+            while(NULL != parent_ && parent_->get_heap_property() > get_heap_property()) {
                 // rotate
                 if(parent_->right_ == this) { // this is right child of parent
                     // before p=parent, x=this
@@ -213,7 +239,7 @@ namespace algo_snippet {
                     //                pl     l
                     // update parent
                     #ifdef ALGO_SNIPPET_DEBUG
-                    assert(parent_->get_key() <= get_key());
+                    assert(parent_->get_bst_key() <= get_bst_key());
                     #endif
                     parent_->right_ = left_;
                     if(parent_->right_) {
@@ -259,7 +285,7 @@ namespace algo_snippet {
                     std::cout << repr() << "this is left child of =" << parent_->repr() << std::endl;
                     std::cout << repr() << "==" << parent_->left_->repr() << std::endl;
                     assert(parent_->left_ == this);
-                    assert(parent_->get_key() >= get_key());
+                    assert(parent_->get_bst_key() >= get_bst_key());
                     #endif
                     parent_->left_ = right_;
                     if(parent_->left_) {
@@ -309,7 +335,7 @@ namespace algo_snippet {
 
 template<typename WT,typename KT>
 void algo_snippet::algo_treap_head<WT,KT>::insert(algo_snippet::algo_treap<WT,KT>*node) {
-    node->rebuild(size_++,*this);
+    node->rebuild_link(size_++,*this);
     if(root) {
         root = root->insert(node);
         root->parent_ = NULL;
@@ -319,9 +345,9 @@ void algo_snippet::algo_treap_head<WT,KT>::insert(algo_snippet::algo_treap<WT,KT
 }
 
 template<typename WT,typename KT>
-void algo_snippet::algo_treap_head<WT,KT>::insert(WT heap_weight, KT key, std::allocator<algo_treap<WT,KT>> &allocator) {
+void algo_snippet::algo_treap_head<WT,KT>::insert(WT heap_property, KT bst_key, std::allocator<algo_treap<WT,KT>> &allocator) {
     algo_snippet::algo_treap<WT,KT>*node = allocator.allocate(1);
-    node->rebuild(heap_weight,key);
+    node->rebuild(heap_property,bst_key);
     insert(node);
 }
 
@@ -334,7 +360,7 @@ void algo_snippet::algo_treap_head<WT,KT>::insert(algo_snippet::algo_treap<WT,KT
 #include <cstring>
 
 template<typename WT,typename KT>
-const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::query(WT heap_weight_limit, const unsigned int rank) const {
+const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::query(WT heap_property_limit, const unsigned int rank) const {
     if(!root || 0 == rank) {
         return NULL;
     }
@@ -349,8 +375,8 @@ const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::quer
         const algo_snippet::algo_treap<WT,KT>*x = fringe.back();
         fringe.pop_back();
 
-        // limit heap_weight
-        if(x->get_heap_weight() > heap_weight_limit) {
+        // limit heap_property
+        if(x->get_heap_property() > heap_property_limit) {
             continue;
         }
 
@@ -361,11 +387,11 @@ const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::quer
             #endif
 
             // push the children to the fringe
-            if(x->get_right() && x->get_right()->get_heap_weight() <= heap_weight_limit) {
+            if(x->get_right() && x->get_right()->get_heap_property() <= heap_property_limit) {
                 fringe.push_back(x->get_right());
             }
             fringe.push_back(x); // push it in-order position
-            if(x->get_left() && x->get_left()->get_heap_weight() <= heap_weight_limit) {
+            if(x->get_left() && x->get_left()->get_heap_property() <= heap_property_limit) {
                 fringe.push_back(x->get_left());
             }
             expanded[x->id()] = true;
@@ -382,6 +408,49 @@ const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::quer
     return NULL;
 }
 
+template<typename WT,typename KT>
+const void algo_snippet::algo_treap_head<WT,KT>::assert_treap() const {
+    if(get_root()) {
+        get_root()->assert_treap();
+
+        // traverse in-order and check the order
+        std::size_t rank = 0;
+        KT prev;
+        bool expanded[size()];
+        memset(expanded, 0, sizeof(expanded));
+        
+        static std::vector<const algo_treap<WT,KT>*> fringe;
+        fringe.clear();
+        fringe.push_back(get_root());
+        while(!fringe.empty()) {
+            const algo_snippet::algo_treap<WT,KT>*x = fringe.back();
+            fringe.pop_back();
+
+            if(!expanded[x->id()]) {
+                // expand the node
+
+                // push the children to the fringe
+                if(x->get_right() ) {
+                    fringe.push_back(x->get_right());
+                }
+                fringe.push_back(x); // push it in-order position
+                if(x->get_left()) {
+                    fringe.push_back(x->get_left());
+                }
+                expanded[x->id()] = true;
+            } else {
+                rank++;
+                if(rank > 1) {
+                    assert(prev <= x->get_bst_key());
+                }
+                prev = x->get_bst_key();
+            }
+        }
+    }
+}
+
+
+
 #ifdef ALGO_TEST
 
 using namespace std;
@@ -394,7 +463,7 @@ int main() {
     algo_treap<int,int> nodes[heap_size];
 
     for(int i = 0; i < heap_size; i++) {
-        cout << "adding key=" << heap_key[i] << " heap_weight= " << i << endl;
+        cout << "adding key=" << heap_key[i] << " heap_property= " << i << endl;
         //head.insert(i,heap_key[i]);
         nodes[i].rebuild(i,heap_key[i]);
         head.insert(nodes[i]);
@@ -402,11 +471,11 @@ int main() {
     cout << "=============Treap======================" << endl;
     cout << head.to_string() << endl;
     cout << "=============Treap======================" << endl;
-    cout << "query heap_weight_limit=100 rank=6 " << endl;
+    cout << "query heap_property_limit=100 rank=6 " << endl;
     algo_treap<int,int>* result = const_cast<algo_treap<int,int>*>(head.query(100,6));
     cout << "result = " << result->repr() << endl;
-    // now increase heap_weight of it
-    cout << "Now increasing heap_weight to 11" << endl;
+    // now increase heap_property of it
+    cout << "Now increasing heap_property to 11" << endl;
     cout << "=============Treap======================" << endl;
     cout << head.to_string() << endl;
     cout << "=============Treap======================" << endl;
@@ -419,6 +488,23 @@ int main() {
     cout << "=============Treap======================" << endl;
     cout << head.to_string() << endl;
     cout << "=============Treap======================" << endl;
+    head.assert_treap();
+
+    int heap_key2[] = {7,8,9,12,15};
+    int heap_weight2[] = {6,7,2,15,9};
+    constexpr int heap_size2 = (sizeof(heap_key2)/sizeof(heap_key2[0]));
+    algo_treap_head<int,int> head2;
+    algo_treap<int,int> nodes2[heap_size2];
+    for(int i = 0; i < heap_size2; i++) {
+        cout << "adding key=" << heap_key2[i] << " heap_property= " << heap_weight2[i] << endl;
+        //head.insert(i,heap_key[i]);
+        nodes2[i].rebuild(heap_weight2[i],heap_key2[i]);
+        head2.insert(nodes2[i]);
+        head2.assert_treap();
+        cout << head2.to_string() << endl;
+        cout << "=============Treap======================" << endl;
+    }
+
     return 0;
 }
 #endif // ALGO_TEST
