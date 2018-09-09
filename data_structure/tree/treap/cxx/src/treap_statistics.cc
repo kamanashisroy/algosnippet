@@ -29,6 +29,7 @@ namespace algo_snippet {
         void insert(algo_treap<WT,KT>& given);
         void insert(algo_treap<WT,KT>* given);
         const algo_treap<WT,KT>* query(WT heap_property_limit, const unsigned int rank) const;
+        const algo_treap<WT,KT>* query_fast(WT heap_property_limit, const unsigned int rank) const;
         inline const std::size_t size() const {
             return size_;
         }
@@ -55,10 +56,25 @@ namespace algo_snippet {
     class algo_treap {
     public:
 
-        algo_treap() = default;
+        algo_treap()
+            : subtree_size_(1)
+            ,max_heap_property_(heap_property_)
+            ,left_(NULL)
+            ,right_(NULL)
+            ,parent_(NULL)
+            ,head_(NULL) {
+        }
 
         algo_treap(WT heap_property, KT bst_key, std::size_t id, algo_treap_head<WT,KT> &head)
-            : heap_property_(heap_property),bst_key_(bst_key), id_(id),left_(NULL),right_(NULL),parent_(NULL),head_(head) {
+            : heap_property_(heap_property)
+            ,bst_key_(bst_key)
+            ,id_(id)
+            ,subtree_size_(1)
+            ,max_heap_property_(heap_property_)
+            ,left_(NULL)
+            ,right_(NULL)
+            ,parent_(NULL)
+            ,head_(head) {
         }
 
         ~algo_treap() {
@@ -131,6 +147,10 @@ namespace algo_snippet {
                         right_->parent_ = this;
                     }
                 }
+                subtree_size_++;
+                if(other->get_heap_property() > max_heap_property_) {
+                    max_heap_property_ = other->get_heap_property();
+                }
                 return this;
             }
         }
@@ -141,6 +161,16 @@ namespace algo_snippet {
 
         inline const WT get_heap_property() const {
             return heap_property_;
+        }
+
+        //! \brief returns the maximum heap-size in the subtree
+        inline const WT get_max_heap_property() const {
+            return max_heap_property_;
+        }
+
+        //! \brief returns the size of the subtree at full depth
+        inline const std::size_t get_subtree_size() const {
+            return subtree_size_;
         }
 
         inline const std::size_t id() const {
@@ -155,7 +185,7 @@ namespace algo_snippet {
         }
         inline const std::string repr() const {
             std::ostringstream output;
-            output << "Treap(k=" << get_bst_key() << ",w=" << get_heap_property() << ",id=" << id() << ")";
+            output << "Treap(k=" << get_bst_key() << ",w=" << get_heap_property() << ",id=" << id() << ",sub-size=" << get_subtree_size() << ",max-w=" << get_max_heap_property() <<")";
             return output.str();
         }
         inline const void to_string(std::ostringstream& output, std::size_t depth) const {
@@ -177,11 +207,13 @@ namespace algo_snippet {
         void rebuild(WT heap_property, KT bst_key) {
             heap_property_ = heap_property;
             bst_key_ = bst_key;
+            id_ = 0;
+            subtree_size_ = 1;
+            max_heap_property_ = heap_property_;
             left_ = NULL;
             right_ = NULL;
             parent_ = NULL;
             head_ = NULL;
-            id_ = 0;
         }
 
         inline const void assert_treap() const {
@@ -211,6 +243,8 @@ namespace algo_snippet {
         WT heap_property_; //!< heap_property sets relative-depth of the node
         KT bst_key_; //!< bst_key is used to order the binary search tree
         std::size_t id_;
+        std::size_t subtree_size_;
+        WT max_heap_property_;
 
         algo_treap<WT,KT>*left_;
         algo_treap<WT,KT>*right_;
@@ -223,6 +257,19 @@ namespace algo_snippet {
 
         inline const algo_treap<WT,KT>* get_right() const {
             return right_;
+        }
+
+        inline void fix_order_statistics() {
+            max_heap_property_ = get_heap_property();
+            subtree_size_ = 1;
+            if(get_left()) {
+                max_heap_property_ = std::max(max_heap_property_, get_left()->get_heap_property());
+                subtree_size_ += get_left()->get_subtree_size();
+            }
+            if(get_right()) {
+                max_heap_property_ = std::max(max_heap_property_, get_right()->get_heap_property());
+                subtree_size_ += get_right()->get_subtree_size();
+            }
         }
 
         void up_heap() {
@@ -271,6 +318,12 @@ namespace algo_snippet {
                         // update root
                         head_->root = this;
                     }
+
+                    // fix order statistics
+                    if(get_left()) {
+                        left_->fix_order_statistics();
+                    }
+                    fix_order_statistics();
                 } else { // >= this is left child of parent
                     // before p=parent, x=this
                     //                 p
@@ -326,6 +379,11 @@ namespace algo_snippet {
                         // update root
                         head_->root = this;
                     }
+                    // fix order statistics
+                    if(get_right()) {
+                        right_->fix_order_statistics();
+                    }
+                    fix_order_statistics();
                 } // else
             } // while
         }
@@ -411,6 +469,73 @@ const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::quer
 }
 
 template<typename WT,typename KT>
+const algo_snippet::algo_treap<WT,KT>*algo_snippet::algo_treap_head<WT,KT>::query_fast(WT heap_property_limit, const unsigned int rank) const {
+    if(!root || 0 == rank) {
+        return NULL;
+    }
+    bool expanded[size()];
+    memset(expanded, 0, sizeof(expanded));
+    
+    unsigned int xrank = 0;
+    static std::vector<const algo_treap<WT,KT>*> fringe;
+    fringe.clear();
+    fringe.push_back(root);
+    while(!fringe.empty()) {
+        const algo_snippet::algo_treap<WT,KT>*x = fringe.back();
+        fringe.pop_back();
+
+        // limit heap_property
+        if(x->get_heap_property() > heap_property_limit) {
+            continue;
+        }
+
+        if(!expanded[x->id()]) {
+            // expand the node
+            #ifdef ALGO_TEST
+            std::cout << "expanding " << x->repr() << std::endl;
+            #endif
+
+            // before we expand the node, let us check the size and heap property of the subtree
+            if(x->get_max_heap_property() <= heap_property_limit) {
+                // we can fast forward the traversal by ignoring the subtree if 
+                if( (xrank+x->get_subtree_size()) < rank ) {
+                    #ifdef ALGO_TEST
+                    std::cout << "skipping " << x->repr() << ",xrank=" << xrank << std::endl;
+                    #endif
+                    xrank+= x->get_subtree_size();
+                    expanded[x->id()] = true;
+                    continue; // skip the subtree/fast forward
+                }/* else if((xrank+x->get_subtree_size()) == rank) {
+                    #ifdef ALGO_TEST
+                    std::cout << "collecting fast" << (xrank+x->get_subtree_size()) << "=" << x->repr() << std::endl;
+                    #endif
+                    return x;
+                }*/
+            }
+
+            // push the children to the fringe
+            if(x->get_right() && x->get_right()->get_heap_property() <= heap_property_limit) {
+                fringe.push_back(x->get_right());
+            }
+            fringe.push_back(x); // push it in-order position
+            if(x->get_left() && x->get_left()->get_heap_property() <= heap_property_limit) {
+                fringe.push_back(x->get_left());
+            }
+            expanded[x->id()] = true;
+        } else {
+            xrank++;
+            #ifdef ALGO_TEST
+            std::cout << "collecting " << xrank << "=" << x->repr() << std::endl;
+            #endif
+            if(xrank == rank) {
+                return x;
+            }
+        }
+    }
+    return NULL;
+}
+
+template<typename WT,typename KT>
 const void algo_snippet::algo_treap_head<WT,KT>::assert_treap() const {
     if(get_root()) {
         get_root()->assert_treap();
@@ -442,6 +567,9 @@ const void algo_snippet::algo_treap_head<WT,KT>::assert_treap() const {
                 expanded[x->id()] = true;
             } else {
                 rank++;
+                #ifdef ALGO_SNIPPET_DEBUG
+                std::cout << x->get_bst_key() << std::endl;
+                #endif
                 if(rank > 1) {
                     assert(prev <= x->get_bst_key());
                 }
@@ -476,6 +604,10 @@ int main() {
     cout << "query heap_property_limit=100 rank=6 " << endl;
     algo_treap<int,int>* result = const_cast<algo_treap<int,int>*>(head.query(100,6));
     cout << "result = " << result->repr() << endl;
+    cout << "query_fast heap_property_limit=100 rank=6 " << endl;
+    algo_treap<int,int>* result2 = const_cast<algo_treap<int,int>*>(head.query_fast(100,6));
+    cout << "result2 = " << result2->repr() << endl;
+    assert(result == result2);
     // now increase heap_property of it
     cout << "Now increasing heap_property to 11" << endl;
     cout << "=============Treap======================" << endl;
