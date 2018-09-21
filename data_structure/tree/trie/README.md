@@ -4,6 +4,8 @@
 Python Notes
 =============
 
+#### Binary-trie or fusion tree
+
 ```
 We made a binary trie
 inserting 4
@@ -36,9 +38,7 @@ dir=-1,"-1",[]
 	dir=1,"1",[]
 ```
 
-Patricia tree/Radix tree
-=========================
-
+#### Patricia tree/Radix tree
 
 ```
 patricia tree --------------
@@ -52,4 +52,13 @@ dir=-1,"-1",[]
 C++ Notes
 ===========
 
-This is radix-tree/trie/prefix tree implemented over redblack tree for strings.
+This is radix-tree/trie/prefix tree implemented over tree for strings.
+
+Trie related problems
+=======================
+
+- [z-function](https://www.hackerrank.com/contests/w37/challenges/z-function)
+
+
+
+
