@@ -19,6 +19,7 @@ String
 Tree
 ----
 - [x] [Tree augmentation](data_structure/tree/tree/python/README.md)
+- [x] [Rank tree](data_structure/tree/tree/python/README.md)
 
 Invariants
 ------------

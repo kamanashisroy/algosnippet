@@ -530,6 +530,29 @@ class algo_tree:
             # when postorder
             yield self
 
+    def get_rank(self):
+        rank = 0
+        node = self
+        while node is not None:
+            # print("checking node", repr(node), rank)
+            if node.left is not None:
+                rank += node.left.subtree_size + 1
+            else:
+                rank += 1
+            # print("rank=", rank)
+            while True:
+                if node.parent is not None:
+                    if node.parent.right == node:
+                        # if we are right child
+                        # print("right node", repr(node), " of ", repr(node.parent))
+                        node = node.parent
+                        break
+                    # print("skip left node", repr(node))
+                    node = node.parent
+                else:
+                    node = None
+                    break
+        return rank 
 
     '''
     Emulating types
@@ -661,5 +684,9 @@ if __name__ == "__main__":
     tree.delete(5)
     tree.assert_invariant()
     print(str(tree))
-    
+    print("==================================")
+    print("Rank of the root ", str(tree.get_rank()))
+    print("Rank of the 2 ", str(tree.find(2).get_rank()))
+    print("Rank of the 3 ", str(tree.find(3).get_rank()))
+    print("Rank of the 7 ", str(tree.find(7).get_rank()))
 
