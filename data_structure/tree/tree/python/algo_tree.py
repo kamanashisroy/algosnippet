@@ -222,7 +222,7 @@ class algo_tree:
     
     def swap(self,other):
         '''
-        every value is swapped except the parent
+        NOTE every value is swapped EXCEPT the parent
         '''
         self.root,other.root = other.root,self.root
         self.left,other.left = other.left,self.left
@@ -240,6 +240,11 @@ class algo_tree:
         if other.left is not None:
             other.left.parent = other
 
+    def swap_data(self,other):
+        self.root,other.root = other.root,self.root
+        self.dup_list,other.dup_list = other.dup_list,self.dup_list
+        
+
     def fix_height(self):
         left_height = 0 if self.left is None else (self.left.height + 1)
         right_height = 0 if self.right is None else (self.right.height + 1)
@@ -249,6 +254,11 @@ class algo_tree:
             self.height = height
             if self.parent is not None:
                 self.parent.fix_height()
+
+    def fix_height_non_recursive(self):
+        left_height = 0 if self.left is None else (self.left.height + 1)
+        right_height = 0 if self.right is None else (self.right.height + 1)
+        self.height = max(left_height,right_height)
     
     def fix_subtree_size(self):
         self.subtree_size = 1
@@ -272,14 +282,15 @@ class algo_tree:
         else:
             raise AssertionError("Unreachable code")
 
-        parent = self.parent
-        self.parent = None # unlink the parent(for safety)
+        # unlink it from parent
+        self.parent,parent = None,self.parent
         if replacement is not None:
+            assert(replacement.parent == self)
             replacement.parent = parent
-            replacement._fix_augmentation() # fix-height is recursive
+            replacement._fix_augmentation_all_ancestors()
             
         elif parent is not None:
-            parent._fix_augmentation()
+            parent._fix_augmentation_all_ancestors()
 
     def unlink(self):
         '''
@@ -337,7 +348,7 @@ class algo_tree:
                 node.unlink()
                 return (x,node)
             else:
-                # when there is left subtree
+                # when there is left subtree and NO right subtree
 
                 # No right tree
                 #
@@ -350,8 +361,10 @@ class algo_tree:
                 #           -------
                 # replace node with predecessor
                 predecessor = node.left
-                node.swap(predecessor)
-                predecessor.unlink()
+                node.swap(predecessor) # swap does not swap parent
+                # node.parent = predecessor.parent # fix parent
+                node._fix_augmentation_all_ancestors()
+                # predecessor.unlink()
                 # node._fix_augmentation()
                 return (x,predecessor)
         elif node.left is None:
@@ -369,9 +382,10 @@ class algo_tree:
             #                         -------
             # swap node with successor
             successor = node.right
-            node.swap(successor)
-            successor.unlink()
-            # node._fix_augmentation()
+            node.swap(successor) # it does not swap the parent
+            # node.parent = successor.parent # fix parent
+            node._fix_augmentation_all_ancestors()
+            # successor.unlink()
             return (x,successor)
         else:
             # check the height of left and right tree
@@ -391,7 +405,7 @@ class algo_tree:
                 # when the tree is left-heavy
                 predecessor = node.left.max()
                 predecessor.unlink()
-                node.root = predecessor.root
+                node.swap_data(predecessor)
                 # node._fix_augmentation()
                 return (x,predecessor)
             else:
@@ -408,13 +422,21 @@ class algo_tree:
                 # when the tree is right-heavy or balanced
                 successor = node.right.min()
                 successor.unlink()
-                node.root = successor.root
+                # node.root = successor.root
+                node.swap_data(successor)
                 return (x,successor)
         raise AssertionError("Unreachable code")
 
     def _fix_augmentation(self):
         self.fix_height()
         self.fix_subtree_size()
+
+    def _fix_augmentation_all_ancestors(self):
+        node = self
+        while node is not None:
+            node.fix_height_non_recursive()
+            node.fix_subtree_size()
+            node = node.parent
 
     def max(self):
         '''
@@ -581,6 +603,7 @@ class algo_tree:
         return '<algo_tree:root={root},left={left},right={right},parent={parent}>'.format(root=str(self.root),left=id(self.left),right=id(self.right),parent=id(self.parent))
 
     def assert_invariant(self):
+        assert(self.parent is None)
         last = None
         for x in self.traverse():
             if last is not None:
@@ -597,17 +620,21 @@ if __name__ == "__main__":
     tree.assert_invariant()
     tree.insert_recursive(6)
     tree.assert_invariant()
-    tree.traverse() # it checks the health
     print(str(tree))
     print("==================================")
+    print("Deleting right-heavy node 4(root)")
     tree.delete(4)
-    print(str(tree))
     tree.assert_invariant()
+    print(str(tree))
     print("==================================")
-    tree.traverse() # it checks the health
     tree.insert_recursive(10)
     tree.assert_invariant()
+    print(str(tree))
+    print("==================================")
+    print("Deleting missing node 11")
     tree.delete(11)
+    print(str(tree))
+    print("==================================")
     tree.assert_invariant()
     tree.insert_non_recursive(9)
     tree.assert_invariant()
@@ -616,8 +643,23 @@ if __name__ == "__main__":
     tree.assert_invariant()
     print(str(tree))
     print("==================================")
-    tree.delete(10)
+    print("Deleting left-heavy node 9(when right is empty)")
+    tree.delete(9)
     print(str(tree))
     print("==================================")
+    print("Deleting right-heavy node 3(when left is empty)")
+    tree.delete(3)
+    print(str(tree))
+    print("==================================")
+    tree.insert_non_recursive(1)
+    tree.insert_recursive(2)
+    tree.insert_recursive(3)
+    tree.insert_recursive(4)
+    print(str(tree))
+    print("==================================")
+    print("Deleting left-heavy node 5(root) balances the tree")
+    tree.delete(5)
+    tree.assert_invariant()
+    print(str(tree))
     
 
