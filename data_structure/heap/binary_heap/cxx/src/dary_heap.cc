@@ -1,60 +1,21 @@
 
-Heap implementations are available in the subdirectories.
-
-C++ STL implementation
-========================
-
-Python implementation
-========================
-
-The `heapq` library contains heap implementations.
-
-```python
-from heapq import heappush, heappop
-
-heap = []
-heappush(heap, 3)
-heappush(heap, 2)
-heappush(heap, 1)
-
-print(heappop())
-
-```
-#### Floyd's Theta(n) heap creation
-
-[cxx source](binary_heap/cxx/src/dary_heap.cc)
+#include <cstdlib>
+#include <cassert>
+#include <exception>
+#include <stdexcept>
+#include <iostream>
+#include <vector>
 
 
-In the following heap-creation algorithm, it starts from the bottom of the heap and goes to the top.
+namespace algo_snippet {
+    inline std::size_t dary_heap_parent(std::size_t i,std::size_t order) {
+        return ((i+1) >> order)-1;
+    }
+    inline std::size_t dary_heap_child(std::size_t i,std::size_t order) {
+        return (i << order)+1;
+    }
 
-```
-        // starting from the leaf nodes
-        for(std::size_t i = x.size()-1;i;--i) {
-```
-
-And it swaps the node if mean-heap property does not hold. So there is `Theta(n)` such work. And in each case there is a bubble-down.
-
-Now a heap is balanced tree, thus the half of the nodes are leaves.
-
-- n/2 nodes have 0 bubble-down.
-- n/4 nodes have 1 bubble-down
-- n/8 nodes have 3 bubble-down
-
-So there is `h*n/(2^(h+1))` bubble down in h level.
-So there is total, Sum(`h*n/(2^(h+1))`) bubble down where h in range(0,floor(log n)).
-
-Note that the,
-
-```
-1/2 + 1/4 + 1/8 + 1/16 .... = 1
-```
-
-So there is at most `n*1` swap in bubble-down step.
-
-Finally the time complexity is Theta(n+n) = Theta(n).
-
-
-```
+    //! \brief builds heap of (1<<order)-ary heap in Theta(n) time
     template<const std::size_t order, typename KT>
     void make_dary_heap(std::vector<KT>& x) {
         static_assert(order != 0);
@@ -92,5 +53,27 @@ Finally the time complexity is Theta(n+n) = Theta(n).
             } // while
         } // for
     }
-```
+}
+
+template<typename KT>
+std::ostream& operator<<(std::ostream& ostrm, const std::vector<KT>&given) {
+    ostrm << "[minheap:";
+	for(const auto x : given) {
+		ostrm << x << ',';
+	}
+    ostrm << ']';
+    return ostrm;
+}
+
+using namespace algo_snippet;
+
+int main(int argc, char*argv[]) {
+    std::vector<int> hp = {10,9,8,7,6,5,4,3,2,1};
+    make_dary_heap<1,int>(hp);
+    std::cout << "Order 1=" << hp << std::endl;
+    make_dary_heap<2,int>(hp);
+    std::cout << "Order 2=" << hp << std::endl;
+	std::cout << "Successful" << std::endl;
+	return 0;
+}
 

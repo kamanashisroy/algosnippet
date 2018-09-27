@@ -16,6 +16,10 @@ String
 -------
 - [ ] Find longest palindromic subsequence.
 
+Heap
+----
+- [x] [Floyd's bottom-up Theta(n) heap creation.](data_structure/heap/binary_heap/cxx/src/dary_heap.cc)
+
 Tree
 ----
 - [x] [Tree augmentation](data_structure/tree/tree/python/README.md)

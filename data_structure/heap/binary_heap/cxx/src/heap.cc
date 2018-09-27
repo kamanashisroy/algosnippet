@@ -6,18 +6,8 @@
 #include <iostream>
 #include <vector>
 
-enum {
-	HEAP_SIZE = 5,
-};
-
 template <typename K>
 class maxheap {
-	void swap(int xindex, int yindex) {
-		K tmp = elem[xindex];
-		elem[xindex] = elem[yindex];
-		elem[yindex] = tmp;
-	}
-
 	public:
 	std::vector<K> elem;
 	maxheap() {
@@ -49,11 +39,11 @@ class maxheap {
 			if(elem[index] >= elem[left_index]) // the heap property holds true
 				return;
 			else {
-				swap(index, left_index);
+				std::swap(elem[index], elem[left_index]);
 				return heapify_top_down(left_index);
 			}
 		} else {
-			swap(index, right_index);
+			std::swap(elem[index], elem[right_index]);
 			return heapify_top_down(right_index);
 		}
 		return;
@@ -79,11 +69,19 @@ class maxheap {
 	}
 };
 
-void dump(maxheap<int>&given) {
-	for(auto x : given.elem) {
-		std::cout << x << std::endl;
+template<typename KT>
+std::ostream& operator<<(std::ostream& ostrm, const maxheap<KT>&given) {
+    ostrm << "[maxheap:";
+	for(const auto x : given.elem) {
+		ostrm << x << ',';
 	}
+    ostrm << ']';
+    return ostrm;
 }
+
+enum {
+	HEAP_SIZE = 5,
+};
 
 int main(int argc, char*argv[]) {
 	maxheap<int> hp;
@@ -94,7 +92,7 @@ int main(int argc, char*argv[]) {
 	//std::for_each(hp.elem.begin(),hp.elem.end(),[](int x){std::cout << x << std::endl;})
 	i = HEAP_SIZE;
 	while(--i) {
-		dump(hp);
+        std::cout << hp << std::endl;
 		std::cout << i << " - " << hp.pop() << std::endl;
 	}
 	std::cout << "Successful" << std::endl;

@@ -1,17 +1,18 @@
 
 
-TARGET_BIN:=app.bin
-SOURCES:=$(wildcard src/*.cpp)
-OBJECTS:=$(subst .cpp,.o,$(SOURCES))
-CPPFLAGS:=-Wall
-LDFLAGS:=-std=c++11
+TARGET_BIN:=$(subst .cc,.bin, $(notdir $(sort $(wildcard src/*.cc))))
+CXXFLAGS:=-Wall -ggdb3
 INCLUDES:=-Isrc
-CPPFLAGS+=$(INCLUDES)
+CXXFLAGS+=$(INCLUDES)
+LDFLAGS:=-std=c++14
+#CXX=g++
 
 all:$(TARGET_BIN)
 
-$(TARGET_BIN):$(OBJECTS)
-	g++ $^ -o $@
+
+%.bin:src/%.cc
+	${CXX} ${CXXFLAGS} $^ -o $@ ${LDFLAGS}
+
 
 test:$(TARGET_BIN)
 	./$(TARGET_BIN)
