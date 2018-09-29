@@ -22,24 +22,27 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
 
 namespace algo_snippet {
+    //! \tparam kint is a integer type, candidates are unsigned int, unsigned short, size_t
+    template<typename kint>
     class disjoint_set {
     public:
-        disjoint_set(size_t n_universe) : parent(n_universe),rank(n_universe) {
-            for(size_t i=0; i<n_universe; i++) {
+        disjoint_set(kint n_universe) : parent(n_universe),rank(n_universe),n_subset(n_universe) {
+            for(kint i=0; i<n_universe; i++) {
                 parent[i] = i;
                 rank[i] = 0;
             }
         }
-        void make(size_t x) {
+        void make(kint x) {
             parent[x] = x;
         }
-        void join(size_t x, size_t y){
+        void join(kint x, kint y){
             x = find(x);
             y = find(y);
             if(x == y) {
                 return;
             }
 
+            n_subset--;
             // check the rank and join
             if(rank[x] == rank[y]) {
                 parent[y] = x;
@@ -50,17 +53,21 @@ namespace algo_snippet {
                 parent[x] = y;
             }
         }
-        size_t find(size_t x) {
+        kint find(kint x) {
             while(parent[x] != x) {
-                const size_t oldx = x;
+                const kint oldx = x;
                 x = parent[x];
                 parent[oldx] = parent[x]; // path halving
             }
             return x;
         }
+        inline kint get_subset_count() const {
+            return n_subset;
+        }
     private:
-        std::vector<size_t> parent;
-        std::vector<size_t> rank;
+        std::vector<kint> parent;
+        std::vector<kint> rank;
+        kint n_subset;
     };
 } 
 
@@ -73,7 +80,7 @@ namespace algo_snippet {
 using namespace algo_snippet;
 
 int main(int argc, char*argv[]) {
-    disjoint_set dset(100);
+    disjoint_set<uint8_t> dset(100);
     dset.make(1);
     dset.make(2);
     dset.join(1,2);
