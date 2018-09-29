@@ -1,7 +1,5 @@
-#VARIANT:=_brute_force
 VARIANT:=
-#VARIANT:=_dijkstra_compare_py
-#VARIANT:=_dijkstra_duality
+VARIANT:=_optimized1
 
 TARGET_VARIANT=${TARGET_PREFIX}${VARIANT}.bin
 
