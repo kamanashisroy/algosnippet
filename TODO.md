@@ -7,7 +7,7 @@ These are the things needs immediate attention.
 Graph
 ------
 - [ ] Check if a given graph is bipartate
-- [ ] Find articulation-vertices of a biconnected graph.
+- [x] [Find articulation-vertices of a biconnected graph.](graph/biconnected_components/cxx)
 - [ ] Find strongly connected components.
 - [ ] Find shortest path in DAG at O(|V| + |E|) time.
 - [ ] Solve the Skiena book problem of grouping non-overlapping recrangles.
