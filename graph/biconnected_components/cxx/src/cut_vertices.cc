@@ -46,15 +46,17 @@ namespace algo_snippet {
     template<typename KGRAPH>
     class graph_traverse {
     public:
-        graph_traverse(){}
+        graph_traverse() : root_nid(0) {}
         virtual ~graph_traverse() {}
         void dfs(const node_t num_nodes, const KGRAPH& root) {
+            root_nid = root.get_nid();
             dfs_start(root);
 
             bool explored[num_nodes]{false};
             bool processed[num_nodes]{false};
             node_t entry[num_nodes]{num_nodes};
-            vector<reference_wrapper<const KGRAPH>> parent(num_nodes,root);
+            parent_table.clear();
+            parent_table.resize(num_nodes,root);
 
             vector<reference_wrapper<const KGRAPH>> fringe;
             fringe.push_back(root); // start from the root
@@ -65,7 +67,7 @@ namespace algo_snippet {
                 if(explored[x.get_nid()]) {
                     if(!processed[x.get_nid()]) {
                         // update the subtree size
-                        dfs_augment(x,parent[x.get_nid()],processed);
+                        dfs_augment(x,parent_table[x.get_nid()],processed);
                         processed[x.get_nid()] = true;
                     } else {
                         // forward edge
@@ -76,7 +78,7 @@ namespace algo_snippet {
                 }
 
                 // explore after popping(unlinke bfs)
-                dfs_explore(x, parent[x.get_nid()]);
+                dfs_explore(x, parent_table[x.get_nid()]);
                 explored[x.get_nid()] = true;
 
                 // we are going to expand this node.
@@ -92,7 +94,7 @@ namespace algo_snippet {
                         }
                         continue;
                     } else {
-                        parent[y.get_nid()] = x;
+                        parent_table[y.get_nid()] = x;
                     }
                     entry[y.get_nid()] = min(entry[y.get_nid()],entry[x.get_nid()]+1);
                     if(entry[y.get_nid()] < entry[x.get_nid()]) {
@@ -104,6 +106,7 @@ namespace algo_snippet {
                 }
             }
             dfs_end();
+            parent_table.clear();
         }
         
         virtual void dfs_start(const KGRAPH& x) {
@@ -139,6 +142,12 @@ namespace algo_snippet {
             // FILLME augment
             // subtree_size[x.get_nid()] += x.get_weight();
         }
+        bool is_root(const KGRAPH& x) const {
+            return x.get_nid() == root_nid;
+        }
+    private:
+        vector<reference_wrapper<const KGRAPH>> parent_table;
+        node_t root_nid;
     };
 
     template <typename KGRAPH>
@@ -149,14 +158,17 @@ namespace algo_snippet {
             ,explored_flag(num_nodes,false)
             ,depth(num_nodes,0)
             ,low_points(num_nodes,0)
-            ,cut_vertex_flag(num_nodes,false) {
+            ,cut_vertex_flag(num_nodes,false)
+            ,num_root_children(0) {
         }
         virtual ~biconnected_component() override {
         
         }
         virtual void dfs_start(const KGRAPH& root) override {
+            num_root_children = 0; // reset
         }
         virtual void dfs_explore(const KGRAPH& x, const KGRAPH& parent_x) override {
+            // setup depth
             explored_flag[x.get_nid()] = true;
             if(x.get_nid() == parent_x.get_nid()) {
                 // when root
@@ -165,29 +177,51 @@ namespace algo_snippet {
                 // derive depth from parent
                 low_points[x.get_nid()] = depth[x.get_nid()] = depth[parent_x.get_nid()]+1;
             }
+            #ifdef DEBUG
             std::cout << "Exploring:" << x.get_nid() << std::endl;
+            #endif
         }
-        virtual void dfs_augment(const KGRAPH& x, const KGRAPH& parent, const bool*augmented) override {
+        virtual void dfs_augment(const KGRAPH& x, const KGRAPH& xparent, const bool*augmented) override {
             
             // calculate low point from neighbors
             node_t xlow = depth[x.get_nid()];
             for(const KGRAPH& y : x.get_connected()) {
-                if(y.get_nid() == parent.get_nid()) {
+                if(y.get_nid() == xparent.get_nid()) {
                     // skip parent
                     continue;
                 }
+                /////////////////////////////////////////////////////////////////////////
+                // Non-root node
+                //
+                // The key fact is that a non-root vertex v is a cut vertex (or articulation point) separating two biconnected components
+                // if and only if there is a child y of v such that lowpoint(y) ≥ depth(v)
+                //
+                if(!this->is_root(x) && low_points[y.get_nid()] >= depth[x.get_nid()]) {
+                    cut_vertex_flag[x.get_nid()] = true;
+                }
+                /////////////////////////////////////////////////////////////////////////
                 xlow = min(low_points[y.get_nid()],xlow);
             }
-            /*
-             The key fact is that a nonroot vertex v is a cut vertex (or articulation point) separating two biconnected components
-             if and only if there is a child y of v such that lowpoint(y) ≥ depth(v)
-             */
-            if(xlow >= depth[x.get_nid()]) {
-                cut_vertex_flag[x.get_nid()] = true;
+            /////////////////////////////////////////////////////////////////////////
+            // root node
+            if(this->is_root(x)) {
+                //
+                // The root vertex must be handled separately: it is a cut vertex if and only if it has at least two children.
+                //
+                if(num_root_children > 1) {
+                    cut_vertex_flag[x.get_nid()] = true;
+                }
             }
+            /////////////////////////////////////////////////////////////////////////
+
             // calculate low point from neighbors
             low_points[x.get_nid()] = xlow;
+            #ifdef DEBUG
             std::cout << "vertex:" << x.get_nid() << ",depth " << depth[x.get_nid()] << ", low point " << xlow << std::endl;
+            #endif
+            if(this->is_root(xparent)) {
+                num_root_children+= 1;
+            }
         }
         bool is_explored(node_t nid) const {
             return explored_flag[nid];
@@ -201,11 +235,13 @@ namespace algo_snippet {
         vector<node_t> depth;
         vector<node_t> low_points;
         vector<bool> cut_vertex_flag;
+        node_t num_root_children;
     };
 }
 
 using namespace algo_snippet;
 
+//! Dumps the cut vertices in sorted order
 void list_all_cut_vertices(const node_t num_nodes, const node_t num_edges) {
     if(0 == num_nodes) {
         return;
@@ -227,8 +263,8 @@ void list_all_cut_vertices(const node_t num_nodes, const node_t num_edges) {
 
     biconnected_component<graph_node> compgen(num_nodes);
     compgen.dfs(num_nodes,graph[0]);
-    // TODO handle the root node
-    // The root vertex must be handled separately: it is a cut vertex if and only if it has at least two children.
+
+    // dump the cut vertices in sorted order
     for(const graph_node& x : graph) {
         if(compgen.is_cut_vertex(x.get_nid())) {
             cout << x.get_nid() << ' ';
