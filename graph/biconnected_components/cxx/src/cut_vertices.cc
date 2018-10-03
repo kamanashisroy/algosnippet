@@ -53,6 +53,7 @@ namespace algo_snippet {
             dfs_start(root);
 
             bool explored[num_nodes]{false};
+            bool expanded[num_nodes]{false};
             bool processed[num_nodes]{false};
             node_t entry[num_nodes]{num_nodes};
             parent_table.clear();
@@ -64,7 +65,7 @@ namespace algo_snippet {
             while(!fringe.empty()) {
                 const KGRAPH& x = fringe.back();
 
-                if(explored[x.get_nid()]) {
+                if(expanded[x.get_nid()]) {
                     if(!processed[x.get_nid()]) {
                         // update the subtree size
                         dfs_augment(x,parent_table[x.get_nid()],processed);
@@ -74,17 +75,17 @@ namespace algo_snippet {
                         // dfs_forward_edge();
                     }
                     fringe.pop_back();
-                    continue; // we already explored it
+                    continue; // we already expanded it
                 }
 
                 // explore after popping(unlinke bfs)
                 dfs_explore(x, parent_table[x.get_nid()]);
-                explored[x.get_nid()] = true;
+                expanded[x.get_nid()] = true;
 
                 // we are going to expand this node.
                 for(const KGRAPH& y : x.get_connected()) {
-                    if(explored[y.get_nid()]) {
-                        // explored already = Tree edge/cross-edge
+                    if(expanded[y.get_nid()]) {
+                        // expand already = Tree edge/cross-edge
                         if(processed[y.get_nid()]) {
                             // cross-edge
                             //dfs_cross_edge_explore(y, x);
@@ -94,6 +95,9 @@ namespace algo_snippet {
                         }
                         continue;
                     } else {
+                        if(explored[y.get_nid()]) {
+                            // forward edge
+                        }
                         parent_table[y.get_nid()] = x;
                     }
                     entry[y.get_nid()] = min(entry[y.get_nid()],entry[x.get_nid()]+1);
@@ -103,6 +107,7 @@ namespace algo_snippet {
                     }
                     fringe.push_back(y);
                     dfs_edge_explore(y, x);
+                    explored[y.get_nid()] = true;
                 }
             }
             dfs_end();
