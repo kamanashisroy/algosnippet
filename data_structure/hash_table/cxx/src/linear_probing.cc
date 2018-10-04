@@ -30,6 +30,77 @@ using namespace std;
 #include <iostream>
 #include <random>
 
+    
+static int test_hash_table() {
+    constexpr size_t test_order = 4;
+
+    // order 4 hash table can contain 16 elements at most
+    hash_table_linear_probing<hash_t> mytable(test_order,0);
+    hash_t x = 1001;
+    hash_t& xout = x;
+
+
+    // ----------------------------------------------------------------
+    // TEST: When added, a value should be found
+    // ----------------------------------------------------------------
+    mytable.insert(x,x);
+    assert(true == mytable.search(x,xout));
+    assert(x == 1001);
+    assert(mytable.get_content_count() == 1);
+    // ----------------------------------------------------------------
+
+
+    // ----------------------------------------------------------------
+    // TEST: When not added, a value should NOT be found
+    // ----------------------------------------------------------------
+    x = 1002;
+    assert(false == mytable.search(x,xout));
+    // ----------------------------------------------------------------
+    
+
+    // ----------------------------------------------------------------
+    // TEST: when deleted it should NOT be found
+    // ----------------------------------------------------------------
+    x = 1001;
+    assert(true == mytable.remove(x,xout));
+    assert(false == mytable.search(x,xout));
+    // ----------------------------------------------------------------
+
+    // ----------------------------------------------------------------
+    // TEST: When it appears twice, the two can be deleted separately.
+    // ----------------------------------------------------------------
+    // insert twice
+    mytable.insert(x,x);
+    mytable.insert(x,x);
+    size_t test_empty_count = mytable.get_empty_count();
+    assert(mytable.get_content_count() == 2);
+    // remove twice
+    assert(true == mytable.remove(x,xout));
+    assert(mytable.get_content_count() == 1);
+    assert(true == mytable.search(x,xout));
+    assert(true == mytable.remove(x,xout));
+    assert(mytable.get_content_count() == 0);
+    assert(mytable.get_empty_count() == test_empty_count); // empty count won't change
+    // ----------------------------------------------------------------
+
+    // ----------------------------------------------------------------
+    // TEST: Boundary case, max the table
+    // ----------------------------------------------------------------
+    for(hash_t i = 0; i < (1<<test_order); i++) {
+        assert(mytable.insert(i,i));
+    }
+    for(hash_t i = 0; i < (1<<test_order); i++) {
+        x = i;
+        assert(mytable.search(i,xout));
+        assert(i == x);
+    }
+    // test overflow
+    assert(false == mytable.insert(x,x));
+    // ----------------------------------------------------------------
+    
+    return 0;
+}
+
 int main(int argc, char*argv[]) {
     size_t table_order = 10;
     size_t table_size = 1<<table_order;
@@ -42,18 +113,7 @@ int main(int argc, char*argv[]) {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dist(0.000000001, 1);
 
-    {
-        hash_t x = 1001;
-        hash_t& xout = x;
-        mytable.insert(x,x);
-        assert(true == mytable.search(x,xout));
-        assert(x == 1001);
-        x = 1002;
-        assert(false == mytable.search(x,xout));
-        x = 1001;
-        assert(true == mytable.remove(x,xout));
-        assert(false == mytable.search(x,xout));
-    }
+    test_hash_table();
 
     for(size_t i = 0; i < table_size; i++) {
         hash_t x = dist(gen)*(1<<(table_order+2));
