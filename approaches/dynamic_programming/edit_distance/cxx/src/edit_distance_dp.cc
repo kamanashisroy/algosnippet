@@ -26,10 +26,14 @@ using namespace std;
 using namespace algo_snippet::dynamic_programming;
 
 int main(int argc, char*argv[]) {
-    cout << "dist(forward,word) " << edit_distance::calc("forward", sizeof("forward")-1, "word", sizeof("word")-1) << endl;
-    assert(4 == edit_distance::calc("forward", sizeof("forward")-1, "word", sizeof("word")-1));
-    cout << "dist(kitten,sitting) " << edit_distance::calc("kitten", sizeof("kitten")-1, "sitting", sizeof("sitting")-1) << endl;
-    assert(3 == edit_distance::calc("kitten", sizeof("kitten")-1, "sitting", sizeof("sitting")-1));
+    std::size_t dist = edit_distance::calc("forward", sizeof("forward")-1, "word", sizeof("word")-1);
+    cout << "dist(forward,word) " << dist << endl;
+    assert(4 == dist);
+    dist = edit_distance::calc("kitten", sizeof("kitten")-1, "sitting", sizeof("sitting")-1);
+    cout << "dist(kitten,sitting) " << dist << endl;
+    assert(4 == dist);
+    dist = edit_distance::calc("sitting", sizeof("sitting")-1, "kitten", sizeof("kitten")-1);
+    cout << "dist(kitten,sitting) " << dist << endl;
     cout << "successful " << endl;
     return 0;
 }

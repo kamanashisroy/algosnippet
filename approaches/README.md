@@ -6,6 +6,7 @@ Approaches
     - [`A-*`](a_star_search)
     - [Greedy Best-First Search](greedy_best_first_search)
 - [Back-tracking](backtracking)
+- [Dynamic-Programming](dynamic_programming)
 
 
 
