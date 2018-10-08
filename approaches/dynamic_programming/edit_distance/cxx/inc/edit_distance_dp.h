@@ -38,6 +38,7 @@ namespace algo_snippet {
                 EDIT_XADD,
                 EDIT_KMAX,
             };
+            
             static std::size_t calc(const char*x, std::size_t xlen, const char*y, std::size_t ylen) {
                 if(!x || !y || 0 == xlen || 0 == ylen) {
                     return xlen+ylen;
@@ -98,9 +99,32 @@ namespace algo_snippet {
                         }
                     }
                 }
+                // one last time(do vertial memoization)
+                for(std::size_t ypos = 0; ypos < ylen; ypos++) {
+                    const std::size_t xpos = xlen;
+                    // try case 3: Add x-character to match y
+                    if((1 + dist[xpos][ypos]) < dist[xpos][ypos+1]) {
+                        dist[xpos][ypos+1] = 1 + dist[xpos][ypos];
+#ifdef DEBUG_EDIT_DISTANCE
+                        prev[xpos][ypos+1] = std::make_pair(xpos,ypos);
+                        op[xpos][ypos+1] = EDIT_XADD;
+#endif
+                    }
+                }
+                for(std::size_t xpos = 0; xpos < xlen; xpos++) {
+                    const std::size_t ypos = ylen;
+                    // try case 2: Skip x-character mismatch(by deleting)
+                    if((1 + dist[xpos][ypos]) < dist[xpos+1][ypos]) {
+                        dist[xpos+1][ypos] = 1 + dist[xpos][ypos];
+#ifdef DEBUG_EDIT_DISTANCE
+                        prev[xpos+1][ypos] = std::make_pair(xpos,ypos);
+                        op[xpos+1][ypos] = EDIT_XDEL;
+#endif
+                    }
+                }
 #ifdef DEBUG_EDIT_DISTANCE
                 std::cout << "match=" << EDIT_MATCH << ",change=" << EDIT_CHANGE << ",xdel=" << EDIT_XDEL << ",xadd=" << EDIT_XADD << std::endl;
-                char marker[xlen+1][ylen+1] = {{' '}};
+                char marker[xlen+1][ylen+1];
                 memset(marker,0,sizeof(marker));
                 // path reconstruction
                 std::size_t xi = xlen;
@@ -110,6 +134,7 @@ namespace algo_snippet {
                     std::tie(xi,yi) = prev[xi][yi];
                 }
 
+                const char op_name[EDIT_KMAX] = {'M','C','D','A'};
                 // dump dp table
                 for(std::size_t xpos = 0; xpos <= xlen; xpos++) {
                     if(0 == xpos) {
@@ -125,7 +150,7 @@ namespace algo_snippet {
                     std::cout << ((0==xpos)?'.':x[xpos-1]) << "\t\t";
 
                     for(std::size_t ypos = 0; ypos <= ylen; ypos++) {
-                        std::cout << dist[xpos][ypos] << ',' << op[xpos][ypos] << marker[xpos][ypos] << "\t\t";
+                        std::cout << dist[xpos][ypos] << ',' << op_name[op[xpos][ypos]] << marker[xpos][ypos] << "\t\t";
                     }
                     std::cout << std::endl;
                 }
