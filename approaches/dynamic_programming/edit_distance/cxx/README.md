@@ -10,7 +10,7 @@ Source-string -------------------------------------> Destination-string
 The problem can be solved by,
 
 - Backtracking
-- Dynamic Programming
+- **Dynamic Programming**
 - `A*`/Dijkstra like algorithm
 
 When the two string has equal length, the edit distance may be comparable to hamming distance.

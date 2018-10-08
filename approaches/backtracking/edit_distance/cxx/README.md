@@ -9,7 +9,7 @@ Source-string -------------------------------------> Destination-string
 
 The problem can be solved by,
 
-- *Backtracking*
+- **Backtracking**
 - Dynamic Programming
 - `A*`/Dijkstra like algorithm
 
