@@ -17,7 +17,7 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <cstdlib>
-#include "longest_increasing_subsequence_dp.h"
+#include "longest_increasing_subsequence_dp_patience.h"
 
 #ifdef DEBUG_LONGEST_INCREASING_SUBSEQUENCE
 #include <iostream>
@@ -27,7 +27,7 @@ using namespace algo_snippet::dynamic_programming;
 
 int main(int argc, char*argv[]) {
     int input1[]{12,23,34,45,56,32,4};
-    int result = longest_increasing_subsequence::calc(input1, 7);
+    int result = longest_increasing_subsequence_patience::calc(input1, 7);
     assert(5 == result);
     cout << "successful " << endl;
     return 0;

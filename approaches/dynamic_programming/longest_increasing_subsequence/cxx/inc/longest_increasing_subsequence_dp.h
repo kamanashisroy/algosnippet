@@ -29,24 +29,50 @@ namespace algo_snippet {
     namespace dynamic_programming {
         class longest_increasing_subsequence {
         public:
+            //! Dynamic programming gives `O(n*n)` runtime.
             static int calc(const int*arr, const int n) {
-                int memo_len[n+1]{0};
+                int memo_len[n];
+#ifdef DEBUG_LONGEST_INCREASING_SUBSEQUENCE
+                int pred[n];
+                
+#endif
                 int result = 0;
                 
+                // init
+                memo_len[0] = 1;
+#ifdef DEBUG_LONGEST_INCREASING_SUBSEQUENCE
+                pred[0] = -1;
+#endif
                 for(int i = 1; i < n; i++) {
+#ifdef DEBUG_LONGEST_INCREASING_SUBSEQUENCE
+                    pred[i] = -1;
+#endif
+                    memo_len[i] = 1;
                     for(int j = 0; j < i; j++) {
                         if(arr[i] > arr[j]) {
                             if(memo_len[i] < (memo_len[j]+1)) {
                                 // relaxation
                                 memo_len[i] = memo_len[j]+1;
                                 result = std::max(result,memo_len[i]);
+#ifdef DEBUG_LONGEST_INCREASING_SUBSEQUENCE
+                                pred[i] = j;
+#endif
                             }
                         }
                     }
                 }
-                return result+1;
+#ifdef DEBUG_LONGEST_INCREASING_SUBSEQUENCE
+                for(int i = 0; i < n; i++) {
+                    std::cout << memo_len[i] << '\t';
+                }
+                std::cout << std::endl;
+                for(int i = 0; i < n; i++) {
+                    std::cout << pred[i] << '\t';
+                }
+                std::cout << std::endl;
+#endif
+                return result;
             }
-
         };
     }
 }

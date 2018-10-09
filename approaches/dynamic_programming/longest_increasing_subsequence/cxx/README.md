@@ -17,3 +17,10 @@ for(int i = 1; i < n; i++) {
     }
 }
 ```
+It also contains a binary search based solution that runs in `O(n log n)` time.
+
+[Hackerank problem link](https://www.hackerrank.com/challenges/longest-increasing-subsequent/problem)
+
+
+
+
