@@ -125,7 +125,7 @@ namespace algo_snippet {
 #ifdef DEBUG_EDIT_DISTANCE
                 std::cout << "match=" << EDIT_MATCH << ",change=" << EDIT_CHANGE << ",xdel=" << EDIT_XDEL << ",xadd=" << EDIT_XADD << std::endl;
                 char marker[xlen+1][ylen+1];
-                memset(marker,0,sizeof(marker));
+                memset(marker,' ',sizeof(marker));
                 // path reconstruction
                 std::size_t xi = xlen;
                 std::size_t yi = ylen;
