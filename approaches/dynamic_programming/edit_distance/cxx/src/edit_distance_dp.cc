@@ -33,7 +33,7 @@ int main(int argc, char*argv[]) {
     cout << "dist(kitten,sitting) " << dist << endl;
     assert(3 == dist);
     dist = edit_distance::calc("sitting", sizeof("sitting")-1, "kitten", sizeof("kitten")-1);
-    cout << "dist(kitten,sitting) " << dist << endl;
+    cout << "dist(sitting,kitten) " << dist << endl;
     assert(3 == dist);
     cout << "successful " << endl;
     return 0;

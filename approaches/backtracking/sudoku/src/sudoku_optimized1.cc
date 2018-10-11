@@ -23,27 +23,30 @@ struct sudoku_square {
     sudoku_square() : rotation{0},mask{0},digit_state{-1} {
         memset(rotation, 0, sizeof(rotation));
     }
-    inline sudoku_square next(int digit_index, int digit_rotation) const { //!< it builds the next possible sudoku square
+    //! it builds the next possible sudoku square
+    inline sudoku_square next(int digit_index, int digit_rotation) const { 
         assert(digit_index < NUM_DIGITS);
-        assert(digit_index == (digit_state+1));
+        assert(digit_index == (digit_state+1)); // push
         sudoku_square sqresult(*this);
         sqresult.rotation[digit_index] = digit_rotation;
         sqresult.digit_state = digit_index;
         sqresult.mask |= 0x100 >> digit_rotation;
         return sqresult;
     }
-    inline void get_digit_mask_row_wise(uint16_t digit_mask[SQUARE_SIZE]) const {
+    inline void get_digit_mask_row_wise(uint16_t (&digit_mask)[SQUARE_SIZE]) const {
         assert(-1 != digit_state);
+        memset(digit_mask, 0, sizeof(digit_mask));
         for(int i = 0; i < NUM_DIGITS && i <= digit_state; i++) {
             assert(rotation[i] < NUM_DIGITS);
-            digit_mask[rotation[i]/SQUARE_SIZE] |= 1<<i;
+            digit_mask[rotation[i]/SQUARE_SIZE] |= 1U<<i;
         }
     }
-    inline void get_digit_mask_column_wise(uint16_t digit_mask[SQUARE_SIZE]) const {
+    inline void get_digit_mask_column_wise(uint16_t (&digit_mask)[SQUARE_SIZE]) const {
         assert(-1 != digit_state);
+        memset(digit_mask, 0, sizeof(digit_mask));
         for(int i = 0; i < NUM_DIGITS && i <= digit_state; i++) {
             assert(rotation[i] < NUM_DIGITS);
-            digit_mask[rotation[i]%SQUARE_SIZE] |= 1<<i;
+            digit_mask[rotation[i]%SQUARE_SIZE] |= 1U<<i;
         }
     }
     inline int8_t get_next_digit_index() const {
@@ -57,8 +60,12 @@ struct sudoku_square {
     inline uint16_t get_mask() const {
         return mask;
     }
+    inline bool available_at(int digit_rotation) const {
+        const uint16_t digit_mask = 0x100 >> digit_rotation;
+        return digit_mask & get_mask();
+    }
     inline bool is_complete() const {
-        return SQUARE_SIZE == (digit_state+1);
+        return NUM_DIGITS == (digit_state+1);
     }
 private:
     uint16_t mask;
@@ -83,10 +90,10 @@ ostream& operator<<(ostream& ostrm, const sudoku_square& sqr) {
 
 ostream& operator<<(ostream& ostrm, const int (&grid)[BOARD_SIZE][BOARD_SIZE]) {
     for(int i = 0; i < BOARD_SIZE; i++) {
-        for(int j = 0; j < BOARD_SIZE; j++) {
+        for(int j = 0; j < (BOARD_SIZE-1); j++) {
             ostrm << grid[i][j] << ' ';
         }
-        ostrm << endl;
+        ostrm << grid[i][BOARD_SIZE-1] << endl;
     }
     return ostrm;
 }
@@ -98,23 +105,6 @@ public:
             , base_row((square_index/3)*3)
             , base_col((square_index%3)*3)
             , base_grid(base_grid) {
-        // build square of size 9 like the following
-        // x x x
-        // x x x
-        // x x x
-        // Now each first digit can occupy the following 3 positions
-        // O O x
-        // x O x
-        // x x x 
-        // The other positions are the mirrors/rotations of the above position.
-        // Now the second digit can be placed anywhere related to the first position
-        // O 1 1
-        // 1 1 1
-        // 1 1 1
-        // if we mark the position with numbers from 0-8 then, the position index is the following
-        // 0 1 2
-        // 3 4 5
-        // 6 7 8
         // So the second position can be placed anywhere from 1-9, we can denote them as bitmask,
         // 0b000000000 = 9 bit bit-mask represents the problem
         // So the first digit can be placed in,
@@ -149,7 +139,7 @@ public:
                 if(composed_grid[board_row][board_col] == 0) {
                     continue;
                 }
-                mask |= 1 << (composed_grid[board_row][board_col]-1);
+                mask |= 1U << (composed_grid[board_row][board_col]-1);
             }
             row_wise_exclusive_mask[row] = mask;
         }
@@ -160,7 +150,7 @@ public:
                 if(composed_grid[board_row][board_col] == 0) {
                     continue;
                 }
-                mask |= 1 << (composed_grid[board_row][board_col]-1);
+                mask |= 1U << (composed_grid[board_row][board_col]-1);
             }
             col_wise_exclusive_mask[col] = mask;
         }
@@ -198,40 +188,83 @@ public:
             ,{0,0,0,  0,0,0,  0,0,0}
             ,{0,0,0,  0,0,0,  0,0,0}
         };
+
+        // select top,left square
         square_generator genA(0,test_grid);
         assert(genA.get_base_board_at_rotation(0) == 1);
         assert(genA.get_base_board_at_rotation(4) == 6);
+        //assert(genE.sudoku_stack.back().get_mask() == 0b100010);
+
+        // select middle 9x9 square
+        //  x x x     0 0 0
+        //  x x x     3 0 0
+        //  x x x     0 5 0
         square_generator genE(4,test_grid);
         assert(genE.get_base_board_at_rotation(3) == 3);
         assert(genE.get_base_board_at_rotation(7) == 5);
-        cout << "self-test successful" << endl;
+        //assert(genE.sudoku_stack.back().get_mask() == 0b100010);
+        cout << "Board read test successful" << endl;
+
+
+        cout << "Testing 3x3 square permutations ....(next_square)" << endl;
         cout << genA.sudoku_stack.back() << endl;
         cout << genE.sudoku_stack.back() << endl;
         const sudoku_square xa = genA.next_square();
         const sudoku_square xe = genE.next_square();
-        cout << (int)xa.get_next_digit_index() << endl;
+        assert(9 == xa.get_next_digit_index());
+        cout << "9 means all 9 numbers are chosen correctly:" << (int)xa.get_next_digit_index() << endl;
         cout << xa << endl;
+        assert(9 == xe.get_next_digit_index());
         cout << xe << endl;
-        uint16_t digit_mask[SQUARE_SIZE]{0};
+        cout << "Square creation successful" << endl;
+
+
+        cout << "Testing 3x3 square permutations ....(digit-mask)" << endl;
+        uint16_t digit_mask[SQUARE_SIZE];
+        cout << "Digit mask at each row/column should have popcount=3 and (&)ing will result in 0" << endl;
         xa.get_digit_mask_row_wise(digit_mask);
-        cout << "digit-mask:" << endl;
+        cout << "xa digit-mask(hex):";
+        uint16_t test_mask = 0;
         for(int i = 0; i < SQUARE_SIZE; i++) {
-            cout << digit_mask[i] << ' ';
+            cout << "0x" << hex << digit_mask[i] << ' ';
+            assert(__builtin_popcount(digit_mask[i]) == SQUARE_SIZE);
+            test_mask |= digit_mask[i];
         }
+        cout << "0x" << hex << test_mask << endl;
+        assert(__builtin_popcount(test_mask) == NUM_DIGITS);
+        cout << "xa Square digit-mask test successful" << endl;
+
+        cout << "Checking the middle square to be complete" << endl;
+        cout << (int)xe.get_next_digit_index() << endl;
+        assert(xe.is_complete());
         if(xe.is_complete()) {
             memset(digit_mask,0,sizeof(digit_mask));
             xe.get_digit_mask_row_wise(digit_mask);
             cout << "digit-mask:" << endl;
+            test_mask = 0;
             for(int i = 0; i < SQUARE_SIZE; i++) {
                 cout << digit_mask[i] << ' ';
+                assert(__builtin_popcount(digit_mask[i]) == SQUARE_SIZE);
+                test_mask |= digit_mask[i];
             }
+            cout << "0x" << hex << test_mask << endl;
+            assert(__builtin_popcount(test_mask) == NUM_DIGITS);
+
             memset(digit_mask,0,sizeof(digit_mask));
             xe.get_digit_mask_column_wise(digit_mask);
             cout << "digit-mask:" << endl;
+            test_mask = 0;
             for(int i = 0; i < SQUARE_SIZE; i++) {
                 cout << digit_mask[i] << ' ';
+                assert(__builtin_popcount(digit_mask[i]) == SQUARE_SIZE);
+                test_mask |= digit_mask[i];
             }
+            cout << "0x" << hex << test_mask << endl;
+            assert(__builtin_popcount(test_mask) == NUM_DIGITS);
         }
+        cout << "middle square test successful" << endl;
+
+
         cout << endl;
         cout << genA.composed_grid << endl;
         cout << genE.composed_grid << endl;
@@ -244,7 +277,7 @@ public:
                 if(genE.composed_grid[board_row][board_col] == 0) {
                     continue;
                 }
-                mask |= 1 << (genE.composed_grid[board_row][board_col]-1);
+                mask |= 1U << (genE.composed_grid[board_row][board_col]-1);
             }
             cout << "row=" << row << ", mask=" << mask << endl;
         }
@@ -257,33 +290,82 @@ public:
                 if(genE.composed_grid[board_row][board_col] == 0) {
                     continue;
                 }
-                mask |= 1 << (genE.composed_grid[board_row][board_col]-1);
+                // cout << "checking " << board_row << ',' << board_col << ":" << genE.composed_grid[board_row][board_col] << endl;
+                // assert(0 != genE.composed_grid[board_row][board_col]);
+                mask |= 1U << (genE.composed_grid[board_row][board_col]-1);
             }
             cout << "col=" << col << ", mask=" << mask << endl;
         }
+
+        #ifdef DEBUG_FULL
+        cout << "Checking all rotations of sudoku square" << endl;
+        
+        const sudoku_square x = sudoku_stack.back();
+        for(int rotation = 0; rotation < NUM_DIGITS; rotation++) {
+            if(x.available_at(rotation)) {
+                // We already played with this digit in previous digit-index
+                continue;
+            }
+            sudoku_square y = x.next(x.get_next_digit_index(),rotation);
+            // this rotation works
+            cout << "Expanding" << y << endl;
+            for(int rotation2 = 0; rotation2 < NUM_DIGITS; rotation2++) {
+                if(y.available_at(rotation2)) {
+                    // We already played with this digit in previous digit-index
+                    continue;
+                }
+                sudoku_square z = y.next(y.get_next_digit_index(),rotation2);
+                // this rotation works
+                cout << z << endl;
+            }
+        }
+        cout << "Tried all rotations" << endl;
+        #endif // DEBUG_FULL
     }
     
+    // DFS Tree
+    // 
     const sudoku_square next_square() {
         // do dfs
         while(!sudoku_stack.empty()) {
             const sudoku_square x = sudoku_stack.back();
             sudoku_stack.pop_back();
 
-            /*if(!is_valid(x)) {
-                continue;
-            }*/
-
             if(x.get_next_digit_index() < NUM_DIGITS) {
                 // we have more digits to consider
                 // explore next digit positions
+                // Below is the all rotation of 2 after 1 is set
+                // [square:2 0 0 ,0 0 0 ,0 0 1 ,]
+                // [square:0 2 0 ,0 0 0 ,0 0 1 ,]
+                // [square:0 0 2 ,0 0 0 ,0 0 1 ,]
+                // [square:0 0 0 ,2 0 0 ,0 0 1 ,]
+                // [square:0 0 0 ,0 2 0 ,0 0 1 ,]
+                // [square:0 0 0 ,0 0 2 ,0 0 1 ,]
+                // [square:0 0 0 ,0 0 0 ,2 0 1 ,]
+                // [square:0 0 0 ,0 0 0 ,0 2 1 ,]
+                // [square:0 0 0 ,0 0 0 ,0 0 2 ,] discarded case
+                // Below is the all rotation of 3 after 1,2 is set
+                /* [square:3 0 0 ,0 0 0 ,0 0 1 ,] discarded case */
+                /* [square:2 3 0 ,0 0 0 ,0 0 1 ,] */
+                /* [square:2 0 3 ,0 0 0 ,0 0 1 ,] */
+                /* [square:2 0 0 ,3 0 0 ,0 0 1 ,] */
+                /* [square:2 0 0 ,0 3 0 ,0 0 1 ,] */
+                /* [square:2 0 0 ,0 0 3 ,0 0 1 ,] */
+                /* [square:2 0 0 ,0 0 0 ,3 0 1 ,] */
+                /* [square:2 0 0 ,0 0 0 ,0 3 1 ,] */
+                /* [square:2 0 0 ,0 0 0 ,0 0 3 ,] discarded case */
+           
                 for(int rotation = 0; rotation < NUM_DIGITS; rotation++) {
+
+                    // if the base-board has any number assigned then the square has to match that
                     const uint8_t base_value = get_base_board_at_rotation(rotation);
                     if(base_value && base_value != (x.get_next_digit_index()+1)) {
+                        // base-board has different non-zero value than our square
                         continue;
                     }
-                    const uint16_t pos_mask = 0x100 >> rotation;
-                    if((pos_mask & x.get_mask())) {
-                        // avoid overlapping position
+
+                    if(x.available_at(rotation)) {
+                        // We already played with this digit in previous digit-index
                         continue;
                     }
                     sudoku_square y = x.next(x.get_next_digit_index(),rotation);
@@ -312,6 +394,9 @@ public:
     }
     const auto& get_current_square() const {
         return current_square;
+    }
+    bool has_more() const {
+        return !sudoku_stack.empty();
     }
 private:
     sudoku_square current_square;
@@ -347,9 +432,8 @@ private:
         // check if the sudoku square is valid in this position
         // build digit mask for square
         uint16_t digit_mask[SQUARE_SIZE]{0};
-        memset(digit_mask,0, sizeof(digit_mask));
         sq.get_digit_mask_row_wise(digit_mask);
-        #ifdef DEBUG
+        #ifdef DEBUG_FULL
         cout << "square=" << sq << endl;
         #endif
         
@@ -359,7 +443,7 @@ private:
         // sq sq sq = base_row 3
         // sq sq sq = base_row 6
         for(int row=0;row < SQUARE_SIZE; row++) {
-            #ifdef DEBUG
+            #ifdef DEBUG_FULL
             cout << "row=" << row << ", mask=" << row_wise_exclusive_mask[row] << ", digit_mask=" << digit_mask[row] << endl;
             #endif
             if(row_wise_exclusive_mask[row] & digit_mask[row]) {
@@ -404,8 +488,13 @@ void sudoku_solve(int (&grid)[BOARD_SIZE][BOARD_SIZE]) {
         square_generator& gen = generator_stack.back();
         sudoku_square sqr = gen.next_square();
         if(!sqr.is_complete()) {
+            assert(!gen.has_more());
             // invalid backtrack
             generator_stack.pop_back();
+            #ifdef DEBUG
+            cout << "going for the next one" << endl;
+            #endif
+            continue;
         }
         // get next square generator
         if((gen.get_square_index()+1) < NUM_SQUARE) {
@@ -414,12 +503,15 @@ void sudoku_solve(int (&grid)[BOARD_SIZE][BOARD_SIZE]) {
             continue;
         } else {
             // we tried everything
-            // TODO display result
-            cout << gen.get_composed_grid() << endl;
-            generator_stack.clear();
+            // display result
+            cout << gen.get_composed_grid();
+            #ifdef DEBUG
+            cout << "Successful" << endl;
+            #endif
             break; // we are done
         }
     }
+    generator_stack.clear();
 }
 
 int main(void) {
