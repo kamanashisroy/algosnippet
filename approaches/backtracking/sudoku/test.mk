@@ -1,5 +1,6 @@
 VARIANT:=
 VARIANT:=_optimized1
+VARIANT:=_optimized2
 
 TARGET_VARIANT=${TARGET_PREFIX}${VARIANT}.bin
 

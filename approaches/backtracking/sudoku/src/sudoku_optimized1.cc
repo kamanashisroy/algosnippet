@@ -60,7 +60,7 @@ struct sudoku_square {
     inline uint16_t get_mask() const {
         return mask;
     }
-    inline bool available_at(int digit_rotation) const {
+    inline bool is_occupied(int digit_rotation) const {
         const uint16_t digit_mask = 0x100 >> digit_rotation;
         return digit_mask & get_mask();
     }
@@ -302,7 +302,7 @@ public:
         
         const sudoku_square x = sudoku_stack.back();
         for(int rotation = 0; rotation < NUM_DIGITS; rotation++) {
-            if(x.available_at(rotation)) {
+            if(x.is_occupied(rotation)) {
                 // We already played with this digit in previous digit-index
                 continue;
             }
@@ -310,7 +310,7 @@ public:
             // this rotation works
             cout << "Expanding" << y << endl;
             for(int rotation2 = 0; rotation2 < NUM_DIGITS; rotation2++) {
-                if(y.available_at(rotation2)) {
+                if(y.is_occupied(rotation2)) {
                     // We already played with this digit in previous digit-index
                     continue;
                 }
@@ -364,7 +364,7 @@ public:
                         continue;
                     }
 
-                    if(x.available_at(rotation)) {
+                    if(x.is_occupied(rotation)) {
                         // We already played with this digit in previous digit-index
                         continue;
                     }
