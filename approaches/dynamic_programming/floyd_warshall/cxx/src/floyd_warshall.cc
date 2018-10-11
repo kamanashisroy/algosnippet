@@ -25,17 +25,25 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 using namespace std;
 using namespace algo_snippet::dynamic_programming;
 
-int main(int argc, char*argv[]) {
+void test_it(bool weighted) {
     floyd_warshall<int,int> alg(10);
     alg.add_edge(1,2,3);
-    alg.add_edge(1,3,3);
-    alg.add_edge(1,4,3);
-    alg.add_edge(2,2,3);
-    alg.add_edge(3,6,10);
+    alg.add_edge(1,3,8);
+    alg.add_edge(1,4,6);
+    alg.add_edge(2,2,1);
+    alg.add_edge(3,6,4);
     alg.add_edge(2,6,5);
-    //alg.calc();
-    alg.calc_dp();
+    if(weighted) {
+        alg.calc();
+    } else {
+        alg.calc_unweighted();
+    }
     alg.reconstruct_matrix(1,6);
+}
+
+int main(int argc, char*argv[]) {
+    test_it(true);
+    test_it(false);
     cout << "successful " << endl;
     return 0;
 }

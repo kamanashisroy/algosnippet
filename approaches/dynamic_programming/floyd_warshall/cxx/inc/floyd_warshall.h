@@ -72,17 +72,19 @@ namespace algo_snippet {
                     }
                 }
             }
-            void calc_dp() {
+            void calc_unweighted() {
                 for(INTTYPE k = 0; k < num_nodes; k++) {
                     for(INTTYPE i = 0; i < num_nodes; i++) {
-                        if(dist[k][i] == std::numeric_limits<WEIGHTTYPE>::max()) {
+                        const INTTYPE distki = ((k<i)?dist[k][i]:dist[i][k]);
+                        if(k == i || std::numeric_limits<WEIGHTTYPE>::max() == distki) {
                             continue;
                         }
-                        for(INTTYPE j = i; j < num_nodes; j++) {
-                            if(dist[k][j] == std::numeric_limits<WEIGHTTYPE>::max()) {
+                        for(INTTYPE j = i+1; j < num_nodes; j++) {
+                            const INTTYPE distkj = ((k<j)?dist[k][j]:dist[j][k]);
+                            if(j == k || std::numeric_limits<WEIGHTTYPE>::max() == distkj) {
                                 continue;
                             }
-                            WEIGHTTYPE via = dist[k][i]+dist[k][j];
+                            WEIGHTTYPE via = distki+distkj;
                             if(via < dist[i][j]) {
                                 dist[i][j] = via;
                                 prev[i][j] = k;
@@ -105,22 +107,22 @@ namespace algo_snippet {
 
                 std::cout << "Infinity=" << std::numeric_limits<WEIGHTTYPE>::max() << std::endl;
                 // show column header
-                std::cout << "*\t\t";
+                std::cout << "*\t";
                 for(INTTYPE i = 0; i < num_nodes; i++) {
-                    std::cout << i << "\t\t";
+                    std::cout << i << "\t";
                 }
                 std::cout << std::endl;
 
                 // dump matrix
                 for(INTTYPE i = 0; i < num_nodes; i++) {
                     // show row header on left
-                    std::cout << i << "\t\t";
+                    std::cout << i << "\t";
                     for(INTTYPE j = 0; j < num_nodes; j++) {
                         // show distance of i to j
                         if(std::numeric_limits<WEIGHTTYPE>::max() == dist[i][j]) {
-                            std::cout << "-" << "\t\t"; // no path
+                            std::cout << "-" << "\t"; // no path
                         } else {
-                            std::cout << dist[i][j] << (path[i][j]?'*':' ') << "\t\t";
+                            std::cout << dist[i][j] << (path[i][j]?'*':' ') << "\t";
                         }
                     }
                     std::cout << std::endl;
