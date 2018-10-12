@@ -52,6 +52,12 @@ struct sudoku_square {
     inline int8_t get_next_digit_index() const {
         return digit_state+1;
     }
+    inline uint16_t top_digit_mask() const {
+        return 1U << digit_state;
+    }
+    inline int8_t top_digit() const {
+        return digit_state+1;
+    }
     inline void get_square_grid(int (&grid)[SQUARE_SIZE][SQUARE_SIZE]) const {
         for(int i = 0; i < NUM_DIGITS && i <= digit_state; i++) {
             grid[rotation[i]/3][rotation[i]%3] = i+1;
@@ -162,10 +168,13 @@ public:
             if(base_value && base_value != 1) {
                 continue;
             }
-            sudoku_square xsqr = dummy.next(0,rotation);
-            if(!is_valid(xsqr)) {
+            if(!is_valid_rotation(1,rotation)) {
                 continue;
             }
+            sudoku_square xsqr = dummy.next(0,rotation);
+            //if(!is_valid(xsqr)) {
+            //    continue;
+            //}
             sudoku_stack.push_back(xsqr);
         }
 
@@ -368,22 +377,29 @@ public:
                         // We already played with this digit in previous digit-index
                         continue;
                     }
-                    sudoku_square y = x.next(x.get_next_digit_index(),rotation);
-                    if(!is_valid(y)) {
+                    if(!is_valid_rotation(1U<<x.get_next_digit_index(),rotation)) {
                         continue;
                     }
+                    sudoku_square y = x.next(x.get_next_digit_index(),rotation);
+                    //if(!is_valid(y)) {
+                    //    continue;
+                    //}
                     // this rotation works
                     sudoku_stack.push_back(y);
                 }
             } else {
                 // no more digits left
+                #ifdef DEBUG
                 current_square = x;
-                build_composed_grid();
+                #endif
+                build_composed_grid(x);
                 return x; // we have found a successful sudoku_square
             }
         }
         sudoku_square empty_square;
+        #ifdef DEBUG
         current_square = empty_square;
+        #endif
         return empty_square;
     }
     int get_square_index() const {
@@ -392,14 +408,18 @@ public:
     const auto& get_composed_grid() const {
         return composed_grid;
     }
+    #ifdef DEBUG
     const auto& get_current_square() const {
         return current_square;
     }
+    #endif
     bool has_more() const {
         return !sudoku_stack.empty();
     }
 private:
+    #ifdef DEBUG
     sudoku_square current_square;
+    #endif
     vector<sudoku_square> sudoku_stack;
     const int square_index;
     const int base_row;
@@ -417,15 +437,25 @@ private:
         }
     }
 
-    void build_composed_grid() {
+    void build_composed_grid(const sudoku_square& xsqr) {
         // Now cleanup the composed grid in the square position
         int sqr_grid[SQUARE_SIZE][SQUARE_SIZE];
-        current_square.get_square_grid(sqr_grid);
+        xsqr.get_square_grid(sqr_grid);
         for(int row=0;row < SQUARE_SIZE; row++) {
             for(int col=0;col < SQUARE_SIZE; col++) {
                 composed_grid[base_row+row][base_col+col] = sqr_grid[row][col];
             }
         }
+    }
+
+    bool is_valid_rotation(uint16_t top_digit_mask, int rotation) {
+        if(row_wise_exclusive_mask[rotation/SQUARE_SIZE] & top_digit_mask) {
+            return false;
+        }
+        if(col_wise_exclusive_mask[rotation%SQUARE_SIZE] & top_digit_mask) {
+            return false;
+        }
+        return true;
     }
 
     bool is_valid(const sudoku_square& sq) {
