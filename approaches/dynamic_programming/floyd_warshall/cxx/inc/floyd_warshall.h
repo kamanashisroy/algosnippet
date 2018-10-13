@@ -44,26 +44,30 @@ namespace algo_snippet {
                 }
             }
 
-            void add_edge(INTTYPE u, INTTYPE v, WEIGHTTYPE weight) {
+            void add_undirected_edge(INTTYPE u, INTTYPE v, WEIGHTTYPE weight) {
                 dist[u][v] = weight;
                 dist[v][u] = weight;
             }
 
-            int get_dist(INTTYPE u, INTTYPE v) {
+            void add_edge(INTTYPE u, INTTYPE v, WEIGHTTYPE weight) {
+                dist[u][v] = weight;
+            }
+
+            inline int get_undirected_dist(INTTYPE u, INTTYPE v) const {
                 return ((u<=v)?dist[u][v]:dist[v][u]);
             }
             
             void calc() {
                 for(INTTYPE k = 0; k < num_nodes; k++) {
                     for(INTTYPE i = 0; i < num_nodes; i++) {
-                        if(dist[k][i] == std::numeric_limits<WEIGHTTYPE>::max()) {
+                        if(std::numeric_limits<WEIGHTTYPE>::max() == dist[i][k]) {
                             continue;
                         }
                         for(INTTYPE j = 0; j < num_nodes; j++) {
-                            if(dist[k][j] == std::numeric_limits<WEIGHTTYPE>::max()) {
+                            if(std::numeric_limits<WEIGHTTYPE>::max() == dist[k][j]) {
                                 continue;
                             }
-                            WEIGHTTYPE via = dist[k][i]+dist[k][j];
+                            WEIGHTTYPE via = dist[i][k]+dist[k][j];
                             if(via < dist[i][j]) {
                                 dist[i][j] = via;
                                 prev[i][j] = k;
@@ -72,19 +76,19 @@ namespace algo_snippet {
                     }
                 }
             }
-            void calc_unweighted() {
+            void calc_undirected() {
                 for(INTTYPE k = 0; k < num_nodes; k++) {
                     for(INTTYPE i = 0; i < num_nodes; i++) {
-                        const INTTYPE distki = ((k<i)?dist[k][i]:dist[i][k]);
-                        if(k == i || std::numeric_limits<WEIGHTTYPE>::max() == distki) {
+                        const INTTYPE distik = get_undirected_dist(i,k);
+                        if(k == i || std::numeric_limits<WEIGHTTYPE>::max() == distik) {
                             continue;
                         }
                         for(INTTYPE j = i+1; j < num_nodes; j++) {
-                            const INTTYPE distkj = ((k<j)?dist[k][j]:dist[j][k]);
+                            const INTTYPE distkj = get_undirected_dist(k,j);
                             if(j == k || std::numeric_limits<WEIGHTTYPE>::max() == distkj) {
                                 continue;
                             }
-                            WEIGHTTYPE via = distki+distkj;
+                            WEIGHTTYPE via = distik+distkj;
                             if(via < dist[i][j]) {
                                 dist[i][j] = via;
                                 prev[i][j] = k;
@@ -95,12 +99,12 @@ namespace algo_snippet {
             }
 
             void reconstruct_matrix(INTTYPE u, INTTYPE v) {
-                INTTYPE path[num_nodes][num_nodes];
-                memset(path, 0, sizeof(path));
+                char path[num_nodes][num_nodes];
+                memset(path, ' ', sizeof(path));
                 // reconstruct path
                 if(std::numeric_limits<WEIGHTTYPE>::max() != dist[u][v]) {
                     while(u!=v) {
-                        path[u][v] = 1;
+                        path[u][v] = '*';
                         v = prev[u][v];
                     }
                 }
@@ -122,7 +126,7 @@ namespace algo_snippet {
                         if(std::numeric_limits<WEIGHTTYPE>::max() == dist[i][j]) {
                             std::cout << "-" << "\t"; // no path
                         } else {
-                            std::cout << dist[i][j] << (path[i][j]?'*':' ') << "\t";
+                            std::cout << dist[i][j] << path[i][j] << "\t";
                         }
                     }
                     std::cout << std::endl;
