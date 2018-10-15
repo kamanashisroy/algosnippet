@@ -29,8 +29,9 @@ void test_it(string&& input) {
     manber_myer alg(input);
     alg.sort_suffixes();
 
+    cout << "Suffix array of " << input << endl;
     for(unsigned int i = 0; i < input.size(); i++) {
-        cout << alg.get_sorted_suffix(i) << ',';
+        cout << alg.get_sorted_suffix(i) << ':' << input.substr(alg.get_sorted_suffix(i)) << endl;
     }
     cout << endl;
 }
