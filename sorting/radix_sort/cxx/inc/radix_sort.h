@@ -40,7 +40,7 @@ namespace algo_snippet {
             }
         private:
             std::array<std::vector<std::pair<unsigned int,unsigned int> >,2> part_stack;
-            std::array<std::vector<std::reference_wrapper<std::string> >, 256> bucket;
+            std::array<std::vector<std::reference_wrapper<std::string> >, (256*2) > bucket;
 
             void part_radix(std::vector<std::reference_wrapper<std::string> >& content, unsigned int step, unsigned int k) {
 
@@ -59,7 +59,15 @@ namespace algo_snippet {
                     // Do bucketing
                     for(unsigned int i = ibegin; i < (ibegin+ilen); i++) {
                         std::string& x = content[i];
-                        bucket[x[k]].push_back(x);
+
+                        // this length correction sorts string in ascending length order
+                        unsigned int bid = 0;
+                        if(k < content.size()) {
+                            bid = x[k];
+                        }
+                        bid <<= 1; // double
+                        bid += (content.size() > k)?1:0;
+                        bucket[bid].push_back(x);
                     }
 
                     // now sort the buckets
@@ -68,7 +76,7 @@ namespace algo_snippet {
                         unsigned int part_start = j;
                         for(const auto& x : xbucket) {
                             content[j++] = x;
-                            if(x.get().size() <= (k+1)) { // already in sorted position
+                            if(x.get().size() < (k+1)) { // already in sorted position
                                 // avoid sorting x
                                 if((j-part_start) > 1) {
 #ifdef DEBUG_RADIX_SORT2

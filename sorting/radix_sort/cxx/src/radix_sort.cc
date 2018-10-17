@@ -28,7 +28,7 @@ using namespace algo_snippet::sorting;
 void test_it() {
     msb_radix_sort alg;
 
-    vector<string> content {"mississiippi", "banana", "manber", "myer", "boat"};
+    vector<string> content {"mississiippi", "banana", "manber", "myer", "boat", "aab", "aa", "a", "aaa", "aaaa"};
     vector<reference_wrapper<string> > sorted;
 
     sorted.reserve(content.size());
