@@ -9,6 +9,11 @@ TODO: add the analogies of the sorting algorithms
 - Divide and conquer based
 	- [Merge Sort](mergesort)
 	- [Heap sort](heapsort)
-	- recursion tree based
-		- [Quick Sort](quicksort)
+
+- Randomized sorting algorithms
+	- [Quick Sort](quicksort)
+
+#### Sorting animation
+
+http://panthema.net/2013/sound-of-sorting/
 
