@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-knapsack_bottomup.cc file is part of Algosnippet.
+unbounded_knapsack_bottomup.cc file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <cstdlib>
-#include "knapsack_bottomup.h"
+#include "unbounded_knapsack_bottomup.h"
 
 #ifdef DEBUG_KNAPSACK
 #include <iostream>
@@ -28,7 +28,7 @@ using namespace algo_snippet::dynamic_programming;
 int main(int argc, char*argv[]) {
     vector<unsigned int> goodness{12,23,34,45,56,32,4};
     vector<unsigned int> badness{32,56,3,6,23,6,3};
-    int result = knapsack_bottomup<unsigned int,unsigned int,unsigned int>::calc(goodness, badness, 20);
+    int result = unbounded_knapsack_bottomup<unsigned int,unsigned int,unsigned int>::calc(goodness, badness, 20);
     //assert(5 == result);
     cout << result << endl;
     cout << "successful " << endl;

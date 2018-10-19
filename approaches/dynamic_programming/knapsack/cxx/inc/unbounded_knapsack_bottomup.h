@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-knapsack_bottomup.h file is part of Algosnippet.
+unbounded_knapsack_bottomup.h file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
@@ -29,8 +29,9 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace algo_snippet {
     namespace dynamic_programming {
+        //! Unbounded knapsack allows unbounded number of each items in the sack.
         template <typename GOODTYPE, typename BADTYPE, typename INTTYPE>
-        class knapsack_bottomup {
+        class unbounded_knapsack_bottomup {
         public:
             // Runtime is O(badness_limit*n)
             static GOODTYPE calc(std::vector<GOODTYPE>& goodness, std::vector<BADTYPE>& badness, BADTYPE badness_limit) {
@@ -51,19 +52,23 @@ namespace algo_snippet {
                         continue;
                     }
 
-                    // case 1: combine with others
-                    for(BADTYPE j = 0; j < (badness_limit - xbad); j++) {
-                        if(0 != memo[j] && (memo[j] + xgood) > memo[j+xbad] ) {
-                            memo[j+xbad] = memo[j]+xgood;
-                            result = std::max(result,memo[j+xbad]);
+                    BADTYPE kbad = xbad;
+                    GOODTYPE kgood = xgood;
+                    // Try different number of items(notice the difference with binary knapsack)
+                    for(INTTYPE k = 1; kbad < badness_limit;k++,kbad+=xbad,kgood+=xgood ) {
+                        // case 1: combine with others
+                        for(BADTYPE j = 0; j < (badness_limit - kbad); j++) {
+                            if(0 != memo[j] && (memo[j] + kgood) > memo[j+kbad] ) {
+                                memo[j+kbad] = memo[j]+kgood;
+                                result = std::max(result,memo[j+kbad]);
+                            }
                         }
-                    }
-
-                    // case 2: base case
-                    // NOTE that base case MUST come after combine operation, because it cannot combine with itself
-                    if(xgood > memo[xbad]) {
-                        memo[xbad] = xgood;
-                        result = std::max(result,xgood);
+                        // case 2: base case
+                        // NOTE that base case MUST come after combine operation, because it cannot combine with itself
+                        if(kgood > memo[xbad]) {
+                            memo[kbad] = kgood;
+                            result = std::max(result,kgood);
+                        }
                     }
 
                 }
