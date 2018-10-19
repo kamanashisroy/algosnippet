@@ -53,21 +53,20 @@ namespace algo_snippet {
                     }
 
                     BADTYPE kbad = xbad;
-                    GOODTYPE kgood = xgood;
                     // Try different number of items(notice the difference with binary knapsack)
-                    for(INTTYPE k = 1; kbad < badness_limit;k++,kbad+=xbad,kgood+=xgood ) {
+                    for(INTTYPE k = 1; kbad < badness_limit;k++,kbad+=xbad) {
                         // case 1: combine with others
-                        for(BADTYPE j = 0; j < (badness_limit - kbad); j++) {
-                            if(0 != memo[j] && (memo[j] + kgood) > memo[j+kbad] ) {
-                                memo[j+kbad] = memo[j]+kgood;
-                                result = std::max(result,memo[j+kbad]);
+                        for(BADTYPE j = 0; j < (badness_limit - xbad); j++) {
+                            if(0 != memo[j] && (memo[j] + xgood) > memo[j+xbad] ) {
+                                memo[j+xbad] = memo[j]+xgood;
+                                result = std::max(result,memo[j+xbad]);
                             }
                         }
                         // case 2: base case
                         // NOTE that base case MUST come after combine operation, because it cannot combine with itself
-                        if(kgood > memo[xbad]) {
-                            memo[kbad] = kgood;
-                            result = std::max(result,kgood);
+                        if(xgood > memo[xbad]) {
+                            memo[xbad] = xgood;
+                            result = std::max(result,xgood);
                         }
                     }
 
