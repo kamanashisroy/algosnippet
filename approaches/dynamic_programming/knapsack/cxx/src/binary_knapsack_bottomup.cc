@@ -28,7 +28,10 @@ using namespace algo_snippet::dynamic_programming;
 int main(int argc, char*argv[]) {
     vector<unsigned int> goodness{12,23,34,45,56,32,4};
     vector<unsigned int> badness{32,56,3,6,23,6,3};
-    int result = binary_knapsack_bottomup<unsigned int,unsigned int,unsigned int>::calc(goodness, badness, 20);
+    binary_knapsack_bottomup<unsigned int,unsigned int,unsigned int> alg(goodness, badness, 20);
+    assert(0 == alg.calc());
+    alg.dump(cout);
+    int result = alg.get_result();
     //assert(5 == result);
     cout << result << endl;
     cout << "successful " << endl;

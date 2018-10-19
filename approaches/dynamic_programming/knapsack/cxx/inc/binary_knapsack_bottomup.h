@@ -25,6 +25,8 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
 #ifdef DEBUG_KNAPSACK
 #include <iostream>
+#include <iomanip>
+#include <cstring> // defines memset
 #endif
 
 namespace algo_snippet {
@@ -33,56 +35,112 @@ namespace algo_snippet {
         class binary_knapsack_bottomup {
         public:
             // Runtime is O(badness_limit*n)
-            static GOODTYPE calc(std::vector<GOODTYPE>& goodness, std::vector<BADTYPE>& badness, BADTYPE badness_limit) {
+            binary_knapsack_bottomup(const std::vector<GOODTYPE>& goodness, const std::vector<BADTYPE>& badness, BADTYPE badness_limit)
+                : goodness(goodness)
+                  , badness(badness)
+                  , badness_limit(badness_limit)
+                  , n(std::min(goodness.size(),badness.size())){
                 // assert(goodness.size() == badness.size());
-                const INTTYPE n = std::min(goodness.size(),badness.size()); 
+            }
 
-                GOODTYPE result = 0;
+            int calc() {
+                if(goodness.size() != badness.size()) {
+                    return -1;
+                }
+                result = 0;
                 
-                // keep track of maximum goodness
-                std::vector<GOODTYPE> memo(badness_limit,0);
+                // keep track of maximum goodness, it takes O(n*n) memory
+                memo.resize(n+1);
+                memo[0].resize(badness_limit+1,0);
 
                 for(INTTYPE i = 0; i < n; i++) {
                     const BADTYPE& xbad = badness[i];
                     const GOODTYPE& xgood = goodness[i];
+
+                    memo[i+1].reserve(badness_limit+1);
+                    std::copy(memo[i].begin(),memo[i].end(),std::back_inserter(memo[i+1]));
 
                     // avoid overflow
                     if(xbad >= badness_limit) {
                         continue;
                     }
 
-                    // case 1: combine with others
-                    for(BADTYPE j = 0; j < (badness_limit - xbad); j++) {
-                        if(0 != memo[j] && (memo[j] + xgood) > memo[j+xbad] ) {
-                            memo[j+xbad] = memo[j]+xgood;
-                            result = std::max(result,memo[j+xbad]);
+                    // combine with others
+                    for(BADTYPE j = 0; j <= (badness_limit - xbad); j++) {
+                        if( (memo[i][j] + xgood) > memo[i+1][j+xbad] ) {
+                            memo[i+1][j+xbad] = memo[i][j]+xgood;
+                            result = std::max(result,memo[i+1][j+xbad]);
                         }
                     }
 
-                    // case 2: base case
-                    // NOTE that base case MUST come after combine operation, because it cannot combine with itself
-                    if(xgood > memo[xbad]) {
-                        memo[xbad] = xgood;
-                        result = std::max(result,xgood);
+                }
+
+                return 0;
+            }
+
+            #ifdef DEBUG_KNAPSACK
+            void dump(std::ostream& dout) {
+
+                // reconstruct path from the result and memo
+                std::vector<INTTYPE> selection;
+                char path[n+1][badness_limit+1];
+                memset(path, ' ', sizeof(path));
+                BADTYPE ypos = badness_limit;
+                INTTYPE xpos = n;
+                while(xpos > 0 && ypos > 0) {
+                    if( ypos < badness[xpos-1] ) {
+                        xpos--;
+                        continue;
                     }
-
+                    if((memo[xpos-1][ypos-badness[xpos-1]] + goodness[xpos-1]) == memo[xpos][ypos]) {
+                        path[xpos][ypos] = '*';
+                        ypos -= badness[xpos-1];
+                        xpos--;
+                        selection.push_back(xpos);
+                    }
                 }
-
-                #ifdef DEBUG_KNAPSACK
-                std::cout << "Badness Lims:\t";
-                for(BADTYPE j = 0; j < badness_limit; j++) {
-                    std::cout << j << ",\t";
+                
+                // dump
+                std::cout << "Badness Input:\t";
+                for(auto& dbad : badness) {
+                    std::cout << std::setw(4) << dbad << ',';
                 }
                 std::cout << std::endl;
-                std::cout << "Max-Goodness:\t";
-                for(BADTYPE j = 0; j < badness_limit; j++) {
-                    std::cout << memo[j] << ",\t";
+                std::cout << "Goodness Input:\t";
+                for(auto& dgood : goodness) {
+                    std::cout << std::setw(4) << dgood << ',';
                 }
                 std::cout << std::endl;
-                #endif
+                std::cout << "Badness Lims:\t" << "Iter ";
+                for(BADTYPE j = 0; j <= badness_limit; j++) {
+                    std::cout << std::setw(4) << j << " ,";
+                }
+                std::cout << std::endl;
+                for(INTTYPE i = 0; i <= n; i++) {
+                    std::cout << "Max-Goodness:\t" << std::setw(4) << i << ',';
+                    for(BADTYPE j = 0; j <= badness_limit; j++) {
+                        std::cout << std::setw(4) << memo[i][j] << path[i][j] << ',';
+                    }
+                    std::cout << std::endl;
+                }
+                std::cout << "Selected items:";
+                for(auto& i : selection) {
+                    std::cout << "(idx=" << i << ",bad=" << badness[i] << ",good=" << goodness[i] << ')';
+                }
+                std::cout << std::endl;
+            }
+            #endif
 
+            GOODTYPE get_result() const {
                 return result;
             }
+        private:
+            const std::vector<GOODTYPE>& goodness;
+            const std::vector<BADTYPE>& badness;
+            const BADTYPE badness_limit;
+            const INTTYPE n;
+            GOODTYPE result;
+            std::vector<std::vector<GOODTYPE>> memo;
         };
     }
 }

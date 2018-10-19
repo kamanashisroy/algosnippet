@@ -25,6 +25,7 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
 #ifdef DEBUG_KNAPSACK
 #include <iostream>
+#include <iomanip>
 #endif
 
 namespace algo_snippet {
@@ -41,7 +42,7 @@ namespace algo_snippet {
                 GOODTYPE result = 0;
                 
                 // keep track of maximum goodness
-                std::vector<GOODTYPE> memo(badness_limit,0);
+                std::vector<GOODTYPE> memo(badness_limit+1,0);
 
                 for(INTTYPE i = 0; i < n; i++) {
                     const BADTYPE& xbad = badness[i];
@@ -54,33 +55,37 @@ namespace algo_snippet {
 
                     BADTYPE kbad = xbad;
                     // Try different number of items(notice the difference with binary knapsack)
-                    for(INTTYPE k = 1; kbad < badness_limit;k++,kbad+=xbad) {
-                        // case 1: combine with others
-                        for(BADTYPE j = 0; j < (badness_limit - xbad); j++) {
-                            if(0 != memo[j] && (memo[j] + xgood) > memo[j+xbad] ) {
+                    for(INTTYPE k = 1; kbad <= badness_limit;k++,kbad+=xbad) {
+                        // combine with others
+                        for(BADTYPE j = 0; j <= (badness_limit - xbad); j++) {
+                            if((memo[j] + xgood) > memo[j+xbad] ) {
                                 memo[j+xbad] = memo[j]+xgood;
                                 result = std::max(result,memo[j+xbad]);
                             }
-                        }
-                        // case 2: base case
-                        // NOTE that base case MUST come after combine operation, because it cannot combine with itself
-                        if(xgood > memo[xbad]) {
-                            memo[xbad] = xgood;
-                            result = std::max(result,xgood);
                         }
                     }
 
                 }
 
                 #ifdef DEBUG_KNAPSACK
+                std::cout << "Badness Input:\t";
+                for(auto& dbad : badness) {
+                    std::cout << std::setw(4) << dbad << ',';
+                }
+                std::cout << std::endl;
+                std::cout << "Goodness Input:\t";
+                for(auto& dgood : goodness) {
+                    std::cout << std::setw(4) << dgood << ',';
+                }
+                std::cout << std::endl;
                 std::cout << "Badness Lims:\t";
-                for(BADTYPE j = 0; j < badness_limit; j++) {
-                    std::cout << j << ",\t";
+                for(BADTYPE j = 0; j <= badness_limit; j++) {
+                    std::cout << std::setw(4) << j << ',';
                 }
                 std::cout << std::endl;
                 std::cout << "Max-Goodness:\t";
-                for(BADTYPE j = 0; j < badness_limit; j++) {
-                    std::cout << memo[j] << ",\t";
+                for(BADTYPE j = 0; j <= badness_limit; j++) {
+                    std::cout << std::setw(4) << memo[j] << ',';
                 }
                 std::cout << std::endl;
                 #endif

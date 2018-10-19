@@ -6,7 +6,7 @@ OBJECTS:=
 TARGET_BIN:=$(subst .cc,.bin,$(notdir $(SOURCES)))
 CXXFLAGS:=-Wall -ggdb3
 INCLUDES=-Iinc
-CXXFLAGS:=-Wall -O2
+#CXXFLAGS:=-Wall -O2
 CXXFLAGS+= -DDEBUG_KNAPSACK
 LDFLAGS:=-std=c++14
 
