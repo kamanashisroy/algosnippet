@@ -97,7 +97,7 @@ namespace algo_snippet {
                 }
 #endif
                 // is_placed is used for in-place count sort
-                std::fill(is_placed.begin()+ibegin,is_placed.end()+iend,0);
+                std::fill(is_placed.begin()+ibegin,is_placed.begin()+iend,0);
                 unsigned int num_placed = 0;
                 // now sort the buckets
                 while(num_placed < ilen) {
