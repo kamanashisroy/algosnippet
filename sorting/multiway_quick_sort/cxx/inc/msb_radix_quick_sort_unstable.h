@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-msb_radix_quick_sort.h file is part of Algosnippet.
+msb_radix_quick_sort_unstable.h file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
@@ -27,9 +27,9 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 namespace algo_snippet {
     namespace sorting {
 
-        class msb_radix_quick_sort {
+        class msb_radix_quick_sort_unstable {
         public:
-            msb_radix_quick_sort() {
+            msb_radix_quick_sort_unstable() {
             }
 
             void sort_string(std::vector<std::reference_wrapper<std::string> >& content) {
@@ -97,7 +97,7 @@ namespace algo_snippet {
                     }
 #endif
                     // is_placed is used for in-place count sort
-                    std::fill(is_placed.begin()+ibegin,is_placed.end()+ilen,0);
+                    std::fill(is_placed.begin()+ibegin,is_placed.end()+iend,0);
                     unsigned int num_placed = 0;
                     // now sort the buckets
                     while(num_placed < ilen) {
@@ -115,8 +115,8 @@ namespace algo_snippet {
 #endif
                             assert(count_memo[bid] > 0);
                             // put content[i] at right place
-                            std::swap(content[i],content[count_memo[bid]-1]);
-                            is_placed[count_memo[bid]-1] = 1;
+                            std::swap(content[i],content[ibegin+count_memo[bid]-1]);
+                            is_placed[ibegin+count_memo[bid]-1] = 1;
                             num_placed++;
                             count_memo[bid]--;
                         }
