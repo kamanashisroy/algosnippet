@@ -2,7 +2,6 @@
 Knapsack
 ============================
 
-
 0-1 Knapsack bottomup
 ======================
 
@@ -58,4 +57,10 @@ Divide by GCD optimization
 
 Dividing the input size(badness) of the sack and the limit with GCD may reduce the `C` by constant time.
 
+Links
+========
+
+- [Explanatory video](https://www.youtube.com/watch?v=U4O3SwDamA4)
+- [Skiena notes](http://algorist.com/problems/Knapsack_Problem.html)
+- [Collection of algorithms for knapsack](http://hjemmesider.diku.dk/~pisinger/codes.html)
 

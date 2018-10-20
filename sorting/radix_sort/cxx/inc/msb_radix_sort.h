@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-radix_sort.h file is part of Algosnippet.
+msb_radix_sort.h file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
