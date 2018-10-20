@@ -51,7 +51,7 @@ namespace algo_snippet {
                     bid = x[k];
                 }
                 bid <<= 1; // double
-                bid += (x.size() > k)?1:0;
+                bid += (x.size() > (k+1))?1:0;
                 return bid;
             }
 
@@ -86,9 +86,9 @@ namespace algo_snippet {
                         // make a partition for future sort
                         if((count_memo[i]-count_memo[i-1]) > 1) {
 #ifdef DEBUG_RADIX_SORT2
-                            std::cout << "Adding radix parts (" << count_memo[i-1] << ',' << (count_memo[i]-count_memo[i-1]) << ')' << std::endl;
+                            std::cout << "Adding radix parts (" << ibegin+count_memo[i-1] << ',' << (count_memo[i]-count_memo[i-1]) << ')' << std::endl;
 #endif
-                            part_stack[step&1].push_back(std::make_pair(count_memo[i-1],count_memo[i]-count_memo[i-1]));
+                            part_stack[step&1].push_back(std::make_pair(ibegin+count_memo[i-1],count_memo[i]-count_memo[i-1]));
                         }
                     }
 #ifdef DEBUG_RADIX_SORT3
