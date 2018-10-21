@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-msb_radix_quick_sort_unstable_dfs.h file is part of Algosnippet.
+msb_radix_quick_count_inplace_insert.h file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
@@ -27,13 +27,12 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 namespace algo_snippet {
     namespace sorting {
 
-        class msb_radix_quick_sort_unstable_dfs {
+        class msb_radix_quick_count_inplace_insert {
         public:
-            msb_radix_quick_sort_unstable_dfs() {
+            msb_radix_quick_count_inplace_insert() {
             }
 
             void sort_string(std::vector<std::reference_wrapper<std::string> >& content) {
-                is_placed.resize(content.size(),0);
                 part_stack.push_back(std::make_tuple(0,0,content.size()));
                 while(!part_stack.empty()) {
                     const auto& part = part_stack.back();
@@ -46,7 +45,7 @@ namespace algo_snippet {
         private:
             std::vector<std::tuple<unsigned int/* k */,unsigned int/* ibegin */,unsigned int /* ilen */> > part_stack;
             std::array<unsigned int, (256*2) > count_memo;
-            std::vector<int> is_placed;
+            std::array<unsigned int, (256*2) > orig_count_memo;
 
             inline unsigned int to_bucket(const std::string& x, unsigned int k) const {
                 // this length correction sorts string in ascending length order
@@ -63,7 +62,7 @@ namespace algo_snippet {
 
                 const unsigned int iend = ibegin+ilen;
                 #ifdef DEBUG_RADIX_SORT2
-                std::cout << "sorting" << '(' << ibegin << ',' << (iend) << ')' << std::endl;
+                std::cout << "sorting" << '(' << ibegin << ',' << (ilen) << ')' << std::endl;
                 for(unsigned int i = ibegin; i < (ibegin+ilen); i++) {
                     std::cout << content[i].get() << ',';
                 }
@@ -91,33 +90,33 @@ namespace algo_snippet {
                         part_stack.push_back(std::make_tuple(k+1, ibegin+count_memo[i-1],count_memo[i]-count_memo[i-1]));
                     }
                 }
+                orig_count_memo = count_memo;
 #ifdef DEBUG_RADIX_SORT3
                 for(unsigned int i = 0; i < count_memo.size(); i++) {
                     std::cout << "Memo [" << i << "]" << count_memo[i] << std::endl;
                 }
 #endif
-                // is_placed is used for in-place count sort
-                std::fill(is_placed.begin()+ibegin,is_placed.begin()+iend,0);
-                unsigned int num_placed = 0;
                 // now sort the buckets
-                while(num_placed < ilen) {
-                    // loop from start, this count sort is NOT stable
-                    // TODO do stable-inplace count-sort
-                    for(unsigned int i = ibegin; i < iend; i++) {
-                        if(is_placed[i]) {
-                            continue; // already placed
-                        }
+                for(unsigned int i = ibegin; i < iend; i++) {
+                    while(true) {
                         std::string& x = content[i];
                         unsigned int bid = to_bucket(x,k);
                         
+                        // check if it is already in the correct bucket
+                        if(
+                            (i-ibegin) < orig_count_memo[bid]
+                            && ((0 == bid) || ((i-ibegin) >= orig_count_memo[bid-1]))
+                            ) {
+                            //assert((ibegin+count_memo[bid]-1) == i);
+                            break;
+                        }
 #ifdef DEBUG_RADIX_SORT2
                         std::cout << "swapping [" << bid << "]" << count_memo[bid] << std::endl;
 #endif
                         assert(count_memo[bid] > 0);
+                        assert((ibegin+count_memo[bid]-1) < content.size());
                         // put content[i] at right place
                         std::swap(content[i],content[ibegin+count_memo[bid]-1]);
-                        is_placed[ibegin+count_memo[bid]-1] = 1;
-                        num_placed++;
                         count_memo[bid]--;
                     }
                 }

@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-msb_radix_quick_sort_unstable.cc file is part of Algosnippet.
+msb_radix_quick_count_inplace.cc file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
@@ -21,12 +21,12 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 #ifdef DEBUG_RADIX_SORT
 #include <iostream>
 #include <cassert>
-#include "msb_radix_quick_sort_unstable.h"
+#include "msb_radix_quick_count_inplace.h"
 using namespace std;
 using namespace algo_snippet::sorting;
 
 void test_it() {
-    msb_radix_quick_sort_unstable alg;
+    msb_radix_quick_count_inplace alg;
 
     vector<string> content {"mississiippi", "banana", "manber", "myer", "boat", "aab", "aa", "a", "aaa", "aaaa"};
     vector<reference_wrapper<string> > sorted;
