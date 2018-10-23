@@ -1,11 +1,4 @@
 
-#include <queue>
-#include <iostream>
-#include <cstdio>
-#include <math.h>
-
-using namespace std;
-
 
 vector<int> make_table(string word) {
 	int i = 0;
@@ -15,7 +8,7 @@ vector<int> make_table(string word) {
 	if(word.size() > 1)
 		tbl[1] = 0;
 	// Theta(|word|)
-	for(i = 1; i < word.size(); i++) {
+	for(i = 1; i < (int)word.size(); i++) {
 		int matchlen = tbl[i-1];
 		//cout << " matchlen( " << word[i-1] << " ) = " << matchlen << endl;
 		if(matchlen >= 0 && word[i] == word[matchlen])
@@ -35,10 +28,10 @@ int search(const string sentence, const string word) {
 	int i = 0;
 	int m = 0;
 	// Theta(|sentence|)
-	for(m = 0; (i+m) < sentence.size();) {
+	for(m = 0; (i+m) < (int)sentence.size();) {
 		if(word[i] == sentence[m+i]) {
 			i++;
-			if(i == word.size())
+			if(i == (int)word.size())
 				return m;
 		} else {
 			if(tbl[i] == -1) {
@@ -52,17 +45,3 @@ int search(const string sentence, const string word) {
 	}
 	return -1;
 }
-
-int main(int argc, char*argv[]) {
-	string sentence;
-	string word;
-	cin >> sentence >> word;
-	int pos = 0;
-	if((pos = search(sentence, word)) != -1) {
-		cout << "found " << pos << '\n';
-	} else {
-		cout << "not found\n";
-	}
-	return 0;
-}
-

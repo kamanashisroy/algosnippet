@@ -56,3 +56,10 @@ Backtracking
 - [ ] Sudoku
 - [ ] Chess-board covering problem
 
+Randomization
+=============
+
+- [ ] Count-min sketch
+- [ ] Cuckoo Bloom filter
+- [ ] Min-hash
+
