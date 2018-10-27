@@ -28,11 +28,14 @@ class kary_heap:
     If the order is 2 then the tree node has at most 4 children.
     If the order is 3 then the tree node has at most 8 children.
     '''
-    __slots__ = ["order","shifter","heap"]
-    def __init__(self,order):
+    __slots__ = ["order","num_children","heap","location"]
+    def __init__(self,order,maxnode = None):
         self.order = order
-        self.shifter = (1 << self.order) - 1
+        self.num_children = (1 << self.order)
         self.heap = []
+        
+        # location is not important if we do not want to delete randomly
+        #self.location = [None]*maxnode
 
     def __len__(self):
         return len(self.heap)
@@ -50,11 +53,16 @@ class kary_heap:
         return self.heap[0] if self.heap else None
     
     def append(self,x):
+        '''
+        Parameters:
+            x       An object that has __le__() defined
+        '''
         # sanity check
         if x is None:
             return False
         
         self.heap.append(x)
+        #self.location[x.idx] = len(self.heap)-1
         self.__up_heap(len(self.heap)-1)
         return True
 
@@ -65,12 +73,16 @@ class kary_heap:
             return None
         result = self.heap[0]
         if len(self.heap) == 1:
+            # delete last
+            #self.location[self.heap[-1].idx] = None
             self.heap.pop()
         else:
             # swap with last
             self.heap[-1],self.heap[0] = self.heap[0],self.heap[-1]
+            #self.location[self.heap[0].idx] = 0
 
             # delete last
+            #self.location[self.heap[-1].idx] = None
             self.heap.pop()
 
             # fixup
@@ -79,9 +91,10 @@ class kary_heap:
     
     def __fix_heap(self,loc):
         assert(-1 != loc)
+        assert(loc is not None)
         assert(loc < len(self.heap))
         if 0 != loc:
-            parent_index = ((loc+self.shifter)>>self.order)-1
+            parent_index = (loc-1)>>self.order
             if self.heap[loc] < self.heap[parent_index]:
                 self.__up_heap(loc)
                 return
@@ -93,48 +106,54 @@ class kary_heap:
     def __up_heap_range(self,loc):
         assert(loc < len(self.heap))
         index = loc
-        parent_index = ((index+self.shifter)>>self.order)-1
         
         while index > 0:
+            parent_index = (index-1)>>self.order
             yield index,parent_index
             index = parent_index
-            parent_index = ((index+self.shifter)>>self.order)-1
     
     def __up_heap(self,loc):
         assert (loc != -1)
         assert (loc < len(self.heap))
         for i,p in self.__up_heap_range(loc):
-            if self.heap[p] < self.heap[i]:
+            if self.heap[p] <= self.heap[i]:
                 break # heap property holds true
+            # swap
             self.heap[i],self.heap[p] = self.heap[p],self.heap[i]
+            #self.location[self.heap[i].idx] = i
+            #self.location[self.heap[p].idx] = p
                 
     def __down_heap_range(self,loc):
         assert(-1 != loc)
         # allow bigger imaginary leaves assert(loc < len(self.heap))
-        first = (loc<<self.order)+1
-        return first,(first+self.shifter)
+        return (loc<<self.order)+1
             
     def __down_heap(self,loc):
         cur_loc = loc
-        first,last = self.__down_heap_range(cur_loc)
+        first = self.__down_heap_range(cur_loc)
         while first < len(self.heap):
             smallest_loc = first
-            for i in range(first,min(len(self.heap),last+1)):
+            for i in range(first,min(len(self.heap),first+self.num_children)):
                 if self.heap[i] < self.heap[smallest_loc]:
                     smallest_loc = i
             
             # check if heap property holds
-            if self.heap[cur_loc] < self.heap[smallest_loc]:
+            if self.heap[cur_loc] <= self.heap[smallest_loc]:
                 break # heap property is asserted
 
             # swap
             self.heap[cur_loc],self.heap[smallest_loc] = self.heap[smallest_loc],self.heap[cur_loc]
+            #self.location[self.heap[cur_loc].idx] = cur_loc
+            #self.location[self.heap[smallest_loc].idx] = smallest_loc
+            
             cur_loc = smallest_loc
-            first,last = self.__down_heap_range(cur_loc)
+            first = self.__down_heap_range(cur_loc)
 
     def verify_heap(self):
         for loc in range(1,len(self.heap)):
-            parent_index = ((loc+self.shifter)>>self.order)-1
-            assert self.heap[parent_index] < self.heap[loc] ,str((loc,parent_index,str(self.heap)))
+            parent_index = (loc-1)>>self.order
+            assert self.heap[parent_index] <= self.heap[loc] ,str((loc,parent_index,str(self.heap)))
+            #assert self.location[self.heap[loc].idx] == loc
+            #assert self.location[self.heap[parent_index].idx] == parent_index
 
 
