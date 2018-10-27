@@ -26,10 +26,11 @@ Tree
 ----
 - [x] [Tree augmentation](data_structure/tree/tree/python/README.md)
 - [x] [Rank tree](data_structure/tree/tree/python/README.md)
-- [ ] B-Tree
-- [ ] 2-3-4 Tree
+- [x] [B-Tree](data_structure/tree/btree/cxx)
+- [x] [2-3-4 Tree](data_structure/tree/btree/cxx)
 - [ ] Splay-tree + sorting
 - [ ] Comparison table of Splay-tree, Red-black tree and AVL tree rotations.
+- [ ] Fenwick tree or Binary indexed tree
 
 Invariants
 ------------
