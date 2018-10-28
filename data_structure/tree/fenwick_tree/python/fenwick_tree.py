@@ -27,13 +27,15 @@ class fenwick_tree:
 
     Fenwick tree can additionally be used for range-minimum query. It is comparable to square-root decomposition. While square-root decomposition takes O(sqrt(n)) space, it needs O(1) update time. The query time is O(sqrt(n)) which is bigger than Fenwick tree.
     '''
-    __slots__ = ["binary_indexed_array"]
+    __slots__ = ["binary_indexed_array", "base_array"]
     def __init__(self,max_size,defaultval=0):
         self.binary_indexed_array = [defaultval]*max_size
 
-    def update_min(self, idx, nval):
+        # Note that base array is not needed in sum query and can be skipped
+        self.base_array = [defaultval]*max_size
+
+    def update_min(self, idx, xval):
         '''
-        
         [ 1   2   3   4   5   6   7   8 ] = 1 based index
          -------------------------------
           1*  0   1*  0   1*  0   1*  0 | Binary representation of 1 based(Pascal) index
@@ -42,25 +44,71 @@ class fenwick_tree:
                                       1*|
          -------------------------------
         [ 1   3   4   8   6   1   4   2 ] = user array
-        [ 1   1   4   1   6   1   4   2 ] = Fenwick tree or binary indexed tree
+        [ 1   1   4   1   6   1   4   1 ] = Fenwick tree or binary indexed tree for range-min
           ^   ^   ^   ^   ^   ^   ^   ^
         ---   | ---   | ---   | ---   |
         -------       | -------       |
         ---------------               |
         -------------------------------
         '''
-        k = idx+1
-        while k:
+        self.base_array[idx] = xval # update base array
+        k = idx+1 # convert to pascal index
+        while k<=len(self.binary_indexed_array):
             # get least significant bit
-            memo_idx = k & -k
-            if(self.binary_indexed_array[memo_idx-1] <= nval):
+            if self.binary_indexed_array[k-1] <= xval:
                 break # heap property holds
-            self.binary_indexed_array[memo_idx-1] = nval
-            k -= memo_idx
+            self.binary_indexed_array[k-1] = xval
+            k += (k & -k)
 
     def query_min(self, start_idx, end_idx):
+        '''
+        Suppose we query minimum of 5 to 7
+        [ 1   2   3   4   5   6   7   8 ] = 1 based index
+         -------------------------------
+          1*  0   1*  0   1*  0   1*  0 | Binary representation of 1 based(Pascal) index
+              1*  1   0   0   1*  1   0 |
+                      1*  1   1   1   0 | The * represents the summary level
+                                      1*|
+         -------------------------------
+        [ 1   3   4   8   6   1   4   2 ] = user array
+        [ 1   1   4   1   6   1   4   1 ] = Fenwick tree or binary indexed tree
+          ^   ^   ^   ^   ^   ^   ^   ^
+        ---   | ---   | ---   | ***   |  Suppose we are quering min of 4(pascal index 5) to 6(pascal index 7),
+        -------       | *******       |  we use the stared path
+        ---------------               |
+        -------------------------------
+
+        Another query
+          ^   ^   ^   ^   ^   ^   ^   ^
+        ---   | ***   | ***   | ---   |  Suppose we are quering min of 2(pascal index 3) to 4(pascal index 5),
+        -------       | -------       |  we use the starred path, something that is not starred, is collected from base_array
+        ---------------               |
+        -------------------------------
+        '''
+        assert start_idx < end_idx
+        assert end_idx < len(self.base_array)
+
         # very tricky
-        pass
+
+        dist = end_idx-start_idx+1
+        k = end_idx+1 # convert to pascal index
+        result = self.base_array[end_idx]
+        while k>=(start_idx+1):
+
+            # when the memo covers the start_idx , we cannot use it
+            if dist < (k & -k):
+                # use base_array
+                result = min(result, self.base_array[k-1])
+                dist -= 1
+                k -= 1 # try to get next memo
+            else:
+                # use memo
+                result = min(result,self.binary_indexed_array[k-1])
+                dist -= (k & -k)
+                k -= (k & -k)
+        return result
+                
+                
 
     def update_sum(self, idx, xval):
         '''
@@ -101,7 +149,7 @@ class fenwick_tree:
 
 if __name__ == "__main__":
     data = [1,3,4,8,6,1,4,2]
-    print("Making fenwick tree for", data)
+    print("Making fenwick-sum tree for", data)
     ftree = fenwick_tree(len(data),0)
     for i,x in enumerate(data):
         ftree.update_sum(i,x)
@@ -116,4 +164,14 @@ if __name__ == "__main__":
     assert(ftree.query_sum(6) == 27)
     assert(ftree.query_sum(7) == 29)
 
+    print("Making fenwick-min tree for", data)
+    ftree = fenwick_tree(len(data),max(data)+1)
+    for i,x in enumerate(data):
+        ftree.update_min(i,x)
+        print(ftree)
+
+    assert(ftree.query_min(4,6) == 1)
+    assert(ftree.query_min(2,4) == 4)
+    assert(ftree.query_min(3,4) == 6)
+ 
     print("successful")

@@ -51,5 +51,5 @@ Links
 ======
 
 - [Hackerrank Cyclical queries](https://www.hackerrank.com/contests/w38/challenges/cyclical-queries/problem)
-- [Neighborhood queries](https://www.hackerrank.com/contests/w38/challenges/neighborhood-queries)
+- [Hackerrank Neighborhood queries](https://www.hackerrank.com/contests/w38/challenges/neighborhood-queries)
  
