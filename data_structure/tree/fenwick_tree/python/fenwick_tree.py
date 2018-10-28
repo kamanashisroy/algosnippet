@@ -27,7 +27,7 @@ class fenwick_tree:
 
     Fenwick tree can additionally be used for range-minimum query. It is comparable to square-root decomposition. While square-root decomposition takes O(sqrt(n)) space, it needs O(1) update time. The query time is O(sqrt(n)) which is bigger than Fenwick tree.
     '''
-    __slots__ = ["binary_indexed_array","max_size"]
+    __slots__ = ["binary_indexed_array"]
     def __init__(self,max_size,defaultval=0):
         self.binary_indexed_array = [defaultval]*max_size
 
@@ -102,7 +102,7 @@ class fenwick_tree:
 if __name__ == "__main__":
     data = [1,3,4,8,6,1,4,2]
     print("Making fenwick tree for", data)
-    ftree = fenwick_tree(8,0)
+    ftree = fenwick_tree(len(data),0)
     for i,x in enumerate(data):
         ftree.update_sum(i,x)
         print(ftree)
