@@ -126,6 +126,70 @@ class segment_tree:
         #print(result)
         return result
 
+    def query_min2(self, start_idx, end_idx):
+        '''
+        This query-min is inspired by the query_sum2
+        '''
+        # convert idx to internal nodes
+        end_idx += self.num_internal_nodes
+        start_idx += self.num_internal_nodes
+        result = self.segment_array[start_idx]
+
+        #print("query min", start_idx, end_idx)
+
+        while start_idx <= end_idx:
+            if start_idx == end_idx:
+                result = min(result,self.segment_array[start_idx])
+                break
+
+            left_parent_idx = self._parent(start_idx)
+            right_parent_idx = self._parent(end_idx)
+
+            # termination logic, when both end has single parent level-up stops
+            if left_parent_idx == right_parent_idx:
+                if start_idx == self._child(left_parent_idx) and end_idx == (self._child(right_parent_idx) + (1<<self.order) -1):
+                    result = min(result, self.segment_array[left_parent_idx])
+                else:
+                    # both index have the same parent
+                    for idx in range(start_idx,end_idx+1):
+                        result = min(result, self.segment_array[idx])
+                # end loop
+                break
+
+            if start_idx == self._child(left_parent_idx):
+                #print("query min:left full parent", start_idx, left_parent_idx)
+                # start-index is the fist child of it's parent
+                # OPTIMIZATION here result = min(result,self.segment_array[left_parent_idx])
+
+                # go up
+                start_idx = left_parent_idx
+            else:
+                #print("query min:left partial parent", start_idx, left_parent_idx)
+                # loop through it
+                for idx in range(start_idx,self._child(left_parent_idx) + (1<<self.order)):
+                    result = min(result, self.segment_array[idx])
+
+                start_idx = left_parent_idx+1
+
+            if end_idx == (self._child(right_parent_idx) + (1<<self.order) -1):
+                #print("query min:right full parent", end_idx, right_parent_idx)
+                # OPTIMIZATION here result = min(result,self.segment_array[right_parent_idx])
+
+                # go up
+                end_idx = right_parent_idx
+            else:
+                #print("query min:right partial parent", end_idx, right_parent_idx)
+                # loop through it
+                for idx in range(self._child(right_parent_idx), end_idx+1):
+                    result = min(result, self.segment_array[idx])
+                end_idx = right_parent_idx-1
+
+
+        #print(result)
+        return result
+
+
+
     def update_sum(self, idx, xval):
         # convert idx to leaf node
         idx += self.num_internal_nodes
@@ -196,6 +260,69 @@ class segment_tree:
 
         return result
 
+    def query_sum2(self, start_idx, end_idx):
+        '''
+        See how it optimizes over the other version by going up without adding sum
+        '''
+        # convert idx to internal nodes
+        end_idx += self.num_internal_nodes
+        start_idx += self.num_internal_nodes
+        result = 0
+
+        #print("query sum", start_idx, end_idx)
+
+        while start_idx <= end_idx:
+            if start_idx == end_idx:
+                result += self.segment_array[start_idx]
+                break
+            left_parent_idx = self._parent(start_idx)
+            right_parent_idx = self._parent(end_idx)
+
+            # termination logic, when both end has single parent level-up stops
+            if left_parent_idx == right_parent_idx:
+                if start_idx == self._child(left_parent_idx) and end_idx == (self._child(right_parent_idx) + (1<<self.order) -1):
+                    result += self.segment_array[left_parent_idx]
+                else:
+                    # both index have the same parent
+                    for idx in range(start_idx,end_idx+1):
+                        result += self.segment_array[idx]
+                # end loop
+                break
+
+            if start_idx == self._child(left_parent_idx):
+                #print("query sum:left full parent", start_idx, left_parent_idx)
+                # start-index is the fist child of it's parent
+                # OPTIMIZATION HERE result += self.segment_array[left_parent_idx]
+
+                # go up
+                start_idx = left_parent_idx
+            else:
+                #print("query sum:left partial parent", start_idx, left_parent_idx)
+                # loop through it
+                for idx in range(start_idx,self._child(left_parent_idx) + (1<<self.order)):
+                    result += self.segment_array[idx]
+
+                start_idx = left_parent_idx+1
+
+            if end_idx == (self._child(right_parent_idx) + (1<<self.order) -1):
+                #print("query sum:right full parent", end_idx, right_parent_idx)
+                # OPTIMIZATION HERE result += self.segment_array[right_parent_idx]
+
+                # go up
+                end_idx = right_parent_idx
+            else:
+                #print("query sum:right partial parent", end_idx, right_parent_idx)
+                # loop through it
+                for idx in range(self._child(right_parent_idx), end_idx+1):
+                    result += self.segment_array[idx]
+                end_idx = right_parent_idx-1
+
+        #print("query sum", start_idx, end_idx, result)
+
+        return result
+
+
+
     def __repr__(self):
         return "[Segment-tree(" + str(self.segment_array) + ")]"
 
@@ -219,6 +346,17 @@ if __name__ == "__main__":
     assert(stree.query_sum(0,6) == 27)
     assert(stree.query_sum(0,7) == 29)
 
+    assert(stree.query_sum2(0,0) == 1)
+    assert(stree.query_sum2(0,1) == 4)
+    assert(stree.query_sum2(0,2) == 8)
+    assert(stree.query_sum2(0,3) == 16)
+    assert(stree.query_sum2(0,4) == 22)
+    assert(stree.query_sum2(0,5) == 23)
+    assert(stree.query_sum2(0,6) == 27)
+    assert(stree.query_sum2(0,7) == 29)
+
+
+
     print("Making Segment tree(2nd order,sum) for", data)
     stree = segment_tree(2,len(data),0)
     for i,x in enumerate(data):
@@ -233,6 +371,9 @@ if __name__ == "__main__":
 
     assert(stree.query_min(2,3) == 4)
     assert(stree.query_min(1,3) == 3)
+
+    assert(stree.query_min2(2,3) == 4)
+    assert(stree.query_min2(1,3) == 3)
 
     print("Making Segment tree(2nd order,min) for", data)
     stree = segment_tree(2,len(data),max(data)+1)
