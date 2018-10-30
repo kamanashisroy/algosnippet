@@ -37,20 +37,20 @@ namespace algo_snippet {
                 }
 
                 // check our limit
-                auto &max_pivote = *ibegin;
-                auto &min_pivote = *ibegin;
-                auto pvt = ibegin;
-                for(unsigned int i = 1; i < 3; i++) {
-                    if(*(ibegin+i) < min_pivote) {
-                        min_pivote = *(ibegin+i);
-                    } else if (*(ibegin+i) > max_pivote) {
-                        max_pivote = *(ibegin+i);
+                ITTYPE max_pivote = ibegin;
+                ITTYPE min_pivote = ibegin;
+                for(ITTYPE i = ibegin; i != (ibegin+3); i++) {
+                    if(*i < *min_pivote) {
+                        min_pivote = i;
+                    } else if (*i > *max_pivote) {
+                        max_pivote = i;
                     }
                 }
-                for(unsigned int i = 1; i < 3; i++) {
-                    if(*(ibegin+i) < max_pivote) {
-                        if(*(ibegin+i) > max_pivote) {
-                            pvt = ibegin+i;
+                ITTYPE pvt = ibegin;
+                for(ITTYPE i = ibegin; i != (ibegin+3); i++) {
+                    if(*i < *max_pivote) {
+                        if(*min_pivote < *i) {
+                            pvt = i;
                         }
                     }
                 }
@@ -73,10 +73,13 @@ namespace algo_snippet {
                     ITTYPE xbegin,xend;
                     std::tie(xbegin,xend) = part;
                     part_stack.pop_back();
+#ifdef DEBUG_QUICK_SORT
+                    std::cout << "part-quick bucket " << std::distance(ibegin,xbegin) << ',' << std::distance(ibegin,xend) << std::endl;
+#endif // DEBUG_QUICK_SORT
                     part_quick(xbegin, xend);
 #ifdef DEBUG_QUICK_SORT
-                    for(auto& ipart : part_stack) {
-                        std::cout << '(' << std::distance(ibegin,ipart.first) << ',' << std::distance(ibegin,ipart.second) << "),";
+                    for(ITTYPE i = ibegin; i != iend; i++) {
+                        std::cout << *i << ',';
                     }
                     std::cout << std::endl;
 #endif // DEBUG_QUICK_SORT

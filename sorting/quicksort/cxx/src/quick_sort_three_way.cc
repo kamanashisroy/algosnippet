@@ -21,7 +21,7 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 #ifdef TEST_QUICK_SORT
 #include <iostream>
 #include <cassert>
-#include "quick_sort.h"
+#include "quick_sort_three_way.h"
 using namespace std;
 using namespace algo_snippet::sorting;
 
@@ -33,8 +33,9 @@ void test_it() {
     for(const auto& x : content) {
         cout << x << ',';
     }
+    cout << endl;
 
-    quick_sort<decltype(content.begin()), select_median_of_three<decltype(content.begin())>> alg;
+    quick_sort_three_way<decltype(content.begin()), select_median_of_three<decltype(content.begin())>> alg;
     alg.sort(content.begin(), content.end());
     cout << "Sorted string:" << endl;
     for(const auto& x : content) {
