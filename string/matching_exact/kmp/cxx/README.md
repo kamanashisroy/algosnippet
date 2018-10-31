@@ -39,4 +39,5 @@ Links
 ======
 
 - [KMP-LCP Problem](https://www.hackerrank.com/challenges/kmp-problem/problem)
+- [Relation between Z-Array and LCP array](https://stackoverflow.com/questions/18521337/relation-between-kmp-algorithm-and-z-algorithm)
 
