@@ -115,6 +115,10 @@ namespace algo_snippet {
 #endif
                         assert(count_memo[bid] > 0);
                         assert((ibegin+count_memo[bid]-1) < content.size());
+                        //
+                        while(to_bucket(content[ibegin+count_memo[bid]-1],k) == bid) {
+                            count_memo[bid]--; // already placed correctly
+                        }
                         // put content[i] at right place
                         std::swap(content[i],content[ibegin+count_memo[bid]-1]);
                         count_memo[bid]--;
