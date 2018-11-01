@@ -58,3 +58,11 @@ Suffix array of banana
 successful 
 ```
 
+Links
+======
+
+- [Hackerrank problem ashton string](https://www.hackerrank.com/challenges/ashton-and-string/problem?h_r=internal-search)
+- [Hackerrank topic description](https://www.hackerrank.com/challenges/string-similarity/topics)
+- [Kasai algorithm](http://codeforces.com/blog/entry/12796#comment-175287)
+- [Related math problem](https://www.hackerrank.com/contests/w37/challenges/z-function/problem)
+
