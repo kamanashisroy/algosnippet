@@ -30,9 +30,13 @@ namespace algo_snippet {
         class manber_myer {
         private:
             struct mm_suffix {
+                int idx;
                 int begin_rank;  // rank of the beginning half of the suffix
                 int end_rank; // rank of the ending half of the suffix
-                int idx;
+                int lcp;
+                int suffix_rank;
+                mm_suffix() : idx(0),begin_rank(0),end_rank(0),lcp(0) {
+                }
                 inline bool operator<(const mm_suffix&rhs) const {
                     // TODO do it without branching , we could use union and 64 bit int comparison
                     if(begin_rank == rhs.begin_rank) {
@@ -48,13 +52,30 @@ namespace algo_snippet {
             };
         public:
             // Runtime: O(content.size())
-            manber_myer(const std::string &content) : content(content),ordered_sfx(content.size()) {
+            manber_myer(const std::string &content) : content(content),lookup_sfx(content.size()) {
+                ordered_sfx.reserve(content.size());
                 for(unsigned int i = 0; i < content.size(); i++) {
-                    ordered_sfx[i].idx = i;
-                    ordered_sfx[i].begin_rank = ordered_sfx[i].end_rank = 0; // no ranks yet
+                    lookup_sfx[i].idx = i;
                 }
+                std::copy(lookup_sfx.begin(), lookup_sfx.end(), std::back_inserter(ordered_sfx));
+            }
+
+            void build() {
+                sort_suffixes();
+                calculate_lcp();
             }
           
+            int get_sorted_suffix(int idx) const {
+                return ordered_sfx[idx].get().idx;
+            }
+
+            int get_sorted_lcp(int idx) const {
+                return ordered_sfx[idx].get().lcp;
+            }
+        private:
+            const std::string &content;
+            std::vector<mm_suffix> lookup_sfx;
+            std::vector<std::reference_wrapper<mm_suffix>> ordered_sfx;
             // Runtime: O(content.size() * log (content.size())) on average
             void sort_suffixes() {
               
@@ -64,7 +85,7 @@ namespace algo_snippet {
                     rank_table[i] = content[i] - 'a'; // Use the ascii as rank
                 }
                 suffix_less_than less_comp;
-                sort(ordered_sfx.begin(), ordered_sfx.end(),less_comp);
+                //sort(ordered_sfx.begin(), ordered_sfx.end(),less_comp);
               
                 for(unsigned int step = 1,k = 1; k < content.size() ; k*=2, ++step) {
                   
@@ -90,13 +111,31 @@ namespace algo_snippet {
                         rank_table[xfx.idx] = currank;
                     }
                 }
+
+                // sorting complete, now update the final rank of the suffix
+                for(unsigned int i = 0; i < content.size(); i++) {
+                    ordered_sfx[i].get().suffix_rank = i;
+                }
             }
-            int get_sorted_suffix(int idx) const {
-                return ordered_sfx[idx].idx;
+
+            //! \NOTE this should be followed by after sort_suffix()
+            void calculate_lcp() {
+                for(unsigned int i = 0; i < content.size(); ++i) {
+                    if(0 == lookup_sfx[i].suffix_rank) {
+                        continue; // we are the first of the suffix array so lcp = 0
+                    }
+                    if(i && lookup_sfx[i-1].lcp > 1) {
+                        lookup_sfx[i].lcp = lookup_sfx[i-1].lcp-1;
+                    }
+                    for(unsigned int j = i+lookup_sfx[i].lcp, k = ordered_sfx[lookup_sfx[i].suffix_rank-1].get().idx+lookup_sfx[i].lcp; j < content.size() && k < content.size(); j++,k++) {
+                        if(content[j] == content[k]) {
+                            lookup_sfx[i].lcp++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
             }
-        private:
-            const std::string &content;
-            std::vector<mm_suffix> ordered_sfx;
         };
     }
 }
