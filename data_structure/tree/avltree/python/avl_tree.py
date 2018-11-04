@@ -374,7 +374,23 @@ class avl_tree(algo_tree.algo_tree):
             right_bfactor = self.balancing_factor()
             if right_bfactor < 0:
                 # right heavy
-                # TODO diagram
+                # (Y.bfactor < -1)   < Y < 
+                #                /|            < X < (X.bfactor < 0)
+                #               / |          /|       |\
+                #              /  |         /M|       | \
+                #             / L |        ----       |  \
+                #            ------                   | R \
+                #                                     |    \
+                #                                     -------
+                # left rotate (upgrade right)
+                #                              < X <
+                #                   < Y <             |\
+                #                /|       |\          | \
+                #               / |       |M\         |  \
+                #              /  |       ----        |   \
+                #             / L |                   |  R \
+                #            /    |                   |     \
+                #           -------                   --------
                 if added_node == self:
                     added_node = self.parent # it swaps the value with parent
 
