@@ -3,7 +3,7 @@ Merge sort uses divide and conquer technique to optimize the sorting. It is simi
 
 The average runtime for merge sort is `BigO(n*log n)`. It is the same for best and average case.
 
-Merge sort can be implemented using recursion or bottom up iteration. 
+Merge sort can be implemented using recursion or bottom up iteration. Refer to [CXX implementation](cxx).
 
 Merge sort can be parallelized. 
 
