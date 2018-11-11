@@ -17,3 +17,9 @@ TODO: add the analogies of the sorting algorithms
 
 http://panthema.net/2013/sound-of-sorting/
 
+Links
+=======
+
+- [Counting related problems](https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem)
+- [Crypt Kicker 2](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=16&page=show_problem&problem=791)
+
