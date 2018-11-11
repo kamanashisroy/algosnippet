@@ -7,7 +7,7 @@ TARGET_BIN:=$(subst .cc,.bin,$(notdir $(SOURCES)))
 CXXFLAGS:=-Wall -ggdb3
 INCLUDES=-Iinc
 #CXXFLAGS:=-Wall -O2
-CXXFLAGS+= -DDEBUG_BIDIRECTIONAL_SEARCH
+#CXXFLAGS+= -DDEBUG_MOVE
 CXXFLAGS+= -DTEST_BIDIRECTIONAL_SEARCH
 LDFLAGS:=-std=c++14
 
@@ -15,7 +15,7 @@ LDFLAGS:=-std=c++14
 all:$(TARGET_BIN) Makefile
 	@echo targets = ${TARGET_BIN}
 
-%.bin:src/%.cc
+%.bin:src/%.cc inc/bidirectional_chess_moves.h
 	${CXX} ${CXXFLAGS} ${INCLUDES} $< -o $@ ${LDFLAGS}
 
 clean:

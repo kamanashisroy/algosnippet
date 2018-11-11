@@ -22,8 +22,10 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <deque>
 #include <tuple>
-//#include <array>
+#include <limits>
+#include <cassert>
 
 namespace algo_snippet {
     namespace chess_board {
@@ -35,65 +37,31 @@ namespace algo_snippet {
                 : is_rook(is_rook)
                  , is_bishop(is_bishop)
                  , is_pawn(is_pawn)
-                 , board_size(board_size)
+                 , BOARD_SIZE(board_size)
                  , xstart(0)
-                 , ystart(0) {
+                 , ystart(0)
+                 , state(0)
+                 , dist(1) {
 
                 // cannot be rook and the pawn
                 assert(!(is_rook && is_pawn));
             }
-            void reset(size_t x, size_t y) {
+            void place(size_t x, size_t y) {
                 xstart = x;
                 ystart = y;
+                state = 0;
+                dist = 1;
             }
             void next_phase() {
                 state++;
-                dist=1;
+                dist = 1;
             }
             auto next_move() {
                int x = (int)xstart;
                int y = (int)ystart;
                switch(state) {
-                    if(is_pawn) {
-                        assert(!is_rook);
                         case 0:
-                            // try up
-                            if( (x-dist) >= 0) {
-                                x-=dist;
-                                state++;
-                                break;
-                            }
-                            dist = 1;
-                        case 1:
-                            // try left
-                            state = 1;
-                            if((y-dist) >= 0) {
-                                y-=dist;
-                                state++;
-                                break;
-                            }
-                            dist = 1;
-                        case 2:
-                            // try down
-                            state = 2;
-                            if( (x+dist) < (int)X_BORDER ) {
-                                x+=dist;
-                                state++;
-                                break;
-                            }
-                            dist = 1;
-                        case 3:
-                            // try right
-                            state = 3;
-                            if( (y+dist) < (int)Y_BORDER ) {
-                                y+=dist;
-                                state++;
-                                break;
-                            }
-                            dist = 1;
-                    }
                     if(is_rook) {
-                        case 0:
                             // try up
                             if( (x-dist) >= 0) {
                                 x-=dist;
@@ -113,7 +81,7 @@ namespace algo_snippet {
                         case 2:
                             // try down
                             state = 2;
-                            if( (x+dist) < (int)X_BORDER ) {
+                            if( (x+dist) < (int)BOARD_SIZE ) {
                                 x+=dist;
                                 dist++;
                                 break;
@@ -122,18 +90,18 @@ namespace algo_snippet {
                         case 3:
                             // try right
                             state = 3;
-                            if( (y+dist) < (int)Y_BORDER ) {
+                            if( (y+dist) < (int)BOARD_SIZE ) {
                                 y+=dist;
                                 dist++;
                                 break;
                             }
                             dist = 1;
                     }
-                    if(is_bishop) {
                         case 4:
+                    if(is_bishop) {
                             state = 4;
                             // go to right-bottom corner
-                            if( (x+dist) < (int)X_BORDER && (y+dist) < (int)Y_BORDER ) {
+                            if( (x+dist) < (int)BOARD_SIZE && (y+dist) < (int)BOARD_SIZE ) {
                                 x+=dist;
                                 y+=dist;
                                 dist++;
@@ -153,7 +121,7 @@ namespace algo_snippet {
                         case 6:
                             state = 6;
                             // go to right-top corner
-                            if( (x-dist) >= 0 && (y+dist) < (int)Y_BORDER) {
+                            if( (x-dist) >= 0 && (y+dist) < (int)BOARD_SIZE) {
                                 x-=dist;
                                 y+=dist;
                                 dist++;
@@ -163,7 +131,7 @@ namespace algo_snippet {
                         case 7:
                             state = 7;
                             // go to left-bottom corner
-                            if( (x+dist) < (int)X_BORDER && (y-dist) >= 0) {
+                            if( (x+dist) < (int)BOARD_SIZE && (y-dist) >= 0) {
                                 x+=dist;
                                 y-=dist;
                                 dist++;
@@ -172,67 +140,119 @@ namespace algo_snippet {
                             state = 8;
                             dist = 1;
                     } // is_bishop
+                        case 8:
+                    if(is_pawn) {
+                            state = 8;
+                            // try up
+                            if( (x-1) >= 0) {
+                                x--;
+                                state++;
+                                break;
+                            }
+                        case 9:
+                            // try left
+                            state = 9;
+                            if((y-1) >= 0) {
+                                y--;
+                                state++;
+                                break;
+                            }
+                        case 10:
+                            // try down
+                            state = 10;
+                            if( (x+1) < (int)BOARD_SIZE ) {
+                                x++;
+                                state++;
+                                break;
+                            }
+                        case 11:
+                            // try right
+                            state = 11;
+                            if( (y+1) < (int)BOARD_SIZE ) {
+                                y++;
+                                state++;
+                                break;
+                            }
+                    }
+
                     default:
                         break;
                 }
-                //cout << x << ',' << y << endl;
-                return make_pair(x,y);
+                //std::cout << x << ',' << y << std::endl;
+                return std::make_pair(x,y);
             }
         private:
             bool is_rook;
             bool is_bishop;
             bool is_pawn;
-            size_t board_size;
+            const size_t BOARD_SIZE;
             size_t xstart;
             size_t ystart;
+            size_t state;
+            int dist;
         };
         class count_chess_move {
         public:
-            size_t bidirectional_bfs_end_on_explore(const vector<string> &input
+            template <typename INTTYPE>
+            static void draw_board(const std::vector<std::vector<INTTYPE>> &board) {
+                std::cout << "-----------------" << std::endl;
+                for(auto row : board) {
+                    for(auto col : row) {
+                        std::cout << (size_t)col << ',';
+                    }
+                    std::cout << std::endl;
+                }
+                std::cout << "-----------------" << std::endl;
+            }
+            static size_t bidirectional_bfs_end_on_explore(std::vector<std::vector<char>> &color
+                , chess_piece &piece
                 , int startX
                 , int startY
                 , int goalX
-                , int goalY) {
-                // convert string grid to distances
-                vector<vector<int>> grid;
-                vector<vector<int>> color;
-                grid.reserve(input.size());
-                for(auto input_line : input) {
-                    grid.emplace_back(input_line.size(),INT_MAX);
-                    color.emplace_back(input_line.size(),0);
-                    for(unsigned int i = 0; i < input_line.size(); i++) {
-                        color.back()[i] = (input_line[i] == 'X') ? BLOCKED : 0;
-                    }
+                , int goalY
+                , bool is_bidirectional) {
+                size_t pathXS=0,pathYS=0;
+                size_t pathXG=0,pathYG=0;
+                // convert string dist to distances
+                std::vector<std::vector<int>> dist(color.size());
+                std::vector<std::vector<std::pair<size_t,size_t>>> pred(color.size());
+                for(size_t i = 0; i < color.size(); i++) {
+                    pred[i].resize(color.size(),std::make_pair((size_t)startX,(size_t)startY));
+                    dist[i].resize(color.size(),std::numeric_limits<int>::max());
                 }
 
                 // do breadth-first traversal
-                deque<pair<int,int>> fringe;
+                std::deque<std::pair<int,int>> fringe;
                 
                 // add start to the fringe
-                color[startX][startY] |= START;
-                grid[startX][startY] = 0;
-                fringe.push_back(make_pair(startX,startY));
+                color[startX][startY] |= START_GROUP;
+                dist[startX][startY] = 0;
+                fringe.push_back(std::make_pair(startX,startY));
               
                 // add goal
-                color[goalX][goalY] |= GOAL;
-                grid[goalX][goalY] = 0;
-                fringe.push_back(make_pair(goalX,goalY));
+                color[goalX][goalY] |= GOAL_GROUP;
+                dist[goalX][goalY] = 0;
+                if(is_bidirectional) {
+                    fringe.push_back(std::make_pair(goalX,goalY));
+                }
               
-                while(!fringe.empty()) {
+                size_t result = std::numeric_limits<size_t>::max();
+                bool reached_goal = false;
+                while(!fringe.empty() && !reached_goal) {
                     int x = 0, y =0;
-                    tie(x,y) = fringe.front();
+                    std::tie(x,y) = fringe.front();
                     fringe.pop_front();
                   
-                    const int mydist = grid[x][y];
+                    const int mydist = dist[x][y];
                     const int mycolor = (color[x][y] & LINK);
                     // mark expanded
                     assert(LINK != mycolor);
                   
                     // add neighbors to the fringe
-                    iter_neighbor neighbor(x,y,grid[0].size(),grid.size());
+                    piece.place(x,y);
                     do {
                           int xnext = 0,ynext = 0;
-                          tie(xnext,ynext) = neighbor.next();
+                          std::tie(xnext,ynext) = piece.next_move();
                           if(xnext == x && ynext == y) {
                                break;
                           }
@@ -244,75 +264,110 @@ namespace algo_snippet {
                           if((color[xnext][ynext] & mycolor)) {
                               continue;
                           }
-                          fringe.push_back(make_pair(xnext,ynext));
+                          fringe.push_back(std::make_pair(xnext,ynext));
                           color[xnext][ynext] |= mycolor;
                           if((color[xnext][ynext] & LINK) == LINK) {
                               // found
-                              return grid[xnext][ynext] + mydist + 1;
+                              result = dist[xnext][ynext] + mydist + 1;
+                              reached_goal = true;
+                              if(mycolor & GOAL_GROUP) {
+                                  pathXG = x;
+                                  pathYG = y;
+                                  pathXS = xnext;
+                                  pathYS = ynext;
+                              } else {
+                                  pathXG = xnext;
+                                  pathYG = ynext;
+                                  pathXS = x;
+                                  pathYS = y;
+                              }
+                                break;
                           }
-                          grid[xnext][ynext] = mydist+1;
-                    } while(true);
+                          pred[xnext][ynext] = std::make_pair(x,y);
+                          dist[xnext][ynext] = mydist+1;
+                    } while(!reached_goal);
                 }
 
-                return INT_MAX;
+                if(reached_goal) {
+                    // now reconstruct path
+                    size_t x = pathXG,y = pathYG;
+                    color[startX][startY] |= FROM;
+                    color[goalX][goalY] |= TO;
+                    while( !(x == (size_t)goalX && y == (size_t)goalY) ) {
+                        color[x][y] |= PATH;
+                        std::tie(x,y) = pred[x][y];
+                    }
+                    x = pathXS;
+                    y = pathYS;
+                    while( !(x == (size_t)startX && y == (size_t)startY) ) {
+                        color[x][y] |= PATH;
+                        std::tie(x,y) = pred[x][y];
+                    }
+                }
+                return result;
             } // bidirectional_bfs
-            size_t bidirectional_bfs_end_on_expand(const vector<string> &input
-                    , chess_piece piece
+            static size_t bidirectional_bfs_end_on_expand(std::vector<std::vector<char>> &color
+                    , chess_piece &piece
                     , const size_t startX
                     , const size_t startY
                     , const size_t goalX
-                    , const size_t goalY) {
+                    , const size_t goalY
+                    , bool bidirectional) {
                 // convert string grid to distances
-                vector<vector<size_t>> agrid;
-                vector<vector<size_t>> bgrid;
-                vector<vector<char>> color;
-                agrid.reserve(input.size());
-                bgrid.reserve(input.size());
-                for(auto input_line : input) {
-                    agrid.emplace_back(input_line.size(),INT_MAX);
-                    bgrid.emplace_back(input_line.size(),INT_MAX);
-                    color.emplace_back(input_line.size(),0);
-                    for(size_t i = 0; i < input_line.size(); i++) {
-                        color.back()[i] = (input_line[i] == 'X') ? BLOCKED : 0;
-                    }
+                std::vector<std::vector<size_t>> start_dist(color.size());
+                std::vector<std::vector<std::pair<size_t,size_t>>> start_pred(color.size());
+                std::vector<std::vector<size_t>> goal_dist(color.size());
+                std::vector<std::vector<std::pair<size_t,size_t>>> goal_pred(color.size());
+                size_t pathX = goalX;
+                size_t pathY = goalY;
+
+                for(size_t i = 0; i < color.size(); i++) {
+                    start_dist[i].resize(color.size(),std::numeric_limits<int>::max());
+                    start_pred[i].resize(color.size(),std::make_pair((size_t)startX,(size_t)startY));
+                    goal_dist[i].resize(color.size(),std::numeric_limits<int>::max());
+                    goal_pred[i].resize(color.size(),std::make_pair((size_t)goalX,(size_t)goalY));
                 }
 
                 // do breadth-first traversal
-                deque<pair<size_t,size_t>> fringe;
+                std::deque<std::pair<size_t,size_t>> fringe;
                 
                 // add start to the fringe
-                color[startX][startY] |= START;
-                agrid[startX][startY] = 0;
-                fringe.push_back(make_pair(startX,startY));
+                color[startX][startY] |= START_GROUP;
+                start_dist[startX][startY] = 0;
+                fringe.push_back(std::make_pair(startX,startY));
               
                 // add goal
-                color[goalX][goalY] |= GOAL;
-                bgrid[goalX][goalY] = 0;
-                fringe.push_back(make_pair(goalX,goalY));
+                color[goalX][goalY] |= GOAL_GROUP;
+                goal_dist[goalX][goalY] = 0;
+                if(bidirectional) {
+                    fringe.push_back(std::make_pair(goalX,goalY));
+                }
               
-                size_t result = INT_MAX;
+                bool reached_goal = false;
+                size_t result = std::numeric_limits<size_t>::max();
                 while(!fringe.empty()) {
                     size_t x = 0, y =0;
-                    tie(x,y) = fringe.front();
+                    std::tie(x,y) = fringe.front();
                     fringe.pop_front();
                   
                     const char mycolor = (color[x][y] & LINK);
                     assert(!(color[x][y] & BLOCKED));
                     if(LINK == mycolor) {
                         // reached goal
-                        return result;
+                        reached_goal = true;
+                        break;
                     }
                     assert(LINK != mycolor);
                     #ifdef DEBUG_MOVE
-                    cout << "Expanding " << x << ',' << y << endl;
+                    std::cout << "Expanding " << x << ',' << y << std::endl;
                     #endif // DEBUG_MOVE
-                    const size_t mydist = (mycolor&START) ? agrid[x][y] : bgrid[x][y];
+                    const size_t mydist = (mycolor&START_GROUP) ? start_dist[x][y] : goal_dist[x][y];
                   
                     // add neighbors to the fringe
                     piece.place(x,y);
                     do {
                           size_t xnext = 0,ynext = 0;
-                          tie(xnext,ynext) = piece.next_move();
+                          std::tie(xnext,ynext) = piece.next_move();
                           if(xnext == x && ynext == y) {
                                break;
                           }
@@ -325,37 +380,69 @@ namespace algo_snippet {
                                continue;
                           }
                           #ifdef DEBUG_MOVE
-                          cout << "Exploring " << xnext << ',' << ynext << endl;
+                          std::cout << "Exploring " << xnext << ',' << ynext << std::endl;
                           #endif // DEBUG_MOVE
-                          fringe.push_back(make_pair(xnext,ynext));
+                          fringe.push_back(std::make_pair(xnext,ynext));
                           color[xnext][ynext] |= mycolor;
-                          if(mycolor & START) {
+                          if(mycolor & START_GROUP) {
                               // try to do relaxation
-                              agrid[xnext][ynext] = min(agrid[xnext][ynext],mydist+1);
-                          } else { // when exploring GOAL
-                              bgrid[xnext][ynext] = min(bgrid[xnext][ynext],mydist+1);
+                                if(start_dist[xnext][ynext] > (mydist+1)) {
+                                    start_dist[xnext][ynext] = mydist+1;
+                                    start_pred[xnext][ynext] = std::make_pair(x,y);
+                                }
+                          } else { // when exploring GOAL_GROUP
+                                if(goal_dist[xnext][ynext] > (mydist+1)) {
+                                    goal_dist[xnext][ynext] = mydist+1;
+                                    goal_pred[xnext][ynext] = std::make_pair(x,y);
+                                }
                           }
                           if((color[xnext][ynext] & LINK) == LINK) {
                               // Relax the goal
                               #ifdef DEBUG_MOVE
-                              draw_board(agrid);
-                              draw_board(bgrid);
+                              draw_board(start_dist);
+                              draw_board(goal_dist);
                               draw_board(color);
-                              cout << "The move was from " << x << ',' << y << endl;
-                              cout << "The move was to " << xnext << ',' << ynext << endl;
+                              std::cout << "The move was from " << x << ',' << y << std::endl;
+                              std::cout << "The move was to " << xnext << ',' << ynext << std::endl;
                               #endif // DEBUG_MOVE
-                              result = min(result, agrid[xnext][ynext]+bgrid[xnext][ynext]);
+                              if(result > (start_dist[xnext][ynext]+goal_dist[xnext][ynext])) {
+                                result = start_dist[xnext][ynext]+goal_dist[xnext][ynext];
+                                reached_goal = true;
+                                pathX = xnext;
+                                pathY = ynext;
+                              }
                           }
                     } while(true);
                 }
-                return INT_MAX;
+
+
+                if(reached_goal) {
+                    // now reconstruct path
+                    size_t x = pathX,y = pathY;
+                    color[startX][startY] |= FROM;
+                    color[goalX][goalY] |= TO;
+                    while( !(x == (size_t)goalX && y == (size_t)goalY) ) {
+                        color[x][y] |= PATH;
+                        std::tie(x,y) = goal_pred[x][y];
+                    }
+                    x = pathX;
+                    y = pathY;
+                    while( !(x == (size_t)startX && y == (size_t)startY) ) {
+                        color[x][y] |= PATH;
+                        std::tie(x,y) = start_pred[x][y];
+                    }
+                }
+
+                return result;
             } // bidirectional_dijkstra
-        private:
             enum {
-                START = 1<<1,
-                GOAL = 1<<2,
+                START_GROUP = 1<<1,
+                GOAL_GROUP = 1<<2,
                 BLOCKED = 1<<3,
-                LINK = (START | GOAL),
+                LINK = (START_GROUP | GOAL_GROUP),
+                PATH = 1<<4,
+                FROM = 1<<5,
+                TO = 1<<6,
             };
         }; // class count_chess_move
     }

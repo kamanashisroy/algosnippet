@@ -42,7 +42,7 @@ int main()
 
     chess_piece piece(false,false,true,n);
     int result = count_chess_move::bidirectional_bfs_end_on_explore(
-            color, piece, startX, startY, goalX, goalY, true);
+            color, piece, startX, startY, goalX, goalY, false);
 
     cout << result << "\n";
 

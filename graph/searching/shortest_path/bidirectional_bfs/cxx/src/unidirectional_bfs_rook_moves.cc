@@ -1,7 +1,7 @@
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 /*
-bidirectional_bfs_pawn_moves.cc file is part of Algosnippet.
+bidirectional_bfs_rook_moves.cc file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
 Copyright (C) 2018  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
@@ -40,9 +40,9 @@ int main()
     int startX = 0, startY = 0, goalX = 0, goalY = 0;
     cin >> startX >> startY >> goalX >> goalY;
 
-    chess_piece piece(false,false,true,n);
-    int result = count_chess_move::bidirectional_bfs_end_on_explore(
-            color, piece, startX, startY, goalX, goalY, true);
+    chess_piece piece(true,false,false,n);
+    int result = count_chess_move::bidirectional_bfs_end_on_expand(
+            color, piece, startX, startY, goalX, goalY, false);
 
     cout << result << "\n";
 
