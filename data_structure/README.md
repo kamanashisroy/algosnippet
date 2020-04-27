@@ -7,6 +7,6 @@ Available data-structures
 - [stack](stack)
 - [queue](queue)
 - [heap](heap)
-- [hash-table](hash-table)
+- [hash-table](hash_table/cxx)
 - [tree](tree)
 
