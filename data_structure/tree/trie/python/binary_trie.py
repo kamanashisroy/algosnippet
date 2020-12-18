@@ -2,10 +2,10 @@
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 '''
-kary_heap.py file is part of Algosnippet.
+binary_trie.py file is part of Algosnippet.
 
 Algosnippet is a collection of practice data-structures and algorithms
-Copyright (C) 2018  Kamanashis Roy
+Copyright (C) 2020  Kamanashis Roy
 
 Algosnippet is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,6 +32,24 @@ def iter_bits(given):
 
 # Binary trie
 class binary_trie:
+    '''
+    Algosnippet is a collection of practice data-structures and algorithms
+    Copyright (C) 2020  Kamanashis Roy
+
+    Algosnippet is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Algosnippet is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
+
+    '''
     __slots__ = ["direction", "left", "right", "compstr", "data"]
     def __init__(self,direction):
         self.direction = direction

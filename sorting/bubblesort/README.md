@@ -7,3 +7,8 @@ Bubble sort is one of the brute force approach of sorting. It is inversion based
 Bubble sort can be optimized by a checking of already sorted state. So in the best case it takes BigO(n). 
 
 But on average it takes BigO(n^2).
+
+Related problems
+================
+
+- [New Year Chaos](https://www.hackerrank.com/challenges/new-year-chaos/problem)

@@ -1,3 +1,0 @@
-
-all:
-	node index.js

@@ -24,35 +24,48 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
 class kary_heap:
     '''
+    Algosnippet is a collection of practice data-structures and algorithms
+    Copyright (C) 2018  Kamanashis Roy
+
+    Algosnippet is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Algosnippet is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
+
     If the order is 1 then it is binary heap.
     If the order is 2 then the tree node has at most 4 children.
     If the order is 3 then the tree node has at most 8 children.
     '''
-    __slots__ = ["order","num_children","heap","location"]
-    def __init__(self,order,maxnode = None):
-        self.order = order
-        self.num_children = (1 << self.order)
+    __slots__ = ["_ORDER","_NUM_CHILDREN","heap"]
+    def __init__(self,order:int):
+        self._ORDER = order
+        self._NUM_CHILDREN = (1 << self._ORDER)
         self.heap = []
         
-        # location is not important if we do not want to delete randomly
-        #self.location = [None]*maxnode
-
     def __len__(self):
         return len(self.heap)
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.heap)
     
     #def __getitem__(self,index):
     #    return self.heap[index]
     
-    def empty(self):
+    def empty(self) -> bool:
         return not self.heap
 
     def peek(self):
         return self.heap[0] if self.heap else None
     
-    def append(self,x):
+    def append(self,x) -> bool:
         '''
         Parameters:
             x       An object that has __le__() defined
@@ -62,7 +75,7 @@ class kary_heap:
             return False
         
         self.heap.append(x)
-        #self.location[x.idx] = len(self.heap)-1
+        self.heap[-1].heap_loc = len(self.heap)-1
         self.__up_heap(len(self.heap)-1)
         return True
 
@@ -74,27 +87,33 @@ class kary_heap:
         result = self.heap[0]
         if len(self.heap) == 1:
             # delete last
-            #self.location[self.heap[-1].idx] = None
+            self.heap[-1].heap_loc = None
             self.heap.pop()
         else:
             # swap with last
             self.heap[-1],self.heap[0] = self.heap[0],self.heap[-1]
-            #self.location[self.heap[0].idx] = 0
+            self.heap[0].heap_loc = 0
+            self.heap[-1].heap_loc = None
 
             # delete last
-            #self.location[self.heap[-1].idx] = None
             self.heap.pop()
 
             # fixup
             self.__down_heap(0)
         return result
     
-    def __fix_heap(self,loc):
+    def fixat(self,loc: int):
+        '''
+        This is useful after relaxation in dijkstra
+        '''
+        self.__fix_heap(loc)
+    
+    def __fix_heap(self, loc: int):
         assert(-1 != loc)
         assert(loc is not None)
         assert(loc < len(self.heap))
         if 0 != loc:
-            parent_index = (loc-1)>>self.order
+            parent_index = (loc-1)>>self._ORDER
             if self.heap[loc] < self.heap[parent_index]:
                 self.__up_heap(loc)
                 return
@@ -103,16 +122,16 @@ class kary_heap:
     #def mydown_heap(self):
     #    self.__down_heap(0)
 
-    def __up_heap_range(self,loc):
+    def __up_heap_range(self,loc: int):
         assert(loc < len(self.heap))
         index = loc
         
         while index > 0:
-            parent_index = (index-1)>>self.order
+            parent_index = (index-1)>>self._ORDER
             yield index,parent_index
             index = parent_index
     
-    def __up_heap(self,loc):
+    def __up_heap(self,loc : int):
         assert (loc != -1)
         assert (loc < len(self.heap))
         for i,p in self.__up_heap_range(loc):
@@ -120,20 +139,20 @@ class kary_heap:
                 break # heap property holds true
             # swap
             self.heap[i],self.heap[p] = self.heap[p],self.heap[i]
-            #self.location[self.heap[i].idx] = i
-            #self.location[self.heap[p].idx] = p
+            self.heap[i].heap_loc = i
+            self.heap[p].heap_loc = p
                 
-    def __down_heap_range(self,loc):
+    def __down_heap_range(self,loc: int) -> int:
         assert(-1 != loc)
         # allow bigger imaginary leaves assert(loc < len(self.heap))
-        return (loc<<self.order)+1
+        return (loc<<self._ORDER)+1
             
-    def __down_heap(self,loc):
+    def __down_heap(self,loc : int):
         cur_loc = loc
         first = self.__down_heap_range(cur_loc)
         while first < len(self.heap):
             smallest_loc = first
-            for i in range(first,min(len(self.heap),first+self.num_children)):
+            for i in range(first,min(len(self.heap),first+self._NUM_CHILDREN)):
                 if self.heap[i] < self.heap[smallest_loc]:
                     smallest_loc = i
             
@@ -143,17 +162,28 @@ class kary_heap:
 
             # swap
             self.heap[cur_loc],self.heap[smallest_loc] = self.heap[smallest_loc],self.heap[cur_loc]
-            #self.location[self.heap[cur_loc].idx] = cur_loc
-            #self.location[self.heap[smallest_loc].idx] = smallest_loc
+            self.heap[cur_loc].heap_loc = cur_loc
+            self.heap[smallest_loc].heap_loc = smallest_loc
             
             cur_loc = smallest_loc
             first = self.__down_heap_range(cur_loc)
 
     def verify_heap(self):
         for loc in range(1,len(self.heap)):
-            parent_index = (loc-1)>>self.order
+            parent_index = (loc-1)>>self._ORDER
             assert self.heap[parent_index] <= self.heap[loc] ,str((loc,parent_index,str(self.heap)))
-            #assert self.location[self.heap[loc].idx] == loc
-            #assert self.location[self.heap[parent_index].idx] == parent_index
+            assert self.heap[loc].loc == loc
 
 
+class kary_node:
+    __slots__ = ["score","pos","heap_loc"]
+    def __init__(self,pos,score):
+        self.score = score
+        self.pos = pos
+        self.heap_loc = 0
+    
+    def __lt__(self,other):
+        return (self.score > other.score)
+
+    def __le__(self,other):
+        return (self.score >= other.score)

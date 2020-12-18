@@ -98,3 +98,10 @@ static int floyd_warshall(const int n, int*adj, int*dist, int root) {
 }
 ```
 
+
+Links
+=======
+
+- [Path with maximum minimum value](https://leetcode.com/problems/path-with-maximum-minimum-value/)
+- [Network delay time](https://leetcode.com/problems/network-delay-time/)
+

@@ -64,4 +64,14 @@ k_t find_combination_subproblem(soln_t&solns, const int sum, const int m, int*co
 }
 
 
+
+
+
 ```
+
+
+Links
+===========
+
+- [Number of dice rolls with target sum](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/)
+
