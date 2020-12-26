@@ -115,4 +115,10 @@ def bin_search_equal(content, pvt, begin=0, end=None):
     return begin if content[begin] == pvt else None
 ```
 
+Links
+======
+
+**Warning: binary search algorithms are hard to get it right**
+
+- [Capacity to ship packages within D days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/submissions/)
 

@@ -4,7 +4,7 @@ This is the dynamic implementation of 01Knapsack problem.
 Subproblems
 ============
 
-Each of the subproblem is divided into two subproblems. It has similarity with dinamic Fibonacci problem, where each of subproblem is divide into two as well.
+Each of the subproblem is divided into two subproblems. It has similarity with dynamic Fibonacci problem, where each of subproblem is divide into two as well.
 
 ```C++
 	soln1 = find_optimal_subproblem(it, end, max_weight, db);

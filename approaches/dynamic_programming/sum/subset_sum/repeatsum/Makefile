@@ -1,6 +1,6 @@
 
 
-TARGET_BIN:=app.bin
+TARGET_BIN:=repeat_sum.bin
 SOURCES:=$(wildcard src/*.cpp)
 OBJECTS:=$(subst .cpp,.o,$(SOURCES))
 CPPFLAGS:=-Wall
@@ -10,8 +10,8 @@ CPPFLAGS+=$(INCLUDES)
 
 all:$(TARGET_BIN)
 
-$(TARGET_BIN):$(OBJECTS)
-	g++ $^ -o $@
+%.bin:src/%.cpp
+	${CXX} $^ -o $@
 
 test:$(TARGET_BIN)
 	./$(TARGET_BIN) < input1.txt

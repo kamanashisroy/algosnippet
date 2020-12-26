@@ -1,5 +1,5 @@
 
-Dinamic programming
+Dynamic programming
 ===================
 
 It uses hashmap to memoization/tabulation. It is optimization over the divide and conquer approach described [here](../divide_and_conquer).
@@ -84,5 +84,5 @@ static vector<int> find_set(const int n, const int sum, int*arr, const int index
 
 ```
 
-Running time for this dinamic approach is pseudo-polynomial(TODO:show how). 
+Running time for this dynamic approach is pseudo-polynomial(TODO:show how). 
 
