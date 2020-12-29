@@ -1,0 +1,9 @@
+digraph fibonacci {
+	node [shape=plaintext];
+	fib0 -> fib2;
+	fib1 -> fib2;
+	fib1 -> fib3;
+	fib2 -> fib3;
+	fib2 -> fib4;
+	fib3 -> fib4;
+}

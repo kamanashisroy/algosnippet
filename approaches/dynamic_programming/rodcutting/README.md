@@ -33,3 +33,4 @@ Links
 ======
 
 - [Integer break](https://leetcode.com/problems/integer-break/)
+- [Cutting stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)

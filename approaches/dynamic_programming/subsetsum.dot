@@ -1,0 +1,9 @@
+digraph subsetsum {
+	node [shape=plaintext];
+	subsetsum0 -> subsetsum1 [label='+1'];
+	subsetsum0 -> subsetsum2 [label='+2'];
+	subsetsum1 -> subsetsum2 [label='+1'];
+	subsetsum0 -> subsetsum3 [label='+3'];
+	subsetsum1 -> subsetsum3 [label='+2'];
+	subsetsum2 -> subsetsum3 [label='+1'];
+}

@@ -5,19 +5,22 @@ Note that unlike Greedy, where each subproblem comes from one parent(like a tree
 
  .                    | Dynamic programming     | Greedy  | Divide and conquor
  ---                  | ---                     | ---     | ---
- Overlapping subproblem | Allowed               | Not allowed | Not allowed
- subproblem graph     | Directed acyclic graph  | Tree    | Tree
+ Overlapping subproblem | Allowed               | Not calculated | Not allowed
+ subproblem graph     | Directed acyclic graph  | Straight line tree    | Tree
 
 Dynamic programming close comparison table
 ============================================
 
- Problem                      | Cost 
- ---                          | --- 
- Fibonacci Numbers            | `O(n)`
- Binomial  Numbers            | `O(n*n)`
- Bellman-Ford algorithm       | `O(V*E)`
- Longest common subsequence   | `O(m*n)`
- Subset sum                   | `O(2^n)`
+ Problem                      | Subproblems    | Cost at each subproblem        | Cost
+ ---                          | ---            | ---                            | ---
+ Fibonacci Numbers            | `O(n)`         | `O(1)`                         | `O(n)`    
+ Binomial  Numbers            | `todo`         | `todo`                         | `O(n*n)`
+ Bellman-Ford algorithm       | `O(V)`         | `O(E)`                         | `O(V*E)` , best case `O(E)`
+ Subset sum                   | `O(2^n)`       | `O(1)`                         | `O(2^n)`
+ Repeat sum (coin change)     | `O(amount)`    | `O(num_coins)`                 | `O(num_coins*amount)`
+ Knapsack                     | `O(2^n)`       | `O(1)`                         | `O(2^n)`
+ Longest common subsequence   | `O(m*n)`       | `O(1)`                         | `O(m*n)`
+ Brick game                   | `O(n)`         | `O(1)`                         | `O(n)`
   
 
 Comparison
@@ -25,17 +28,23 @@ Comparison
 
 #### Fibonacci number
 
+Approach: Forward in-edge relaxation, prefix-subproblem-memoization
+
 ```
 // fill me
 ```
 
 #### Binomial number
 
+Approach: Forward in-edge relaxation, prefix-subproblem-memoization
+
 ```
 // fill me
 ```
 
 #### Bellman-Ford algorithm
+
+Approach: Random edge relaxation
 
 ```python
 def bellman_ford(self, n: int, edges: List[List[int]], src: int, dst: int) -> int:
@@ -59,6 +68,8 @@ def bellman_ford(self, n: int, edges: List[List[int]], src: int, dst: int) -> in
 
 #### Subset sum
 
+Approach: Forward BFS(out-edge), prefix-subproblem-memoization
+
 ```python
 class Solution:
     def subset_sum(self, nums, target):
@@ -66,7 +77,7 @@ class Solution:
         memo[0] = 1                    # root
         N = len(nums)
         
-        for x in nums:                 # expand edges through x (induction step)
+        for x in nums:                 # expand subproblems through x (induction step)
             memo_next = dict()
             for k in memo.keys():
                 memo_next[k] = 1
@@ -78,10 +89,35 @@ class Solution:
         return False                   # no relaxation in decision problem
 ```
 
-#### Coin-change algorithm
+#### Knapsack
+
+Approach: Forward BFS(out-edge) + relaxation, prefix-subproblem-memoization
 
 ```python
-def coinChange(self, coins: List[int], amount: int) -> int:
+def solve_knapsack(objs, limit):
+    memo = dict()
+    memo[0] = 0                        # root
+    
+    result = 0
+    for w,v in objs:                   # expand subproblems through object of weight,w and value,v (induction step)
+        memo_next = dict()
+        for x in memo.keys():
+            if x not in memo_next or memo_next[x] < memo[x]:
+                memo_next[x] = memo[x]
+            calc_value = memo[x]+v
+            if (x+w) < limit and ((x+w) not in memo_next or memo_next[x+w] < calc_value):
+                memo_next[x+w] = calc_value
+                result = max(result,calc_value)     # relaxation step
+        memo = memo_next
+    return result
+```
+
+#### Repeat-sum(Coin-change) algorithm
+
+Approach: Forward in-edge relaxation, prefix-subproblem-memoization
+
+```python
+def coinChangeMin(self, coins: List[int], amount: int) -> int:
     N = len(coins)
     memo = [-1]*(amount+1)
     memo[0] = 0                        # root
@@ -92,7 +128,28 @@ def coinChange(self, coins: List[int], amount: int) -> int:
     return memo[amount]
 ```
 
+Counting number of unique ways has exponential time and space cost. O(X^C) where coin can appear X number of times.
+
+```python
+def coinChangeCountWays(n, c):
+    # Write your code here
+    memo = [None]*(n+1)
+    memo[0] = {0:1}                    # root
+    for i in range(1,n+1):
+        next_memo = defaultdict(int)
+        for ci,x in enumerate(c):      # expand edges
+            if i >= x:
+                for comb,count in memo[i-x].items():
+                    mycomb = comb + (1<<(16*ci))
+                    if mycomb not in next_memo:
+                        next_memo[mycomb] = count
+        memo[i] = next_memo
+    return sum(memo[n].values())
+```
+
 #### Longest common subsequence
+
+Approach: Forward in-edge relaxation, prefix-subproblem-memoization
 
 ```python
 def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -111,6 +168,66 @@ def longestCommonSubsequence(self, text1: str, text2: str) -> int:
 
     return memo[LEN1][LEN2]
 ```
+
+#### Bricks Game
+
+Similar to blackjack game playing.
+
+Approach: Backward in-edge relaxation, suffix-subproblem-memoization
+
+```
+def bricksGame(arr):
+    N = len(arr)
+    memo = [MSCORE(0,0) for i in range(N+1)]                    # root = memo[N] = MSCORE(0,0)
+    
+    for i in reversed(range(N)):
+        # when in pos i
+        cum_score = arr[i]
+        result = MSCORE(my=memo[i+1].his+cum_score,his=memo[i+1].my)
+        for j in range(i+1,min(i+3,N)):                         # expand 3 ways
+            cum_score += arr[j]
+            rest = memo[j+1]
+            combined = MSCORE(my=rest.his+cum_score, his=rest.my)
+            if combined.my > result.my:
+                result = combined                               # relaxation
+        memo[i] = result
+    return memo[0].my
+```
+
+[Bricks game](https://www.hackerrank.com/challenges/play-game)
+
+#### Cutting stick
+
+Approach: Forward BFS, substring-subproblem-memoization
+
+```
+    def stick_cutting_bottomup(self, cuts:List[int]):
+        N = len(cuts)
+        memo = [[-1]*(N-sz) for sz in range(N)]
+        
+        # setup smaller base cases                              # Many roots
+        for k in range(2):
+            for begin in range(N-k):
+                if 2 == k:
+                    memo[begin][k] = cuts[begin+k]-cuts[begin] # base case 2 , 1 cut is needed
+                else:
+                    memo[begin][k] = 0 # base case, no cuts required
+                
+        for k in range(3,N):
+            for begin in range(N-k):
+                end = begin+k
+                setup_cost = cuts[end]-cuts[begin]
+                cost = -1
+                for i in range(begin+1,end):                     # expand to substrings
+                    costa = memo[begin][i-begin]
+                    costb = memo[i][end-i]
+                    if -1 == cost or cost > (costa+costb+setup_cost):
+                        cost = costa+costb+setup_cost            # relaxation
+                memo[begin][k] = cost
+        return memo[0][N-1]
+```
+
+[Cutting stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
 
 Lectures
 =========
