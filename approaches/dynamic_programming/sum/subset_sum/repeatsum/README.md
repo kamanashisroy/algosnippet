@@ -28,3 +28,4 @@ Links
 - [Jump Game VI](https://leetcode.com/problems/jump-game-vi/)
 - [Number of Dice Rolls With Target Sum](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/)
 - [The Coin Change Problem](https://www.hackerrank.com/challenges/coin-change/)
+- [Number of Ways to Paint N × 3 Grid](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/)

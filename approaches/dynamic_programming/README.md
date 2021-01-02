@@ -77,7 +77,7 @@ class Solution:
         memo[0] = 1                    # root
         N = len(nums)
         
-        for x in nums:                 # expand subproblems through x (induction step)
+        for x in nums:                 # expand(out-edge) subproblems through x (induction step)
             memo_next = dict()
             for k in memo.keys():
                 memo_next[k] = 1
@@ -99,7 +99,7 @@ def solve_knapsack(objs, limit):
     memo[0] = 0                        # root
     
     result = 0
-    for w,v in objs:                   # expand subproblems through object of weight,w and value,v (induction step)
+    for w,v in objs:                   # expand(out-edge) subproblems through object of weight,w and value,v (induction step)
         memo_next = dict()
         for x in memo.keys():
             if x not in memo_next or memo_next[x] < memo[x]:
@@ -122,7 +122,7 @@ def coinChangeMin(self, coins: List[int], amount: int) -> int:
     memo = [-1]*(amount+1)
     memo[0] = 0                        # root
     for i in range(1,amount+1):
-        for c in coins:                # expand edges
+        for c in coins:                # expand(in-edge) edges
             if i >= c and -1 != memo[i-c] and (-1 == memo[i] or memo[i] > (memo[i-c]+1)): # relaxation
                 memo[i] = memo[i-c]+1
     return memo[amount]
@@ -137,7 +137,7 @@ def coinChangeCountWays(n, c):
     memo[0] = {0:1}                    # root
     for i in range(1,n+1):
         next_memo = defaultdict(int)
-        for ci,x in enumerate(c):      # expand edges
+        for ci,x in enumerate(c):      # expand(in-edge) edges
             if i >= x:
                 for comb,count in memo[i-x].items():
                     mycomb = comb + (1<<(16*ci))
@@ -160,7 +160,7 @@ def longestCommonSubsequence(self, text1: str, text2: str) -> int:
     memo = [[0]*(LEN2+1) for i in range(LEN1+1)]
 
     for i,x in enumerate(text1):
-        for j,y in enumerate(text2):                            # expand 3 ways
+        for j,y in enumerate(text2):                            # expand(in-edge) 3 ways
             if x == y:                                          # expand from top-left corner
                 memo[i+1][j+1] = memo[i][j] + 1
             else:                                               # expand from left or from top
@@ -184,7 +184,7 @@ def bricksGame(arr):
         # when in pos i
         cum_score = arr[i]
         result = MSCORE(my=memo[i+1].his+cum_score,his=memo[i+1].my)
-        for j in range(i+1,min(i+3,N)):                         # expand 3 ways
+        for j in range(i+1,min(i+3,N)):                         # expand(in-edge) 3 ways
             cum_score += arr[j]
             rest = memo[j+1]
             combined = MSCORE(my=rest.his+cum_score, his=rest.my)
@@ -206,7 +206,7 @@ Approach: Forward BFS, substring-subproblem-memoization
         memo = [[-1]*(N-sz) for sz in range(N)]
         
         # setup smaller base cases                              # Many roots
-        for k in range(2):
+        for k in range(3):
             for begin in range(N-k):
                 if 2 == k:
                     memo[begin][k] = cuts[begin+k]-cuts[begin] # base case 2 , 1 cut is needed
