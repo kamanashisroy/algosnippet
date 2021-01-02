@@ -36,10 +36,47 @@ Approach: Forward in-edge relaxation, prefix-subproblem-memoization
 
 #### Binomial number
 
-Approach: Forward in-edge relaxation, prefix-subproblem-memoization
+Approach: Forward in-edge relaxation, 2D-prefix-subproblem-memoization
+
+```C++
+/*
+  Pascals_Triangle
+  1
+  1  1
+  1  2  1
+  1  3  3  1
+  1  4  6  4  1
+  1  5  10 10 5 1
+
+  ...
+  ...
+  tri[i][j] = tri[i-1][j] + tri[i-1][j-1]
+
+ */
+std::size_t binomial_calc(const std::size_t xn, const std::size_t xk) {
+    std::size_t tri[xn+1][xn+1];
+
+    // initialize the vertial 1 and ending 1
+    for(std::size_t row = 0; row <= xn; row++) {
+        tri[row][0] = 1;
+        tri[row][row] = 1;
+    }
+
+    // calculate pascal triangle
+    for(std::size_t row = 2; row <= xn; row++) {
+        for(std::size_t col = 1; col < row; col++) {
+            tri[row][col] = tri[row-1][col] + tri[row-1][col-1];
+        }
+    }
+    
+    return tri[xn][xk];
+}
+```
+
+#### Catalan number
 
 ```
-// fill me
+//TODO
 ```
 
 #### Bellman-Ford algorithm
@@ -149,7 +186,9 @@ def coinChangeCountWays(n, c):
 
 #### Longest common subsequence
 
-Approach: Forward in-edge relaxation, prefix-subproblem-memoization
+Approach: Forward in-edge relaxation, 2-prefix-subproblem-memoization
+
+Just like `Binomial number` calculation above.
 
 ```python
 def longestCommonSubsequence(self, text1: str, text2: str) -> int:
