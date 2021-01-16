@@ -29,3 +29,15 @@ String data-structures
 - TODO add link for Trie
 - TODO radix-tree
 - TODO compressed trie
+
+Links
+======
+
+#### String edit problems
+
+- [Regex matching](https://leetcode.com/problems/regular-expression-matching/)
+
+#### Optimization problems
+
+- [Maximum score from removing substrings](https://leetcode.com/problems/maximum-score-from-removing-substrings/)
+

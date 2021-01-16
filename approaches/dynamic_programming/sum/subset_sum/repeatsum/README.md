@@ -29,3 +29,4 @@ Links
 - [Number of Dice Rolls With Target Sum](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/)
 - [The Coin Change Problem](https://www.hackerrank.com/challenges/coin-change/)
 - [Number of Ways to Paint N × 3 Grid](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/)
+- Greedy! [Maximum units on a truck](https://leetcode.com/contest/weekly-contest-222/problems/maximum-units-on-a-truck/)

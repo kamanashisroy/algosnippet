@@ -6,3 +6,4 @@ Related problems
 =================
 
 - [Two sum](https://leetcode.com/problems/two-sum/)
+- [Count good meals](https://leetcode.com/contest/weekly-contest-222/problems/count-good-meals/)
