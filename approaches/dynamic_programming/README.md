@@ -472,6 +472,10 @@ class LLDicompose(Generic[HT]):
         return None
 ```
 
+#### Interval DP
+
+- [Largest Submatrix With Rearrangements](https://leetcode.com/problems/largest-submatrix-with-rearrangements/)
+
 Lectures
 =========
 

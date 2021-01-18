@@ -23,3 +23,6 @@ The [Subtrees and path](https://www.hackerrank.com/challenges/subtrees-and-paths
 #### Rank finding
 
 The [Triplets](https://www.hackerrank.com/challenges/triplets/problem) uses **subtree size** augmentation built on cxx avl-tree.
+
+- [Reverse pairs](https://leetcode.com/problems/reverse-pairs/)
+

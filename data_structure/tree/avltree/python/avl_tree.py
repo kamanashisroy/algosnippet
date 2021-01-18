@@ -1,10 +1,9 @@
-#!/bin/python3
-# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+#!python
 
 '''
 avl_tree.py file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
-Copyright (C) 2018  Kamanashis Roy
+Copyright (C) 2021  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -17,285 +16,82 @@ You should have received a copy of the GNU General Public License
 along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+from typing import TypeVar,Generic
 
-import algo_tree
+AVLTREENODET = TypeVar('AVLTREENODET')
 
-def upgrade_x_left(x,y):
-    #print("Doing upgrade_x_left")
-    assert(y.left == x)
-    # left heavy
-    #                              < Y <
-    #
-    #                                     |\
-    #                   < X <             | \
-    #                /|       |\          |  \
-    #               / |       |M\         | R \
-    #              /  |       ----        |    \
-    #             / L |                   -------
-    #            /    |
-    #           -------
-    # right rotate
-    #                   < X < 
-    #                /|            < Y <
-    #               / |          /|       |\
-    #              /  |         /M|       | \
-    #             / L |        ----       |  \
-    #            /    |                   | R \
-    #           -------                   |    \
-    #                                     -------
-
-    middle = x.right
-
-    # swap
-    x.swap(y)
-    x,y = y,x
-
-    # fixup y
-    y.left = middle
-    if(middle is not None):
-        middle.parent = y
-    y.height -= 1
-    
-    # fixup x
-    x.right = y
-    y.parent = x
-
-    # fix height
-    y.height -= 1
-    y.fix_height()
-    
-    # fix subtree-size
-    y.fix_subtree_size()
-    x.fix_subtree_size()
-
-def upgrade_x_right(x,y):
-    #print("Doing upgrade_x_right")
-    assert(y.right == x)
-    # right heavy
-    #                   < Y <
-    #                /|          < X <    
-    #               / |        /|      |\
-    #              /  |       / |      | \
-    #             / L |      /  |      |  \
-    #            ------     / M |      | R \
-    #                      ------      |    \
-    #                                  -------
-    # left rotate
-    #                            < X <
-    #                   < Y <          |\ 
-    #                /|      |\        | \
-    #               / |      | \       |  \
-    #              /  |      |  \      |   \
-    #             / L |      | M \     | R  \
-    #            ------      ------    -------
-    #
-
-    middle = x.left
-
-    # swap
-    x.swap(y)
-    x,y = y,x
-
-    # fixup y
-    y.right = middle
-    if(middle is not None):
-        middle.parent = y
-    
-    # fixup x
-    x.left = y
-    y.parent = x
-
-    # fix height
-    y.height -= 1
-    y.fix_height()
-    
-    # fix subtree-size
-    y.fix_subtree_size()
-    x.fix_subtree_size()
-
-def upgrade_z_left(x,y,z):
-    assert(x.right == z)
-    assert(y.left == x)
-    # middle heavy
-    #                                           < Y <
-    #                   < X <                         |\
-    #                /|              < z <            | \
-    #               /L|           /|      |\          |  \
-    #              ----          / |      | \         | R \
-    #                           /  |      |  \        |    \
-    #                          /ML |      | MR\       -------
-    #                         ------      ------
-    #                                
-    # rotate left and then right, swap Z and Y
-    #                                 
-    #                                < Z <
-    #                   < X <                    < Y <  
-    #                /|       |\             /|       |\
-    #               /L|       | \           / |       | \
-    #              ----       |  \         /  |       |  \
-    #                         |ML \       / MR|       | R \ 
-    #                         ------     ------       ------
-    middle_left = z.left
-    middle_right = z.right
-    right = y.right
-
-    # swap
-    z.swap(y)
-    z,y = y,z
-
-    # fix z
-    z.left = x
-    x.parent = z
-    z.right = y
-    y.parent = z
-
-    # fix x
-    x.right = middle_left
-    if middle_left is not None:
-        middle_left.parent = x
-
-    # fix y
-    y.left = middle_right
-    if middle_right is not None:
-        middle_right.parent = y
-
-    # fix height
-    x.height -= 1
-    y.height -= 1
-    y.fix_height()
-    
-    # fix subtree-size
-    x.fix_subtree_size()
-    y.fix_subtree_size()
-    z.fix_subtree_size()
-
-def upgrade_z_right(x,y,z):
-    assert(x.left == z)
-    assert(y.right == x)
-    # middle heavy
-    #                   < Y <                         
-    #                                           < X < 
-    #                /|              < z <            |\
-    #               /L|           /|      |\          |R\
-    #              ----          / |      | \         ----
-    #                           /  |      |  \
-    #                          /ML |      | MR\
-    #                         ------      ------
-    #                                
-    # rotate left and then right, swap Z and Y
-    #                                 
-    #                                < Z <
-    #                   < Y <                    < X <  
-    #                /|       |\             /|       |\
-    #               /L|       | \           / |       | \
-    #              ----       |  \         /  |       |  \
-    #                         |ML \       / MR|       | R \ 
-    #                         ------     ------       ------
-    middle_left = z.left
-    middle_right = z.right
-    right = y.right
-
-    # swap
-    z.swap(y)
-    y,z = z,y
-
-    # fix z
-    z.left = y
-    y.parent = z
-    z.right = x
-    x.parent = z
-
-    # fix x
-    x.left = middle_right
-    if middle_right is not None:
-        middle_right.parent = x
-
-    # fix y
-    y.right = middle_left
-    if middle_left is not None:
-        middle_left.parent = y
-
-    # fix height
-    x.height -= 1
-    y.height -= 1
-    y.fix_height()
-    
-    # fix subtree-size
-    x.fix_subtree_size()
-    y.fix_subtree_size()
-    z.fix_subtree_size()
-
-
-class avl_tree(algo_tree.algo_tree):
+class avl_tree(Generic[AVLTREENODET]):
     '''
     AVL tree is self balancing binary tree
     '''
-    def __init__(self,x=None,parent=None):
-        algo_tree.algo_tree.__init__(self,x,parent)
+    __slots__ = ['root']
+    def __init__(self, root:AVLTREENODET=None):
+        self.root = root
 
+    def insert(self, node:AVLTREENODET):
+        top:AVLTREENODET = self.root
+        if top is None:
+            self.root = node
+            return
 
-    @classmethod
-    def from_sorted_unique_array(cls,parent,sorted_array,start,end):
-        '''
-        build avl tree from sorted data.
-        NOTE it can not handle duplicate data
+        assert(top)
+        assert(not top.parent)
 
-        Parameters:
-            start   start index of the sorted array
-            end     end index(not included) of the sorted array
-        '''
-        mid = (start+end)>>1
-        x = sorted_array[mid]
-        self = avl_tree(x,parent)
-        left_height = 0
-        right_height = 0
-        if start != mid:
-            self.left = avl_tree.from_sorted_unique_array(self,sorted_array,start,mid)
-            self.subtree_size += self.left.subtree_size
-            left_height = self.left.height
-        if (mid+1) != end:
-            self.right = avl_tree.from_sorted_unique_array(self,sorted_array,mid+1,end)
-            self.subtree_size += self.right.subtree_size
-            right_height = self.right.height
-        self.height = max(left_height,right_height)
-        return self
- 
+        while top:
+            if node.val == top.val:
+                top.dup.append(node)
+                break
+            elif node.val < top.val:
+                if top.left is None:
+                    top.left = node
+                    node.parent = top
+                    break
+                else:
+                    top = top.left
+            else:
+                if top.right is None:
+                    top.right = node
+                    node.parent = top
+                    break
+                else:
+                    top = top.right
 
-    def balancing_factor(self):
-        bfactor = 0
-        if self.left is None:
-            bfactor = -1
-        else:
-            bfactor = self.left.height
-        if self.right is None:
-            bfactor += 1
-        else:
-            bfactor -= self.right.height
-        return bfactor
+        root:AVLTREENODET = top
+        while top:
+            top = avl_tree.balance(top)
+            assert(top)
+            root = top
+            top = top.parent
+            
+        assert(root)
+        assert(not root.parent)
+
+        self.root = root # update root
+
+            
+    @staticmethod
+    def balancing_factor(x:AVLTREENODET) -> int:
+        rheight = -1 if x.right is None else x.right.height
+        lheight = -1 if x.left is None else x.left.height
+        return lheight - rheight
         
-    def avl_balance(self, added_node):
+    @staticmethod
+    def balance(node:AVLTREENODET) -> AVLTREENODET:
         '''
         Parameters:
             added_node The node containing the new value, it may not be the real
                        added-node. It can be some other swapped node
             return The node containing the added value.
         '''
-
-
-        data = None
-        if added_node is not None:
-            data = added_node.root
-
-        if self.parent is None:
-            #print("No parent:" + repr(self))
-            # No balancing for root node
-            return added_node
-
         # calculate the balance factor
-        bfactor = self.parent.balancing_factor()
-        #print("balancing factor of parent {parent} is {bf}".format(parent=repr(self.parent),bf=bfactor))
+        bfactor = avl_tree.balancing_factor(node)
+        #print("balancing factor of {node} is {bf}".format(node=repr(node),bf=bfactor))
 
-        if self == self.parent.left and bfactor > 1:
+        if bfactor >= -1 and bfactor <= 1:
+            node.augment()
+            return node # no balancing needed
+
+        if bfactor > 0:
             # When insertion
             # left heavy
             #                 X < Y <
@@ -306,35 +102,10 @@ class avl_tree(algo_tree.algo_tree):
             #            /    |
             #           -------
 
-            left_bfactor = self.balancing_factor()
-            if left_bfactor > 0:
-                # left heavy
-                #                              < Y <
-                #
-                #                                     |\
-                #                   < X <             | \
-                #                /|       |\          |  \
-                #               / |       |M\         | R \
-                #              /  |       ----        |    \
-                #             / L |                   -------
-                #            /    |
-                #           -------
-                # right rotate
-                #                   < X < 
-                #                /|            < Y <
-                #               / |          /|       |\
-                #              /  |         /M|       | \
-                #             / L |        ----       |  \
-                #            /    |                   | R \
-                #           -------                   |    \
-                #                                     -------
-                if added_node == self:
-                    added_node = self.parent # it swaps the value with parent
-
-                upgrade_x_left(self,self.parent)
-                assert(added_node.root == data)
-
-            elif left_bfactor < 0:
+            left = node.left
+            assert(left is not None)
+            left_bfactor = avl_tree.balancing_factor(left)
+            if left_bfactor < 0:
                 # middle heavy
                 #                                           < Y <
                 #                   < X <                         |\
@@ -354,14 +125,10 @@ class avl_tree(algo_tree.algo_tree):
                 #              ----       |  \         /  |       |  \
                 #                         |ML \       / MR|       | R \ 
                 #                         ------     ------       ------
-                if added_node == self.right:
-                    added_node = self.parent # it swaps the value with parent
-
-                upgrade_z_left(self,self.parent,self.right)
-                assert(added_node.root == data)
-
-
-        elif self == self.parent.right and bfactor < -1:
+                
+                avl_tree.rotate_left(left)
+            return avl_tree.rotate_right(node)
+        else:
             # when insertion
             # right heavy
             #                   < Y < X
@@ -371,143 +138,220 @@ class avl_tree(algo_tree.algo_tree):
             #                         | R \
             #                         |    \
             #                         -------
-            right_bfactor = self.balancing_factor()
-            if right_bfactor < 0:
-                # right heavy
-                # (Y.bfactor < -1)   < Y < 
-                #                /|            < X < (X.bfactor < 0)
-                #               / |          /|       |\
-                #              /  |         /M|       | \
-                #             / L |        ----       |  \
-                #            ------                   | R \
-                #                                     |    \
-                #                                     -------
-                # left rotate (upgrade right)
-                #                              < X <
-                #                   < Y <             |\
-                #                /|       |\          | \
-                #               / |       |M\         |  \
-                #              /  |       ----        |   \
-                #             / L |                   |  R \
-                #            /    |                   |     \
-                #           -------                   --------
-                if added_node == self:
-                    added_node = self.parent # it swaps the value with parent
-
-                upgrade_x_right(self,self.parent)
-                assert(added_node.root == data)
-            elif right_bfactor > 0:
+            right = node.right
+            right_bfactor = avl_tree.balancing_factor(right)
+            if right_bfactor > 0:
                 # middle heavy
                 # TODO diagram
-                if added_node == self.left:
-                    added_node = self.parent # it swaps the value with parent
+                avl_tree.rotate_right(right)
 
-                upgrade_z_right(self,self.parent,self.left)
-                assert(added_node.root == data)
+            return avl_tree.rotate_left(node)
+        return node
 
-        elif self == self.parent.left and bfactor < -1:
-            # when deletion
-            # right heavy
-            #                 X < Y <
-            #                /|       |\
-            #               /L|       | \
-            #              ----       |  \ 
-            #                         | R \
-            #                         |    \
-            #                         -------
-            # TODO implement
-            pass
+    @staticmethod
+    def rotate_left(node:AVLTREENODET) -> AVLTREENODET:
+        # right heavy
+        #                   < Y < X
+        #                /|       |\
+        #               /L|       | \
+        #              ----       |  \ 
+        #                         | R \
+        #                         |    \
+        #                         -------
+        head = node.right
+        assert(head is not None)
+        parent = node.parent
+        middle = head.left
 
-        elif self == self.parent.right and bfactor > 1:
-            # when deletion
-            # left heavy
-            #                   < Y < X
-            #                /|       |\
-            #               / |       |R\
-            #              /  |       ----
-            #             / L |
-            #            /    |
-            #           -------
-            # TODO implement
-            pass
-        return added_node
+        node.right,head.left,head.parent,node.parent = middle,node,parent,head
 
-    def insert_recursive(self,x,maintain_dup_list=True,new_avl_tree = None):
+        # fixup parent
+        if parent:
+            if node == parent.right:
+                parent.right = head
+            else:
+                parent.left = head
 
-        #print("Inserting {x} in avl-tree".format(x=str(x)))
-        if(new_avl_tree is None):
-            new_avl_tree = avl_tree(x)
+        # fixup middle
+        if middle:
+            middle.parent = node
 
-        # insert
-        result_node,is_duplicate = algo_tree.algo_tree.insert_recursive(self,x,maintain_dup_list,new_avl_tree)
-        if result_node is None:
-            # when the insertion fails
-            return result_node,is_duplicate
+        node.augment()
+        head.augment()
+        #print('rotate left', repr(head))
+        return head
 
-        #print("Inserted {x} in avl-tree --- backtracking at {y}".format(x=repr(result_node),y=repr(self)))
-        if not is_duplicate:
-            #print("balancing avl-tree for {node}".format(node=repr(self)))
-            # We really added a new node
-            result_node = self.avl_balance(result_node)
-            assert(result_node.root == x)
+    @staticmethod
+    def rotate_right(node:AVLTREENODET) -> AVLTREENODET:
+        # left heavy
+        #                 X < Y <
+        #                /|       |\
+        #               / |       |R\
+        #              /  |       ----
+        #             / L |
+        #            /    |
+        #           -------
+        head:AVLTREENODET = node.left
+        assert(head)
+        middle:AVLTREENODET = head.right
+        parent:AVLTREENODET = node.parent
 
-        return result_node,is_duplicate
+        node.left,head.right,head.parent,node.parent  = middle,node,parent,head
 
-    def _insert_non_recursive(self,x,maintain_dup_list=True,new_node=None):
-        if new_node is None:
-            new_node = avl_tree(x)
+        # fixup parent
+        if parent:
+            if node == parent.right:
+                parent.right = head
+            else:
+                parent.left = head
+        # fixup middle
+        if middle:
+            middle.parent = node
+
+        node.augment()
+        head.augment()
+        #print('rotate right', repr(head))
+        return head
+
+
+    def count_smaller(self, x) -> int:
+        top:AVLTREENODET = self.root
+        if top is None:
+            return 0
+
+        count = 0
+        while top:
+            if x < top.val:
+                if top.left is None:
+                    break
+                else:
+                    top = top.left
+            else:
+                if top.val < x:
+                    count += len(top.dup)+1
+                if top.left:
+                    count += top.left.subtree
+                if top.right is None:
+                    break
+                else:
+                    top = top.right
+        return count
+
+
+
+ALGOTREENODE = TypeVar('ALGOTREENODE')
+
+class algo_tree(Generic[ALGOTREENODE]):
+    '''
+              < X < 
+           /|       |\
+          / |       | \
+         /  |       |  \
+        / L |       | R \
+       ------       ------
+
+    Attributes:
+        left        Left child
+        right       Right child
+        parent      Parent node
+        height      Height of the tree
+        subtree     number of nodes in the subtree
+        dup         nodes with equal value
         
-        return algo_tree.algo_tree._insert_non_recursive(self,x,maintain_dup_list,new_node)
+    '''
+    # XXX subtree_size does not count duplicates
+    __slots__ = ["left","right","parent", "val","height","subtree","dup"]
+    def __init__(self,x:ALGOTREENODE):
+        self.left = None
+        self.right = None
+        self.parent = None
+        self.val = x
+        self.dup = []
+        self.height = 0
+        self.subtree = 1 # subtree size is always > 1
+
+    def augment(self):
+        height,subtree = 0,1+len(self.dup)
+        left,right = self.left,self.right
+        if left:
+            height = left.height+1
+            subtree += left.subtree
+        if right:
+            height = max(height,right.height+1)
+            subtree += right.subtree
         
-    def insert_non_recursive_after(self, added_node):
-        self.fix_height() # this is recursive
-        added_node = self.avl_balance(added_node)
-        return algo_tree.algo_tree.insert_non_recursive_after(self,added_node)
+        self.height,self.subtree = height,subtree
+
+    '''
+    Emulating Container
+    '''
+    def __len__(self) -> int:
+        return self.subtree
+
+    def __getitem__(self, idx) -> ALGOTREENODE:
+        '''
+        Return:
+            algo_tree: the node with idx-th rank
+        '''
+        pass
 
 
+    def __contains__(self,x) -> bool:
+        return self.find(x) is not None
 
+    def __iter__(self) -> None:
+        '''
+        Traverse inorder
+        '''
+        if self.left:
+            for node in self.left:
+                yield node
+        yield self
+        if self.right:
+            for node in self.right:
+                yield node
+
+    '''
+    Emulating neumeric types
+    '''
+
+    def __lshift__(self,other):
+        return self.left
+
+    def __rshift__(self,other):
+        return self.right
+
+    def __str__(self,depth:int=0) -> str:
+        ret = ""
+        if(self.left is None):
+            ret += "\t"*(depth+2)+"None\n"
+        else:
+            ret += self.left.__str__(depth+1)
+        ret += "\t"*(depth+1)+str(self.height)+','+str(self.val)+','+str(self.subtree)+"\n"
+        if(self.right is None):
+            ret += "\t"*(depth+2)+"None\n"
+        else:
+            ret += self.right.__str__(depth+1)
+        return ret
+
+    def __repr__(self) -> str:
+        return '<algo_tree:val={val},left={left},right={right},parent={parent}>'.format(val=str(self.val),left=id(self.left),right=id(self.right),parent=id(self.parent))
+
+    def assert_invariant(self):
+        last = None
+        for x in self:
+            if last is not None:
+                assert(x >= last)
+            last = x
 
 
 if __name__ == "__main__":
     tree = avl_tree()
-    tree.insert_non_recursive(5)
-    tree.insert_non_recursive(3)
-    tree.insert_non_recursive(6)
-    print(str(tree))
-    print("==========================")
-    for i in range(10):
-        tree.insert_non_recursive(i)
+    nums = [4,3,2,1,5,3]
+    for x in nums:
+        print(tree.count_smaller(x))
+        node = algo_tree(x)
+        tree.insert(node)
 
-    print(str(tree))
-    print("==========================")
-    # try wikipedia example
-    tree = avl_tree()
-    tree.insert_non_recursive('M')
-    tree.insert_non_recursive('N')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('O')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('L')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('K')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('Q')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('P')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('H')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('I')
-    print(str(tree))
-    print("==========================")
-    tree.insert_non_recursive('A')
-    print(str(tree))
-    print("==========================")
-
+    print(tree.root)
+            
