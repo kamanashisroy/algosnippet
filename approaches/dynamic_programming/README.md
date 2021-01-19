@@ -216,6 +216,59 @@ def coinChangeCountWays(n, c):
 
 Again, calculating the maximum amount possible, for `K` number of coins is greedy problem(`biggest_coin*K`). 
 
+#### Edit distance
+
+Approach: Forward in-edge relaxation, BFS from multiple DAG root
+
+Just like `Binomial number` calculation above.
+
+```python
+from collections import namedtuple
+
+DIST = namedtuple('DIST','cost,op', defaults=(0,None))
+class edit_distance:
+    @staticmethod
+    def expand(topleft, top, left, x, y):
+        cost,op = topleft.cost+1,'r'   # replace character
+        if x == y and cost > topleft.cost:
+            cost,op = topleft.cost,'a' # accept character
+        if cost > (left.cost+1):
+            cost,op = left.cost+1,'i'  # insert character
+        if cost > (top.cost+1):
+            cost,op = top.cost+1,'d'   # drop character
+        return DIST(cost=cost,op=op)
+
+    @staticmethod
+    def distance(src:str, dst:str) -> int:
+        M,N = len(src),len(dst)
+        if 0 == M: # when from word is empty
+            return N
+
+        print('None |', ' | '.join(dst))
+        print(' | '.join(['---' for _ in range(N+1)]))
+        memo = [DIST(cost=i,op='i' if i else ' ') for i in range(N+1)] # DAG roots
+        print('root |', ' | '.join(map(str,iter(memo))))
+
+        # Do BFS
+        for i,x in enumerate(src,1):
+            next_memo = [DIST(cost=i,op='d')] # initialize with cost of drop
+            for j,y in enumerate(dst,1):
+                next_memo.append(edit_distance.expand(memo[j-1], memo[j], next_memo[-1], x, y))
+            memo = next_memo
+            print(x, '|', ' | '.join(map(str,iter(memo))))
+
+        return memo[-1].cost
+```
+
+Here is the visualization for `edit_distance.distance('tea', 'tree')`.
+
+None | t | r | e | e
+--- | --- | --- | --- | ---
+root | DIST(cost=0, op=' ') | DIST(cost=1, op='i') | DIST(cost=2, op='i') | DIST(cost=3, op='i') | DIST(cost=4, op='i')
+t | DIST(cost=1, op='d') | DIST(cost=0, op='a') | DIST(cost=1, op='i') | DIST(cost=2, op='i') | DIST(cost=3, op='i')
+e | DIST(cost=2, op='d') | DIST(cost=1, op='d') | DIST(cost=1, op='r') | DIST(cost=1, op='a') | DIST(cost=2, op='a')
+a | DIST(cost=3, op='d') | DIST(cost=2, op='d') | DIST(cost=2, op='r') | DIST(cost=2, op='r') | DIST(cost=2, op='r')
+
 #### Longest common subsequence
 
 Approach: Forward in-edge relaxation, 2D-prefix-subproblem-memoization
@@ -286,7 +339,7 @@ Similar to blackjack game playing.
 
 Approach: Backward in-edge relaxation, suffix-subproblem-memoization
 
-```
+```python
 def bricksGame(arr):
     N = len(arr)
     memo = [MSCORE(0,0) for i in range(N+1)]                    # root = memo[N] = MSCORE(0,0)
@@ -313,7 +366,7 @@ Approach: Forward BFS, substring-subproblem-memoization
 
 Just like `catalan number` calculation above.
 
-```
+```python
     def stick_cutting_bottomup(self, cuts:List[int]):
         N = len(cuts)
         memo = [[-1]*(N-sz) for sz in range(N)]
@@ -380,7 +433,7 @@ Just like `catalan number` calculation.
 
 Bottom up solution below,
 
-```
+```python
     def maxScore(self, nums: List[int]) -> int:
         N = len(nums)
         if 0 == N:
@@ -424,7 +477,7 @@ Bottom up solution below,
 
 Decomposing a linked-list into buckets,
 
-```
+```python
 from typing import TypeVar, Generic
 
 HT = TypeVar('HT')
