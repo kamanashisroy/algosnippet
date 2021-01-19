@@ -244,7 +244,7 @@ class edit_distance:
         if 0 == M: # when from word is empty
             return N
 
-        print('None |', ' | '.join(dst))
+        print('None |', ' root | ', ' | '.join(dst))
         print(' | '.join(['---' for _ in range(N+1)]))
         memo = [DIST(cost=i,op='i' if i else ' ') for i in range(N+1)] # DAG roots
         print('root |', ' | '.join(map(str,iter(memo))))
@@ -262,12 +262,13 @@ class edit_distance:
 
 Here is the visualization for `edit_distance.distance('tea', 'tree')`.
 
-None | t | r | e | e
+None |  root |  t | r | e | e
 --- | --- | --- | --- | ---
 root | DIST(cost=0, op=' ') | DIST(cost=1, op='i') | DIST(cost=2, op='i') | DIST(cost=3, op='i') | DIST(cost=4, op='i')
 t | DIST(cost=1, op='d') | DIST(cost=0, op='a') | DIST(cost=1, op='i') | DIST(cost=2, op='i') | DIST(cost=3, op='i')
 e | DIST(cost=2, op='d') | DIST(cost=1, op='d') | DIST(cost=1, op='r') | DIST(cost=1, op='a') | DIST(cost=2, op='a')
 a | DIST(cost=3, op='d') | DIST(cost=2, op='d') | DIST(cost=2, op='r') | DIST(cost=2, op='r') | DIST(cost=2, op='r')
+
 
 #### Longest common subsequence
 

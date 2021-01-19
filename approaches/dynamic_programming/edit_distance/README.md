@@ -3,7 +3,7 @@ Longest-common-subsequence is a special case of edit-distance problem.
 
 Here is the visualization for `edit_distance.distance('tea', 'tree')`.
 
-None | t | r | e | e
+None |  root |  t | r | e | e
 --- | --- | --- | --- | ---
 root | DIST(cost=0, op=' ') | DIST(cost=1, op='i') | DIST(cost=2, op='i') | DIST(cost=3, op='i') | DIST(cost=4, op='i')
 t | DIST(cost=1, op='d') | DIST(cost=0, op='a') | DIST(cost=1, op='i') | DIST(cost=2, op='i') | DIST(cost=3, op='i')

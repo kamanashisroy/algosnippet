@@ -1,7 +1,6 @@
 
 Approaches
 ===========
-
 - [Divide and conquor](divide_and_conquer)
     - [Merge sort](../sorting/mergesort)
     - [binary search](divide_and_conquer/binary_search)
