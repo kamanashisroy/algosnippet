@@ -6,14 +6,11 @@ DIST = namedtuple('DIST','cost,op', defaults=(0,None))
 class edit_distance:
     @staticmethod
     def expand(topleft, top, left, x, y):
-        cost,op = topleft.cost+1,'r'   # replace character
-        if x == y and cost > topleft.cost:
-            cost,op = topleft.cost,'a' # accept character
-        if cost > (left.cost+1):
-            cost,op = left.cost+1,'i'  # insert character
-        if cost > (top.cost+1):
-            cost,op = top.cost+1,'d'   # drop character
-        return DIST(cost=cost,op=op)
+        yield DIST(topleft.cost+1,'r')   # replace character
+        if x == y:
+            yield DIST(topleft.cost,'a') # accept character
+        yield DIST(left.cost+1,'i')      # insert character
+        yield DIST(top.cost+1,'d')       # drop character
     
     @staticmethod
     def distance(src:str, dst:str) -> int:
@@ -30,9 +27,8 @@ class edit_distance:
         for i,x in enumerate(src,1):
             next_memo = [DIST(cost=i,op='d')] # initialize with cost of drop
             for j,y in enumerate(dst,1):
-                next_memo.append(edit_distance.expand(memo[j-1], memo[j], next_memo[-1], x, y))
+                next_memo.append(min(edit_distance.expand(memo[j-1], memo[j], next_memo[-1], x, y)))
             memo = next_memo
             print(x, '|', ' | '.join(map(str,iter(memo))))
             
         return memo[-1].cost
-
