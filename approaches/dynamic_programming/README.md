@@ -23,6 +23,7 @@ Dynamic programming close comparison table
  Knapsack                     | `O(2^n)`       | `O(1)`                         | `O(2^n)` , pseudo-polynomial
  Longest common subsequence   | `O(m*n)`       | `O(1)`                         | `O(m*n)`
  Longest increasing subsequence | `O(n)`       | `O(log n)`                     | `O(n*log n)`
+ Longest palindromic subsequence | `O(n*n)`    | `O(1)`                         | `O(n*n)`
  Brick game                   | `O(n)`         | `O(1)`                         | `O(n)`
  Stick cutting                | `O(?)`         | `O(?)`                         | `O(?)`
   
@@ -334,20 +335,20 @@ def longest_increasing_subseq(arr : List[int]) -> int:
 
 ```python
 from collections import namedtuple
-PMEMO = namedtuple('PMEMO','sz,lo,hi,s')
+P = namedtuple('P','sz,lo,hi,s')
 class Solution:
     def longestPalindrome(self, s: str) -> int:
         N,memo = len(s),[]
 
         # odd palindrome base
-        memo.append([PMEMO(lo=i,hi=i,sz=1,s=s[i:i+1]) for i in range(N)])
+        memo.append([P(lo=i,hi=i,sz=1,s=s[i:i+1]) for i in range(N)])
 
         # even palindrome base
         even_memo = [None]*N
         memo.append(even_memo)
         for i in range(N-1):
             if s[i] == s[i+1]:
-                even_memo[i] = PMEMO(lo=i,hi=i+1,sz=2,s=s[i:i+2])
+                even_memo[i] = P(lo=i,hi=i+1,sz=2,s=s[i:i+2])
 
         for k in range(2,N):
             enclosed_memo,next_memo = memo[-2],[None]*N
@@ -357,7 +358,7 @@ class Solution:
                     hi = lo+k
                     if s[lo] == s[hi] and enclosed_memo[lo+1]:
                         prev = enclosed_memo[lo+1]
-                        next_memo[lo] = PMEMO(lo=lo,hi=hi,sz=prev.sz+2,s=s[lo]+prev.s+s[hi])
+                        next_memo[lo] = P(lo=lo,hi=hi,sz=prev.sz+2,s=s[lo]+prev.s+s[hi])
 
         print('size | ', ' | '.join([str((i,x)) for i,x in enumerate(s)]))
         print('---  | ', ' | '.join(['---']*N))
@@ -374,7 +375,7 @@ Here is the table for "abcab".
 
 size |  (0, 'a') | (1, 'b') | (2, 'c') | (3, 'a') | (4, 'b')
 ---  |  --- | --- | --- | --- | ---
-0  |  PMEMO(sz=1, lo=0, hi=0, s='a') | PMEMO(sz=1, lo=1, hi=1, s='b') | PMEMO(sz=1, lo=2, hi=2, s='c') | PMEMO(sz=1, lo=3, hi=3, s='a') | PMEMO(sz=1, lo=4, hi=4, s='b')
+0  |  P(sz=1, lo=0, hi=0, s='a') | P(sz=1, lo=1, hi=1, s='b') | P(sz=1, lo=2, hi=2, s='c') | P(sz=1, lo=3, hi=3, s='a') | P(sz=1, lo=4, hi=4, s='b')
 1  |  None | None | None | None | None
 2  |  None | None | None | None | None
 3  |  None | None | None | None | None
@@ -382,22 +383,26 @@ size |  (0, 'a') | (1, 'b') | (2, 'c') | (3, 'a') | (4, 'b')
 
 #### Longest palindromic subsequence
 
+Approach: Forward in-edge relaxation, substring-subproblem-memoization
+
+Just like `Binomial number` calculation above.
+
 ```python
 from collections import namedtuple
-PMEMO = namedtuple('PMEMO','sz,lo,hi,s')
+P = namedtuple('P','sz,lo,hi,s')
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
         N,memo = len(s),[]
 
         # odd palindrome base
-        memo.append([PMEMO(lo=i,hi=i,sz=1,s=s[i:i+1]) for i in range(N)])
+        memo.append([P(lo=i,hi=i,sz=1,s=s[i:i+1]) for i in range(N)])
 
         # even palindrome base
         even_memo = memo[-1][:]
         memo.append(even_memo)
         for i in range(N-1):
             if s[i] == s[i+1]:
-                even_memo[i] = PMEMO(lo=i,hi=i+1,sz=2,s=s[i:i+2])
+                even_memo[i] = P(lo=i,hi=i+1,sz=2,s=s[i:i+2])
 
         for k in range(2,N):
             enclosed_memo,next_memo = memo[-2],memo[-1][:]
@@ -408,7 +413,7 @@ class Solution:
                     hi = lo+k
                     if s[lo] == s[hi]:
                         prev = enclosed_memo[lo+1]
-                        next_memo[lo] = max(curr, PMEMO(lo=lo,hi=hi,sz=prev.sz+2,s=s[lo]+prev.s+s[hi]))
+                        next_memo[lo] = max(curr, P(lo=lo,hi=hi,sz=prev.sz+2,s=s[lo]+prev.s+s[hi]))
         print('size | ', ' | '.join([str((i,x)) for i,x in enumerate(s)]))
         print('---  | ', ' | '.join(['---']*N))
         for k,m in enumerate(memo):
@@ -420,11 +425,11 @@ Here is the table for "abcab".
 
 size |  (0, 'a') | (1, 'b') | (2, 'c') | (3, 'a') | (4, 'b')
 ---  |  --- | --- | --- | --- | ---
-0  |  PMEMO(sz=1, lo=0, hi=0, s='a') | PMEMO(sz=1, lo=1, hi=1, s='b') | PMEMO(sz=1, lo=2, hi=2, s='c') | PMEMO(sz=1, lo=3, hi=3, s='a') | PMEMO(sz=1, lo=4, hi=4, s='b')
-1  |  PMEMO(sz=1, lo=0, hi=0, s='a') | PMEMO(sz=1, lo=1, hi=1, s='b') | PMEMO(sz=1, lo=2, hi=2, s='c') | PMEMO(sz=1, lo=3, hi=3, s='a') | PMEMO(sz=1, lo=4, hi=4, s='b')
-2  |  PMEMO(sz=1, lo=1, hi=1, s='b') | PMEMO(sz=1, lo=2, hi=2, s='c') | PMEMO(sz=1, lo=3, hi=3, s='a') | PMEMO(sz=1, lo=4, hi=4, s='b') | PMEMO(sz=1, lo=4, hi=4, s='b')
-3  |  PMEMO(sz=3, lo=0, hi=3, s='aba') | PMEMO(sz=3, lo=1, hi=4, s='bcb') | PMEMO(sz=1, lo=4, hi=4, s='b') | PMEMO(sz=1, lo=4, hi=4, s='b') | PMEMO(sz=1, lo=4, hi=4, s='b')
-4  |  PMEMO(sz=3, lo=1, hi=4, s='bcb') | PMEMO(sz=3, lo=1, hi=4, s='bcb') | PMEMO(sz=1, lo=4, hi=4, s='b') | PMEMO(sz=1, lo=4, hi=4, s='b') | PMEMO(sz=1, lo=4, hi=4, s='b')
+0  |  P(sz=1, lo=0, hi=0, s='a') | P(sz=1, lo=1, hi=1, s='b') | P(sz=1, lo=2, hi=2, s='c') | P(sz=1, lo=3, hi=3, s='a') | P(sz=1, lo=4, hi=4, s='b')
+1  |  P(sz=1, lo=0, hi=0, s='a') | P(sz=1, lo=1, hi=1, s='b') | P(sz=1, lo=2, hi=2, s='c') | P(sz=1, lo=3, hi=3, s='a') | P(sz=1, lo=4, hi=4, s='b')
+2  |  P(sz=1, lo=1, hi=1, s='b') | P(sz=1, lo=2, hi=2, s='c') | P(sz=1, lo=3, hi=3, s='a') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b')
+3  |  P(sz=3, lo=0, hi=3, s='aba') | P(sz=3, lo=1, hi=4, s='bcb') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b')
+4  |  P(sz=3, lo=1, hi=4, s='bcb') | P(sz=3, lo=1, hi=4, s='bcb') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b')
 
 
 #### Bricks Game
