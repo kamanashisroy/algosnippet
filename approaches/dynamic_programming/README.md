@@ -141,8 +141,8 @@ class Solution:
         for x in nums:                 # expand(out-edge) subproblems through x (induction step)
             memo_next = dict()
             for k in memo.keys():
-                memo_next[k] = 1
-                memo_next[k+x] = 1
+                memo_next[k] = memo[k]
+                memo_next[k+x] = memo[k]
             memo = memo_next
             if target in memo:
                 return True
@@ -154,6 +154,10 @@ It is possible to get the kth smallest or largest sum by best first subproblem e
 It can be done with heapq(like Dijkstra's shortest path algorithm), or by using a sorted interval.
 
 - [Kth smallest sum](https://leetcode.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/)
+- [Matrix Sum](https://leetcode.com/problems/find-valid-matrix-given-row-and-column-sums/submissions/)
+- Subarray sum and Kadane's algorithm
+  - [Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray/)
+    - [Discussion](https://leetcode.com/problems/maximum-sum-circular-subarray/discuss/1820129/max-subarray-sum-with-subarray-size-limit)
 
 #### Knapsack
 
@@ -215,6 +219,12 @@ def coinChangeCountWays(n, c):
     return sum(memo[n].values())
 ```
 
+- Similar [Minimum Time to Complete Trips](https://leetcode.com/contest/weekly-contest-282/problems/minimum-time-to-complete-trips/)
+  - Divide and conquor is [more efficient than DP here](https://leetcode.com/contest/weekly-contest-282/problems/minimum-time-to-complete-trips/)
+- Very interesting [Minimum Time To Finish The Race](https://leetcode.com/problems/minimum-time-to-finish-the-race/)
+  - [Best first then dynamic programming](https://leetcode.com/problems/minimum-time-to-finish-the-race/discuss/1804794/Sort-by-r-for-Best-First-traversal-then-dynamic-programming)
+
+
 Again, calculating the maximum amount possible, for `K` number of coins is greedy problem(`biggest_coin*K`). 
 
 #### Edit distance
@@ -267,6 +277,8 @@ t | DIST(cost=1, op='d') | DIST(cost=0, op='a') | DIST(cost=1, op='i') | DIST(co
 e | DIST(cost=2, op='d') | DIST(cost=1, op='d') | DIST(cost=1, op='r') | DIST(cost=1, op='a') | DIST(cost=2, op='a')
 a | DIST(cost=3, op='d') | DIST(cost=2, op='d') | DIST(cost=2, op='r') | DIST(cost=2, op='r') | DIST(cost=2, op='r')
 
+- [Minimum Distance to Type a Word Using Two Fingers](https://leetcode.com/problems/minimum-distance-to-type-a-word-using-two-fingers/)
+
 #### Longest common subsequence
 
 Approach: Forward in-edge relaxation, 2D-prefix-subproblem-memoization
@@ -290,6 +302,7 @@ def longestCommonSubsequence(self, text1: str, text2: str) -> int:
 
     return memo[LEN1][LEN2]
 ```
+
 
 #### Longest increasing subsequence
 
@@ -330,6 +343,11 @@ def longest_increasing_subseq(arr : List[int]) -> int:
         result = max(result,x.sz)
     return result
 ```
+
+- [Longest strictly increasing subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+- [Number of Ways to Separate Numbers](https://leetcode.com/problems/number-of-ways-to-separate-numbers/)
+	- [Use count sort to achieve O(N into N)](https://leetcode.com/submissions/detail/642838332/)
+	- TODO use LCP array
 
 #### Longest palindromic substring
 
@@ -430,6 +448,21 @@ size |  (0, 'a') | (1, 'b') | (2, 'c') | (3, 'a') | (4, 'b')
 2  |  P(sz=1, lo=1, hi=1, s='b') | P(sz=1, lo=2, hi=2, s='c') | P(sz=1, lo=3, hi=3, s='a') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b')
 3  |  P(sz=3, lo=0, hi=3, s='aba') | P(sz=3, lo=1, hi=4, s='bcb') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b')
 4  |  P(sz=3, lo=1, hi=4, s='bcb') | P(sz=3, lo=1, hi=4, s='bcb') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b') | P(sz=1, lo=4, hi=4, s='b')
+
+
+#### Assignment Problems
+
+- [Maximum AND Sum of Array](https://leetcode.com/contest/weekly-contest-280/problems/maximum-and-sum-of-array/)
+- [Minimum XOR Sum of Two Arrays](https://leetcode.com/problems/minimum-xor-sum-of-two-arrays/)
+- Hard [Two Efficient Teams](https://www.hackerrank.com/contests/w37/challenges/two-efficient-teams/)
+- Bipartite graph
+	- [Complete bipartite graph and perfect matching](https://en.wikipedia.org/wiki/Perfect_matching)
+	- [Scipy Optimize](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html)
+		- [Solution using Scipy](https://leetcode.com/problems/maximum-and-sum-of-array/discuss/1767788/Python-2-lines-solution-using-hungarian-algorithm-explained)
+
+#### Minimum cut problem
+
+- [Minimum cut](https://en.wikipedia.org/wiki/Minimum_cut)
 
 
 #### Bricks Game
@@ -571,6 +604,8 @@ Bottom up solution below,
 
 - [Best time to buy and sell stock twice](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
 - [Maximum sum of 3 non-overlapping subarrays](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/)
+- Hard [Minimum Time to Remove All Cars Containing Illegal Goods](https://leetcode.com/problems/minimum-time-to-remove-all-cars-containing-illegal-goods/)
+- Hard [Minimum Difference in Sums After Removal of Elements](https://leetcode.com/problems/minimum-difference-in-sums-after-removal-of-elements/)
 
 #### Structural DP
 
@@ -627,6 +662,14 @@ class LLDicompose(Generic[HT]):
 #### Interval DP
 
 - [Largest Submatrix With Rearrangements](https://leetcode.com/problems/largest-submatrix-with-rearrangements/)
+
+#### DP with bitmask
+
+- [Smallest Sufficient Team](https://leetcode.com/problems/smallest-sufficient-team/)
+
+#### Backward chaining DP
+
+- [Count Unique Characters of All Substrings of a Given String](https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/)
 
 Lectures
 =========

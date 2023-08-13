@@ -21,3 +21,7 @@ Again, when the number of children rises, there are less swap and the structure 
 
 Note that comparing `less-than-equal` when checking the heap property reduces number of swap when the heap contains duplicate elements.
 
+Problems
+========
+
+[Problem requiring pos](https://leetcode.com/contest/biweekly-contest-100/problems/find-score-of-an-array-after-marking-all-elements/)

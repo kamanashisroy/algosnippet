@@ -21,6 +21,7 @@ You should have received a copy of the GNU General Public License
 along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+# Check this problem https://leetcode.com/contest/biweekly-contest-100/problems/find-score-of-an-array-after-marking-all-elements/
 
 class kary_heap:
     '''
@@ -174,6 +175,29 @@ class kary_heap:
             assert self.heap[parent_index] <= self.heap[loc] ,str((loc,parent_index,str(self.heap)))
             assert self.heap[loc].loc == loc
 
+    def poploc(self, loc):
+        if loc is None or loc >= len(self.heap):
+            return None
+        # swap with last
+        result = self.heap[loc]
+        if (len(self.heap)-1) == loc:
+            # delete last
+            self.heap[-1].heap_loc = None
+            self.heap.pop()
+        else:
+            # swap with last
+            self.heap[-1],self.heap[loc] = self.heap[loc],self.heap[-1]
+            self.heap[loc].heap_loc = loc
+            self.heap[-1].heap_loc = None
+
+            # delete last
+            self.heap.pop()
+
+            # fixup
+            
+            self.fixat(loc)
+        return result
+    
 
 class kary_node:
     __slots__ = ["score","pos","heap_loc"]
@@ -187,3 +211,7 @@ class kary_node:
 
     def __le__(self,other):
         return (self.score >= other.score)
+
+    def __repr__(self):
+        return str(self.score)
+
