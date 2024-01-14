@@ -28,6 +28,9 @@ class SegmentTree:
         # [ filler 0 ] [ root Node 1 ] 2 3 [ Internal nodes 4 5 6 7 ] [ Leaves 8 9 10 11 12 13 14 15 ]
 
     def append(self, i:int) -> None:
+        '''
+        This segment tree only increases 1 every time.
+        '''
         curr = self.N+i
         self.nodes[curr] += 1
         while curr > 1:

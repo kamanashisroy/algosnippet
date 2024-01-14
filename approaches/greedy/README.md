@@ -10,6 +10,7 @@ Links
 #### Optimization related
 
 - [Maximum Binary String After Change](https://leetcode.com/problems/maximum-binary-string-after-change/)
+- [Determine the Minimum Sum of a k-avoiding Array](https://leetcode.com/contest/weekly-contest-359/problems/determine-the-minimum-sum-of-a-k-avoiding-array/)
 
 #### Scheduler related
 

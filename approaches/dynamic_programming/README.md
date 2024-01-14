@@ -670,6 +670,13 @@ class LLDicompose(Generic[HT]):
 #### Backward chaining DP
 
 - [Count Unique Characters of All Substrings of a Given String](https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/)
+- [2830. Maximize the Profit as the Salesman](https://leetcode.com/problems/maximize-the-profit-as-the-salesman/)
+
+#### Bucketing
+
+Run DP near the leaf of the subproblem tree.
+
+- [2827. Number of Beautiful Integers in the Range](https://leetcode.com/problems/number-of-beautiful-integers-in-the-range/)
 
 Lectures
 =========

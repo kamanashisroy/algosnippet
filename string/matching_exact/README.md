@@ -6,4 +6,5 @@
 
 Problems
 =========
-TODO fill me rk-hash function algorithm
+
+- [3008. Find Beautiful Indices in the Given Array II](https://leetcode.com/problems/find-beautiful-indices-in-the-given-array-ii/description/)
