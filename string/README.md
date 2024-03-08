@@ -41,3 +41,14 @@ Links
 
 - [Maximum score from removing substrings](https://leetcode.com/problems/maximum-score-from-removing-substrings/)
 
+#### Number of substrings of a string
+
+```
+total number of substrings = (n*(n+1))//2
+```
+
+- [Number of Smooth Descent Periods of a Stock](https://leetcode.com/problems/number-of-smooth-descent-periods-of-a-stock/)
+
+#### Palindrome related
+
+- [Simple palindrome check](https://leetcode.com/problems/find-first-palindromic-string-in-the-array/)

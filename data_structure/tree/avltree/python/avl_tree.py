@@ -22,6 +22,21 @@ AVLTREENODET = TypeVar('AVLTREENODET')
 
 class avl_tree(Generic[AVLTREENODET]):
     '''
+    avl_tree.py file is part of Algosnippet.
+    Algosnippet is a collection of practice data-structures and algorithms
+    Copyright (C) 2021  Kamanashis Roy
+    Algosnippet is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    Algosnippet is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
+
+
     AVL tree is self balancing binary tree
     '''
     __slots__ = ['root']
@@ -237,8 +252,27 @@ class avl_tree(Generic[AVLTREENODET]):
                     top = top.right
         return count
 
-
-
+    def bisect_left(self, x, top:AVLTREENODET) -> Optional[int]:
+        # Used in leetcode problem https://leetcode.com/contest/weekly-contest-358/problems/minimum-absolute-difference-between-elements-with-constraint/
+        if top is None:
+            return None
+        while top:
+            # expand
+            if x < top.val:
+                if top.left is None:
+                    return top.val
+                else:
+                    top = top.left
+            else:
+                if x == top.val:
+                    return top.val
+                right_result = self.bisect_left(x, top.right)
+                if right_result is None or right_result > x:
+                    return top.val
+                else:
+                    return max(top.val, right_result)
+        return None
+ 
 ALGOTREENODE = TypeVar('ALGOTREENODE')
 
 class algo_tree(Generic[ALGOTREENODE]):

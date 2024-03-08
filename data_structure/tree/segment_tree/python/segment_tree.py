@@ -4,7 +4,7 @@
 '''
 segment_tree.py file is part of Algosnippet.
 Algosnippet is a collection of practice data-structures and algorithms
-Copyright (C) 2018  Kamanashis Roy
+Copyright (C) 2021  Kamanashis Roy
 Algosnippet is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or

@@ -1,41 +1,44 @@
 
+PRKM = 31
+PRKD = 1000000007
 
-def get_hash_by_string(string):
-    result = 0;
-    for x in string:
-        result = (result*256 + ord(x))%101
-    return result
+class rkHash:
+    '''
+    rk.py file is part of Algosnippet.
+    Algosnippet is a collection of practice data-structures and algorithms
+    Copyright (C) 2021  Kamanashis Roy
+    Algosnippet is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    Algosnippet is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
+    '''
 
-def get_rolling_hash_multiplier(word_len):
-    result = 1
-    for i in xrange(word_len):
-        result = (result*256)%101
-    return result
+    def __init__(self, sz=0):
+        self.h = 0
+        self.q = deque()
+        self.shift = 1
+        self.sz = sz
+        for _ in range(sz):
+            self.shift *= PRKM
+            self.shift %= PRKD
 
-def get_rolling_hash_by_char(rolling_hash, rem_ch, add_ch, mul):
-    return (rolling_hash*256 - (rem_ch*mul)%101 + add_ch)
-	%101 # Mod is done at the end to keep the size of the hash at bay
+    def push(self, x):
+        self.pop()
+        self.h += (x+1)
+        self.h %= PRKD
+        self.q.append(x+1)
 
-def count_substring(string, sub_string):
-    count = 0
-    our_hash = get_hash_by_string(sub_string)
-    mul = get_rolling_hash_multiplier(len(sub_string))
-    rolling_hash = get_hash_by_string(string[:len(sub_string)])
-    if(rolling_hash == our_hash):
-        count = count + 1
-    #print mul
-    for i in xrange(len(sub_string),len(string),1):
-        #print string[i]
-        start = i - len(sub_string)
-        #print string[start]
-        rolling_hash = get_rolling_hash_by_char(rolling_hash
-                                                , ord(string[start])
-                                                , ord(string[i]), mul);
-        if(rolling_hash == our_hash):
-            count = count + 1
-    return count
+    def pop(self):
+        self.h *= PRKM
+        if self.sz == 0:
+            return
+        if len(self.q) >= self.sz:
+            y = self.q.popleft()
+            self.h = self.h - (y*self.shift)
 
-if __name__ == '__main__':
-    haystack = raw_input()
-    niddle = raw_input()
-    print count_substring(haystack, niddle)

@@ -18,4 +18,5 @@ Links
 
 - [Hackerrank Cyclical queries](https://www.hackerrank.com/contests/w38/challenges/cyclical-queries/problem)
 - [Neighborhood queries](https://www.hackerrank.com/contests/w38/challenges/neighborhood-queries)
- 
+- Hard [Count Good Triplets in an Array](https://leetcode.com/problems/count-good-triplets-in-an-array/)
+- Hard [Count Integers in Intervals](https://leetcode.com/problems/count-integers-in-intervals/)

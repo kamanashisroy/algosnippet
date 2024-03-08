@@ -122,4 +122,8 @@ Links
 
 - [Capacity to ship packages within D days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/submissions/)
 - [Number of visible people in a queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/)
+- [2187. Minimum Time to Complete Trips](https://leetcode.com/contest/weekly-contest-282/problems/minimum-time-to-complete-trips/)
+- Very tricky [2141. Maximum Running Time of N Computers](https://leetcode.com/problems/maximum-running-time-of-n-computers/)
+- Hardest [2071. Maximum Number of Tasks You Can Assign](https://leetcode.com/problems/maximum-number-of-tasks-you-can-assign/)
+
 
