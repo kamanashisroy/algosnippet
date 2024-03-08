@@ -4,40 +4,42 @@ Treap
 
 #### Insert
 
-#### update
+```Python
+    def append_node(self,given_treap_node):
+        '''
+        return new root after adding the treap-node
+        '''
 
-The cost of update is logarighmic to the change of heap-property.
+        #############################################
+        # check the HEAP PROPERTY
+        if given_treap_node.heap_key < self.heap_key:
+            # self goes under given_treap_node
+            given_treap_node.append_node(self)
+            return given_treap_node # new root
+        # HEAP PROPERTY
+        #############################################
 
-```C++
-        // update weight of the treap
-        void update(WT weight) {
-            // implement update weight
-            if(weight < weight_) { // weight is reduced
-                // we should go up
-                weight_ = weight;
-                move_up();
-            } else if(weight > weight_) { // weight is increased
-                // we should go down
-                weight_ = weight;
-                while( (left_ && left_->get_weight() < get_weight()) || (right_ && right_->get_weight() < get_weight()) ) {
-                    if(left_ && !right_) {
-                        left_->move_up();
-                    } else if(right_ && !left_) {
-                        right_->move_up();
-                    } else if(right_ && left_) {
-                        if(left_->get_weight() <= right_->get_weight()) {
-                            // I guess we can do balancing when the weights are equal
-                            left_->move_up();
-                        } else {
-                            right_->move_up();
-                        }
-                    }
-                }
-            }
-        }
+        self.num_nodes += given_treap_node.num_nodes
+        #############################################
+        # check the BINARY SEARCH TREE PROPERTY
+        #############################################
+        if given_treap_node.key <= self.key:
+            # keep the new node at left
+            if self.left is None:
+                self.left = given_treap_node
+            else:
+                self.left = self.left.append_node(given_treap_node)
+            self.left.parent = self
+        else: # when given_treap_node is BIGGER
+            if self.right is None:
+                self.right = given_treap_node
+            else:
+                self.right = self.right.append_node(given_treap_node)
+            self.right.parent = self
+        return self
 ```
 
-
+TODO implement stack based construction approach, see the lecture below.
 
 Treap example output
 =====================
@@ -98,5 +100,12 @@ Augmented-Treap can be used as order-statistics-tree to solve problems of tree-d
 ```
 https://www.hackerrank.com/contests/w38/challenges/neighborhood-queries/submissions/code/1310160145
 ```
+
+- [Number of visible people in a queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/)
+
+Lectures
+========
+
+- [Stanford lecture slide for RMQ and treap](http://web.stanford.edu/class/cs166/lectures/01/Slides01.pdf)
 
 

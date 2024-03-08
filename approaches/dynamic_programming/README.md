@@ -18,6 +18,7 @@ Dynamic programming close comparison table
  Binomial  Numbers            | `O(n)`         | `O(1)`                         | `O(n)`
  Catalan   Numbers            | `O(n)`         | `O(n)`                         | `O(n*n)`
  Bellman-Ford algorithm       | `O(V)`         | `O(E)`                         | `O(V*E)` , best case `O(E)`
+ Subarray sum                 | `O(n)`         | `O(1)`                         | `O(n)`
  Subset sum                   | `O(2^n)`       | `O(1)`                         | `O(2^n)` , pseudo-polynomial
  Repeat sum (coin change)     | `O(amount)`    | `O(num_coins)`                 | `O(num_coins*amount)`
  Knapsack                     | `O(2^n)`       | `O(1)`                         | `O(2^n)` , pseudo-polynomial
@@ -126,6 +127,29 @@ def bellman_ford(self, n: int, edges: List[List[int]], src: int, dst: int) -> in
         
     return cost[dst]
 ```
+
+#### Subarray sum
+
+Approach: Backward in-edge relaxation, cumulative sum was counted in forward direction
+
+```
+def subarraySum(self, nums: List[int], k: int) -> int:
+    nums = [0] + nums
+    cumsum = [(x,i) for i,x in enumerate(itertools.accumulate(nums))]
+    
+    result = 0
+    appear = defaultdict(int)
+    for x,i in reversed(cumsum):
+        if k+x in appear:
+            ap = appear[k+x]
+            result += ap
+        appear[x] += 1
+
+    return result
+```
+
+- [Subarray sum](https://leetcode.com/problems/subarray-sum-equals-k/)
+- [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 
 #### Subset sum
 
@@ -271,7 +295,7 @@ a | DIST(cost=3, op='d') | DIST(cost=2, op='d') | DIST(cost=2, op='r') | DIST(co
 
 Approach: Forward in-edge relaxation, 2D-prefix-subproblem-memoization
 
-Just like `Binomial number` calculation above.
+Just like *Binomial number* calculation above.
 
 ```python
 def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -290,6 +314,22 @@ def longestCommonSubsequence(self, text1: str, text2: str) -> int:
 
     return memo[LEN1][LEN2]
 ```
+
+Here is the visualization for `longestCommonSubsequence('tea', 'tree')`.
+
+None |  root |  t | r | e | e
+--- | --- | --- | --- | --- | ---
+t    |    0,None   |   1,t   |   1,t   |   1,t   |   1,t
+e    |    0,None   |   1,t   |   1,t   |   2,e   |   2,e
+a    |    0,None   |   1,t   |   1,t   |   2,e   |   2,e
+
+- [Longest common subsequence](https://www.hackerrank.com/challenges/dynamic-programming-classics-the-longest-common-subsequence/)
+
+##### Reductions
+
+- *Longest common subsequence* can be reduced to *Edit distance* by allowing only delete operation.
+- Note that *Longest common subsequence* can also be reduced to *Longest Increasing Subsequence*, in case all the characters are unique.
+- Again, *Longest palindromic subsequence* can be reduced to *Longest common subsequence*, by using reversed string as the second input.
 
 #### Longest increasing subsequence
 
@@ -330,6 +370,8 @@ def longest_increasing_subseq(arr : List[int]) -> int:
         result = max(result,x.sz)
     return result
 ```
+
+- [Number of visible people in a queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/)
 
 #### Longest palindromic substring
 
@@ -380,6 +422,8 @@ size |  (0, 'a') | (1, 'b') | (2, 'c') | (3, 'a') | (4, 'b')
 2  |  None | None | None | None | None
 3  |  None | None | None | None | None
 4  |  None | None | None | None | None
+
+- [Palindrome Partitioning IV](https://leetcode.com/problems/palindrome-partitioning-iv/)
 
 #### Longest palindromic subsequence
 
@@ -573,6 +617,8 @@ Bottom up solution below,
 - [Maximum sum of 3 non-overlapping subarrays](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/)
 
 #### Structural DP
+
+- [Binary tree maximum path](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
 
 Decomposing a linked-list into buckets,
 

@@ -121,4 +121,5 @@ Links
 **Warning: binary search algorithms are hard to get it right**
 
 - [Capacity to ship packages within D days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/submissions/)
+- [Number of visible people in a queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/)
 

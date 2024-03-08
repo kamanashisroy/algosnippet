@@ -12,6 +12,7 @@ class Treap:
         self.identifier = identifier
         self.left = None
         self.right = None
+        self.parent = None
         self.num_nodes = 1 # number of nodes in the subtree
 
     def append_node(self,given_treap_node):
@@ -31,45 +32,20 @@ class Treap:
         self.num_nodes += given_treap_node.num_nodes
         #############################################
         # check the BINARY SEARCH TREE PROPERTY
+        #############################################
         if given_treap_node.key <= self.key:
             # keep the new node at left
             if self.left is None:
                 self.left = given_treap_node
             else:
-                # left is not None
-
-                #############################################
-                # check the HEAP PROPERTY
-                if self.left.heap_key <= given_treap_node.heap_key:
-                    self.left.append_node(given_treap_node)
-                else: # heap_key is smaller than left child
-                    backup = self.left
-                    self.left = given_treap_node
-                    self.left.append_node(backup)
-                # HEAP PROPERTY
-                #############################################
-        # BINARY SEARCH TREE PROPERTY
-        #############################################
-        #############################################
-        # check the BINARY SEARCH TREE PROPERTY
+                self.left = self.left.append_node(given_treap_node)
+            self.left.parent = self
         else: # when given_treap_node is BIGGER
             if self.right is None:
                 self.right = given_treap_node
             else:
-                # right is not None
-
-                #############################################
-                # check the HEAP PROPERTY
-                if self.right.heap_key <= given_treap_node.heap_key:
-                    self.right.append_node(given_treap_node)
-                else: # heap_key is smaller than right child
-                    backup = self.right
-                    self.right = given_treap_node
-                    self.right.append_node(backup)
-                # HEAP PROPERTY
-                #############################################
-        # BINARY SEARCH TREE PROPERTY
-        #############################################
+                self.right = self.right.append_node(given_treap_node)
+            self.right.parent = self
         return self
 
     def __repr__(self):
@@ -121,7 +97,6 @@ class Treap:
 
         return result
        
-
 if __name__ == '__main__':
     heap_key = [32,14,12,523,13,1,7,23,7,2,7,4,89,8,3,26,94]
     n = len(heap_key)
@@ -129,6 +104,7 @@ if __name__ == '__main__':
     root = Treap(0,heap_key[0],0,0)
     for i in range(1,n):
         root = root.append_node(Treap(i,heap_key[i],i,i))
+        root.parent = None
 
     print(str(root))
     print(root.query(10))

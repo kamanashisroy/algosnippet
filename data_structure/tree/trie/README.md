@@ -58,6 +58,8 @@ Trie related problems
 =======================
 
 - [z-function](https://www.hackerrank.com/contests/w37/challenges/z-function)
+- [Maximum Genetic Difference(XOR) Query](https://leetcode.com/problems/maximum-genetic-difference-query/)
+- [Maximum XOR With an Element From Array](https://leetcode.com/problems/maximum-xor-with-an-element-from-array/)
 
 
 
