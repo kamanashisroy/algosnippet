@@ -20,3 +20,5 @@ Links
 - [Neighborhood queries](https://www.hackerrank.com/contests/w38/challenges/neighborhood-queries)
 - Hard [Count Good Triplets in an Array](https://leetcode.com/problems/count-good-triplets-in-an-array/)
 - Hard [Count Integers in Intervals](https://leetcode.com/problems/count-integers-in-intervals/)
+- Hard [Maximum Segment Sum After Removal](https://leetcode.com/problems/maximum-segment-sum-after-removals/description/)
+    - This can also be done using `dict`, `heap`, `insort` and `bisect_left` etc.

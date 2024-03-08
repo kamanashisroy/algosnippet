@@ -29,4 +29,5 @@ Interval related problems
 
 - [Describe the painting](https://leetcode.com/contest/biweekly-contest-57/problems/describe-the-painting/)
 - [Next Permutation](https://leetcode.com/problems/next-permutation/)
+- [Maximum segment sum after removals](https://leetcode.com/problems/maximum-segment-sum-after-removals/description/)
 
