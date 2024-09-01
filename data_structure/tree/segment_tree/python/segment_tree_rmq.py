@@ -1,5 +1,3 @@
-
-
 class SegmentTreeRMQ:
     '''
     segment_tree.py file is part of Algosnippet.
@@ -93,7 +91,7 @@ class SegmentTreeRMQ:
                 pass
         return result
     
-    def queryMax(self, givenLeft, givenRight):
+    def queryMax(self, givenLeft, givenRight, defaultVal = None):
         '''
         Return the maximum value between beg and end
         '''
@@ -101,6 +99,8 @@ class SegmentTreeRMQ:
         assert((self.N+givenRight) < len(self.nodes))
         
         ret = max(self.nodes[self.N+givenLeft],self.nodes[self.N+givenRight])
+        if defaultVal is not None:
+            ret = max((defaultVal,-1),ret)
         stack = [1]
         while stack:
             cur = stack.pop()
@@ -115,8 +115,12 @@ class SegmentTreeRMQ:
                 if rightMost <= (self.N+givenRight) and leftMost >= (self.N+givenLeft):
                     ret = max(ret,self.nodes[child])
                     continue
+                    
+                if defaultVal is not None and self.nodes[child][0] <= defaultVal:
+                    continue
 
                 stack.append(child)
                 
         return ret
+
 
