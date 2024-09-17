@@ -15,12 +15,12 @@ class SegmentTreeRMQ:
     along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
     '''
 
-    def __init__(self, Ngiven:int):
+    def __init__(self, Ngiven:int, defaultVal:int = -1):
         depth = 0
         while (1<<depth) < Ngiven:
             depth += 1
 
-        INFLO = (-1,-1)
+        INFLO = (defaultVal,-1)
         self.N = 1<<depth
         self.nodes = [ INFLO for _ in range((self.N<<1)+2)]
         self.rightMost = [ i for i in range((self.N<<1)+2)]
@@ -123,4 +123,6 @@ class SegmentTreeRMQ:
                 
         return ret
 
+    def printNodes(self, beg,end):
+        print(self.nodes[self.N+beg:self.N+end])
 
