@@ -5,7 +5,7 @@
 binary_trie.py file is part of Algosnippet.
 
 Algosnippet is a collection of practice data-structures and algorithms
-Copyright (C) 2020  Kamanashis Roy
+Copyright (C) 2025  Kamanashis Roy
 
 Algosnippet is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ def iter_bits(given):
 class binary_trie:
     '''
     Algosnippet is a collection of practice data-structures and algorithms
-    Copyright (C) 2020  Kamanashis Roy
+    Copyright (C) 2025  Kamanashis Roy
 
     Algosnippet is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
