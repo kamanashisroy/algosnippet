@@ -5,7 +5,7 @@
 binomial_heap.py file is part of Algosnippet.
 
 Algosnippet is a collection of practice data-structures and algorithms
-Copyright (C) 2018  Kamanashis Roy
+Copyright (C) 2025  Kamanashis Roy
 
 Algosnippet is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,6 +58,11 @@ class binomial_heap:
             else:
                 break
        
+        for ordKey,tree in self.sub.items():
+            if tree:
+                assert( 1 == len(tree) )
+                assert( ordKey == tree[0].order )
+
 
     def popleft(self):
         # find min in O(log n) time
@@ -137,4 +142,7 @@ if __name__ == '__main__':
 
     print(str(heap))
 
-    print(str(heap.popleft()))
+    st = []
+    while heap:
+        st.append(heap.popleft())
+    print(st)

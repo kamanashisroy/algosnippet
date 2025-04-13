@@ -1,6 +1,6 @@
 
 
-class LazyPrefixTrie:
+class LazySuffixTrie:
     '''
     Algosnippet is a collection of practice data-structures and algorithms
     Copyright (C) 2025  Kamanashis Roy
@@ -19,29 +19,38 @@ class LazyPrefixTrie:
     along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
     '''
+
+    def __init__(self, cur):
+        self.cur = cur
+        self.children = [None]*26
+        self.indices = set()
+        self.memo = 0
+
     def __init__(self, cur):
         self.cur = cur
         self.children = [None]*26
         self.indices = set()
 
-    def pushPrefixAt(self, beg):
+    def pushAt(self, beg):
         self.indices.add(beg)
 
-    def expand(self, content):
+    def expand(self, content, callback = None):
         for curpos in self.indices:
             cur = self
+            if callback:
+                cur.memo = callback(cur.memo, curpos)
             x = content[curpos]
             if cur.children[x] is None:
-                cur.children[x] = LazyPrefixTrie(x)
+                cur.children[x] = LazySuffixTrie(x)
             if (curpos+1) < len(content):
-                cur.children[x].pushPrefixAt(curpos+1)
+                cur.children[x].pushAt(curpos+1)
         self.indices.clear()
 
     @staticmethod
     def makeTrie(given):
-        tr = LazyPrefixTrie(None)
+        tr = LazySuffixTrie(None)
         for i in range(len(given)):
-            tr.pushPrefixAt(i)
+            tr.pushAt(i)
         return tr
 
 
@@ -59,5 +68,5 @@ if __name__ == "__main__":
                 ret = max(ret, calc(x,y,depth+1))
         return ret
 
-    print('Longest common substring', calc(LazyPrefixTrie.makeTrie(first), LazyPrefixTrie.makeTrie(second)))
+    print('Longest common substring', calc(LazySuffixTrie.makeTrie(first), LazySuffixTrie.makeTrie(second)))
 
