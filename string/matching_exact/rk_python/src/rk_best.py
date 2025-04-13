@@ -40,7 +40,7 @@ class RollingHash:
         self.SMALL = SMALL
     
     def substr(self, beg, end ):
-        if end <= beg:
+        if end <= beg or beg >= self.QN:
             return 0
         if end >= self.QN:
             return self.suffixMemo[beg]
@@ -51,8 +51,8 @@ class RollingHash:
         endPart *= self.mul[end-beg]
         endPart %= self.BIG
         
-        if begPart < endPart:
-            begPart += self.BIG
-        return begPart - endPart
+        subPart = begPart-endPart
+        subPart %= self.BIG
+        return subPart
 
 

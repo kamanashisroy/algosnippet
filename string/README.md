@@ -51,4 +51,8 @@ total number of substrings = (n*(n+1))//2
 
 #### Palindrome related
 
+- Longest palindromic substring 
+    - [5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/description/)
+    - It can be done in $$O(n)$$ time.
+
 - [Simple palindrome check](https://leetcode.com/problems/find-first-palindromic-string-in-the-array/)
