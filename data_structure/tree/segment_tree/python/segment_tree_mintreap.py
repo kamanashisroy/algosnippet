@@ -17,8 +17,6 @@ class SegmentTreeMinTreap:
 
     Min Treap built on top of segment-tree.
     '''
-
-
     def __init__(self, Ngiven:int, defaultVal:int = float('Inf')):
         depth = 0
         while (1<<depth) < Ngiven:
@@ -28,13 +26,8 @@ class SegmentTreeMinTreap:
         self.N = 1<<depth
         self.defaultVal = defaultVal
         self.nodes = [ INFLO for _ in range((self.N<<1)+2)]
-        self.rightMost = [ i for i in range((self.N<<1)+2)]
-        self.leftMost = [ i for i in range((self.N<<1)+2)]
         # N = 4
         # [ filler 0 ] [ root Node 1 ] 2 3 [ Internal nodes 4 5 6 7 ] [ Leaves 8 9 10 11 12 13 14 15 ]
-        for i in range(self.N-1,0,-1):
-            self.leftMost[i] = self.leftMost[i<<1]
-            self.rightMost[i] = self.rightMost[(i<<1)+1]
 
     def fill(self,aNums):
         assert((self.N+len(aNums)-1) < len(self.nodes))
@@ -42,10 +35,9 @@ class SegmentTreeMinTreap:
             self.nodes[i+self.N] = (x,i)
         
         for i in range(self.N-1,0,-1):
-            #self.nodes[i] = self.oper(self.nodes[i<<1],self.nodes[(i<<1)+1])
             self.nodes[i] = min(self.nodes[i<<1],self.nodes[(i<<1)+1])
 
-    def clearAt(self, i:int) -> None:
+    def __delitem__(self, i:int) -> None:
         assert((self.N+i) < len(self.nodes))
         curr = self.N+i
         val = (self.defaultVal,i)
@@ -90,3 +82,6 @@ class SegmentTreeMinTreap:
             curr = right
         return -1
  
+    bisect_first = findFirstOfGivenSizeOrSmaller
+ 
+
