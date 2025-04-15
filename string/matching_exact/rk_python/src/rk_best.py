@@ -39,6 +39,9 @@ class RollingHash:
         self.BIG = BIG
         self.SMALL = SMALL
     
+    def __hash__(self):
+        return self.suffixMemo[0]
+    
     def substr(self, beg, end ):
         if end <= beg or beg >= self.QN:
             return 0

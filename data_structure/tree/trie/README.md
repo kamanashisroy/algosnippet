@@ -58,10 +58,10 @@ class TrieDict:
             cur = stack.pop()
             if cur.leaves:
                 for assoc in cur.leaves:
-                    print(origWords[assoc])
+                    yield assoc
             for x in cur.children:
                 if x is not None:
-                    yield x
+                    stack.append(x)
     
     def __len__(self):
         return self.numInserted
