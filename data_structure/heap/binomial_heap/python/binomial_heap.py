@@ -23,6 +23,7 @@ along with Algosnippet.  If not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
 
+debugBinomialHeap = False
 class binomial_heap:
     '''
     It is a list of binomial tree of different order
@@ -39,7 +40,9 @@ class binomial_heap:
         It creates a binomial tree and melds with existing same order tree.
         Complexity Theta(1) amortised.
         '''
-        self.__append_binomial_tree(binomial_tree(x))
+        treeNode = binomial_tree(x)
+        self.__append_binomial_tree(treeNode)
+        return treeNode
 
     def __append_binomial_tree(self,xtree):
         self.sub[xtree.order].append(xtree)
@@ -58,10 +61,11 @@ class binomial_heap:
             else:
                 break
        
-        for ordKey,tree in self.sub.items():
-            if tree:
-                assert( 1 == len(tree) )
-                assert( ordKey == tree[0].order )
+        if debugBinomialHeap:
+            for ordKey,tree in self.sub.items():
+                if tree:
+                    assert( 1 == len(tree) )
+                    assert( ordKey == tree[0].order )
 
 
     def popleft(self):
@@ -114,7 +118,7 @@ class binomial_tree:
         if other.elem < self.elem:
             return other.consume(self)
     
-        old_order = self.order
+        #old_order = self.order
         self.order += 1 # order is increased after meld
         
         self.left_child,other.right_sibling = other,self.left_child
@@ -131,6 +135,29 @@ class binomial_tree:
         if(self.right_sibling is not None):
             ret += self.right_sibling.__str__(depth)
         return ret
+
+    def increaseHeapProp(self, new_elem, updateTreeNode):
+        assert(self.elem <= new_elem)
+        old_elem = self.elem
+        self.elem = new_elem
+        # check all left-child
+        
+        smallest = self
+        other = self.left_child
+        while other is not None:
+            if other.elem < smallest.elem: # we need to swap
+                smallest = other
+            other = other.right_sibling
+
+        # now swap with smallest
+        if smallest != self:
+            smallest.elem,self.elem = self.elem,smallest.elem
+            updateTreeNode(smallest.elem, smallest)
+            updateTreeNode(self.elem, self)
+            smallest.increaseHeapProp(smallest.elem, updateTreeNode)
+            
+ 
+
 
 if __name__ == '__main__':
     heap_key = [32,14,12,523,13,1,7,23,7,2,7,4,89,8,3,26,94]
