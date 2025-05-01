@@ -179,4 +179,8 @@ Links
 - [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
 - [Element Appearing More Than 25% In Sorted Array](https://leetcode.com/problems/element-appearing-more-than-25-in-sorted-array/)
 - [Form Array by Concatenating Subarrays of Another Array](https://leetcode.com/problems/form-array-by-concatenating-subarrays-of-another-array/)
+- 2 Dimentional binary search
+    - [Seperate squares 2](https://leetcode.com/problems/separate-squares-ii/description/)
+        - [My solution](https://leetcode.com/problems/separate-squares-ii/solutions/6702875/binary-search-on-sorted-array-of-y-coord-and-prefix-sum)
+
 
