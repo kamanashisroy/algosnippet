@@ -7,3 +7,6 @@ Topsort is used before finding strongly connected components and finding the sho
 
 - [Alien dictionary](https://leetcode.com/problems/alien-dictionary/)
 	- Hard/expert [using dfs solution](https://leetcode.com/submissions/detail/642678980/)
+
+- [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/description/)
+

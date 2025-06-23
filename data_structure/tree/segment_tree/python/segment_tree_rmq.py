@@ -71,25 +71,19 @@ class SegmentTreeRMQ:
         '''
         Return the max score saved in range of [0,i] inclusive
         '''
-        curr = self.N+i
-        result = self.nodes[curr]
-        path = []
-        while curr > 1:
-            parent = curr >> 1
-            path.append((parent,curr&1))
-            curr = parent
+        if i >= self.N:
+            return self.nodes[1]
 
-        while path:
-            curr,odd = path.pop()
-            if odd:
-                # when we are going for right child
-                # take best result from left
-                left = curr<<1
-                result = max(result, self.nodes[left])
-            else:
-                # when we are going for left chld, we cannot take memo
-                pass
-        return result
+        return self.queryMax(0, i, -1)
+    
+    def queryMaxRight(self, i:int) -> int:
+        '''
+        Return the max score saved in range of [i,...] inclusive
+        '''
+        if i >= self.N:
+            return (-1,-1)
+        return self.queryMax(i, self.N-1, -1)
+ 
     
     def queryMax(self, givenLeft, givenRight, defaultVal = None):
         '''
@@ -116,6 +110,9 @@ class SegmentTreeRMQ:
                     ret = max(ret,self.nodes[child])
                     continue
                     
+                if self.nodes[child][0] < ret[0]:
+                    continue
+
                 if defaultVal is not None and self.nodes[child][0] <= defaultVal:
                     continue
 
