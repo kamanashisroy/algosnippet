@@ -304,6 +304,52 @@ class algo_tree(Generic[ALGOTREENODE]):
         self.height = 0
         self.subtree = 1 # subtree size is always > 1
 
+    def max(self):
+        if self.right is None:
+            return self
+        return self.right.max()
+
+    def pred(self):
+        '''
+        predecessor
+        Please refer to https://leetcode.com/problems/minimum-time-to-activate-string/solutions/7038399/binary-tree-predecessorsuccessor-and-inc-xyfq
+        '''
+        if self.left is not None:
+            return self.left.max()
+        cur = self
+        while cur is not None:
+            if cur.parent is None:
+                return None # no prev
+            if cur.parent.right == cur: # when right child
+                return cur.parent
+            assert(cur.parent.left == cur) # when left child
+            cur = cur.parent
+        return None
+
+
+    def min(self):
+        if self.left is None:
+            return self
+        return self.left.min()
+        
+    def succ(self):
+        '''
+        successor
+        '''
+        if self.right is not None:
+            return self.right.min()
+
+        cur = self
+        while cur is not None:
+            if cur.parent is None:
+                return None
+            if cur.parent.left == cur: # when left child
+                return cur.parent
+            assert(cur.parent.right == cur) # when right child
+            cur = cur.parent
+        return None
+
+        
     def augment(self):
         height,subtree = 0,1+len(self.dup)
         left,right = self.left,self.right
